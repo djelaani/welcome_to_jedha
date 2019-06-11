@@ -14,3 +14,7 @@ N'hesitez pas à regarder :[Jedha](url)
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_{1,2}=\frac{-b\pm\sqrt{\Delta}}{2a}" />
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(Y=1)=f(X)+\epsilon" />
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X) = \frac{1}{1+exp(-(\beta_{0}+X_{1}\beta_{1}+...+X_{p}\beta_{p}))" />
+
