@@ -16,5 +16,7 @@ N'hesitez pas à regarder :[Jedha](url)
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(Y=1)=f(X)+\epsilon" />
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X) = \frac{1}{1+exp(-(\beta_{0}))" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X) = \frac{1}{1+exp(-(\beta_{0}))}" />
+
+
 
