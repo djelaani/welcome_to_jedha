@@ -47,3 +47,7 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
  <img src="https://latex.codecogs.com/svg.latex?\Large&space;H_k=\frac{1}{card(k)}\cdot\sum_{i\in{k}}(y_i-\underline{y_k})^2" />
  
  <img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{\beta_n}=arg\min_{\beta:||\beta||_{0}\leq{s}}||Y-X^{t}\beta||^{2}_{2}" />
+ 
+ 
+ <img src="https://latex.codecogs.com/svg.latex?\Large&space;C(A)=H(A)+\gamma\cdot{k_A}" />
+
