@@ -61,3 +61,7 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{f}_B(.)=\frac{1}{B}\sum_{b=1}^{B}\hat{h}_{z_b}(.)" />
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{f}_B(.)=arg\max_{i}Card\{b|\hat{f}_B(.)=j\}" />
+
