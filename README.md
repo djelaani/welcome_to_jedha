@@ -26,4 +26,4 @@ $$\epsilon$$
 *X_{1}+X_{2}*
 
 
-Le 1^er ingrédient, du glucose (C^_{6}H^(_12)O^(_6))
+Le 1^er
