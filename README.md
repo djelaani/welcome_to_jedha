@@ -29,4 +29,4 @@ You can create footnotes like this[^footnote].
 [^footnote]: Here is the *text* of the **footnote**.
 
 
-Les modèles linéaires sont populaires pour estimer une variable cible continue ***Y*** qui dépend de variables explicatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...X_p,\forall\epsilon[[1,n]]" />. En général le volume d’observation (souvent noté
+Les modèles linéaires sont populaires pour estimer une variable cible continue ***Y*** qui dépend de variables explicatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...X_p,\forall \epsilon[[1,n]]" />. En général le volume d’observation (souvent noté
