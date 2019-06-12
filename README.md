@@ -37,5 +37,5 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\beta=arg\min_{\beta}||y-X^{t}\beta||^{2}_{2}" />
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[(Y-\widehat{f})^2]=E[f-\widehat{f}]^2+E[\hat{f}^2]-E[\widehat{f}]^2+\sum" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[(Y-\widehat{f})^2]=E[f-\widehat{f}]^2+E[\hat{f}^2]-E[\widehat{f}]^2+\Sigma" />
  
