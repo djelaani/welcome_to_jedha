@@ -50,4 +50,7 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
  
  
  <img src="https://latex.codecogs.com/svg.latex?\Large&space;C(A)=H(A)+\gamma\cdot{k_A}" />
+ 
+ 
+ <img src="https://latex.codecogs.com/svg.latex?\Large&space;C(A_{K_{A}-1}" />
 
