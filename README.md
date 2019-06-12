@@ -24,4 +24,6 @@ $$\epsilon$$
 ε
 
 
-1^1
+You can create footnotes like this[^footnote].
+
+[^footnote]: Here is the *text* of the **footnote**.
