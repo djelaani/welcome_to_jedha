@@ -65,3 +65,6 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{f}_B(.)=arg\max_{i}Card\{b|\hat{f}_B(.)=j\}" />
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(A/B)=\frac{P(B/A)\cdot{P(A)}}{P(A)}" />
+
+
