@@ -21,5 +21,5 @@ $$\epsilon$$
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X)=\frac{1}{1+exp(-(\beta_{0}+X_{1}\beta_{1}+...+X_{p}\beta_{p}))}" />
 
 
-
+ε
 
