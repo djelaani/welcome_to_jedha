@@ -10,8 +10,9 @@ for item in var:
 N'hesitez pas à regarder :[Jedha](url)
 
 ## premier sous titre
-\[ x_{1,2} = \frac{- b \pm \sqrt{\Delta}}{2a} \]
+$ x_{1,2} = \frac{- b \pm \sqrt{\Delta}}{2a}$
 
+$\epsilon$
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_{1,2}=\frac{-b\pm\sqrt{\Delta}}{2a}" />
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(Y=1)=f(X)+\epsilon" />
