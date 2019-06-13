@@ -95,3 +95,6 @@ Une autre manière d’estimer la loi de <img src="https://latex.codecogs.com/sv
 
 
 ![reg_logistique](https://drive.google.com/uc?export=view&id=1PM8NiLz9yydMsPErNg1sF5Rl-xS6U4s8)
+
+![sur_apprentissage](https://drive.google.com/open?id=1Dx7vSLocMMcjiYmowVS2GzKXbvxgkN5l)
+
