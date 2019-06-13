@@ -132,3 +132,7 @@ Une fois toutes les probabilités conditionnelles calculées on obtient pour cha
 Un avantage du modèle bayésien naïf est qu’il permet de ne pas faire d’hypothèse sur les lois de distribution des variables explicatives si on transforme ces dernières en variables quantitatives. Cependant il est très rare que l’hypothèse fondamentale d’indépendance des variables explicatives soit vérifiée en pratique.
 
 Les modèles bayésiens naïfs peuvent faire l’objet d’une agrégation au même titre que les arbres aléatoires, cela permet en général d’obtenir des résultats bien plus stables et également de mieux respecter l’hypothèse d’indépendance des variables explicatives si, comme on l’a vu dans le cas des random forest, on utilise qu’une partie des variables explicatives pour construire chaque modèle.
+
+
+Les vecteurs propres de la matrice des variances-covariances sont des combinaisons linéaires des variables <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...,X_p" /> que l’on note <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1^',X_2^',...,X_p^'" />
+
