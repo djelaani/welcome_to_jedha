@@ -166,4 +166,4 @@ Où *i* est un indice qui représente un individu dans la population.
 La matrice des indicatrices des modalités de *X* la matrice notée <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_l" /> et définie de la manière suivante :
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1=\{X_{(k)}(i),i\in\llbracket{1,n}\rrbracket,k\in\llbracket{1,m}\rrbracket\}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1=\{X_{(k)}(i),i\in\llbracket{1,n}\rrbracket,k\in\llbracket\;1,m\;\rrbracket\}" />
