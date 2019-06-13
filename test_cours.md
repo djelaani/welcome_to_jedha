@@ -42,7 +42,7 @@ Où ε est l’erreur.
 
 
 
-![reg_logistique1](https://drive.google.com/open?id=1PM8NiLz9yydMsPErNg1sF5Rl-xS6U4s8)
+![reg_logistique1](https://drive.google.com/uc?export=view&id=1PM8NiLz9yydMsPErNg1sF5Rl-xS6U4s8)
 
 
 Lorsque nous avons les régressions linéaires, nous avons vu que notre prédicteur était la ligne que traçait notre modèle. Dans une régression logistique, la ligne est simplement une frontière qui sépare deux catégories. Dans le graphique du dessus, nous essayons de voir si une personne va acheter un produit (représenté par le chiffre 1) ou ne va pas acheter un produit (représenté par le chiffre 0) la ligne représente la probabilité qu’une personne achète (_purchased) _ou non en fonction de son Âge.
@@ -114,7 +114,7 @@ La régression logistique est une transposition dans l’intervalle [0,1] de la 
 
 
 ###
-![mat_confusion](https://drive.google.com/open?id=11g8FW4ZB-4LSEq2Z_xj426xuhYJ7a3jf)
+![mat_confusion](https://drive.google.com/uc?export=view&id=11g8FW4ZB-4LSEq2Z_xj426xuhYJ7a3jf)
 
 
 Une des façons rapides et faciles de mesurer la performance de votre modèle grâce aux matrices de confusion. L’idée est de voir les prédictions que votre modèle a vu juste ainsi que les faux-positifs et faux-négatifs. En faisant les sommes des erreurs sur le total de prédiction vous avez le taux de précision de votre modèle.
@@ -137,7 +137,7 @@ La courbe ROC (receiver operating characteristic curve) qui permet de visualiser
 
 Cette courbe est obtenue en traçant le taux de vrais positifs (sensitivity) détectés en fonction du taux de faux positifs (*fall out* or *1 - specificity*) pour différentes valeurs du seuil.
 
-![courbe_roc](https://drive.google.com/open?id=1uno8_q_YU183T7xwDRoRggr_Zy0i13uW)
+![courbe_roc](https://drive.google.com/uc?export=view&id=1uno8_q_YU183T7xwDRoRggr_Zy0i13uW)
 
 
 Une courbe ROC revêt en général un aspect similaire à l’illustration ci-dessus. Il est très rare et très mauvais signe que la courbe ROC se trouve sous la diagonale, cela signifierait que pour chaque vrai positif détecté, on récupère une quantité plus grande en proportion de faux positifs. La courbe ROC permet immédiatement de décrire les performances du modèle en termes de détection des observations positives, cependant elle permet aussi d’avoir une appréciation générale du modèle. Le biais par lequel la courbe évalue la performance générale du modèle est un indicateur numérique appelé AUC (Area Under the Curve). L’AUC est littéralement le calcul de l’aire délimitée par la courbe ROC et les côtés du carré unité.
@@ -188,7 +188,7 @@ Une manière simple et efficace de se garantir de ce piège est de pratiquer la 
 La comparaison de l’erreur d’apprentissage et l’erreur de test permet de comprendre le réel pouvoir explicatif d’un modèle, car elle quantifie la performance du modèle sur des données inconnues par rapport à sa performance sur des données connues.
 
 
-![sur_apprentissage](https://drive.google.com/open?id=1Dx7vSLocMMcjiYmowVS2GzKXbvxgkN5l)
+![sur_apprentissage](https://drive.google.com/uc?export=view&id=1Dx7vSLocMMcjiYmowVS2GzKXbvxgkN5l)
 
 
 La figure ci dessus illustre le principe de la k-fold cross-validation. Chaque itération produit des résultat en termes d’erreurs de test et d’apprentissage dont on se sert pour évaluer le modèle. Pour calculer ces erreurs on se base en général sur la fonction de coût qu’on a choisit pour optimiser le modèle, ou bien tout simplement la moyenne des erreur au carré. En général on s’attend à ce que l’erreur de test et de validation soient du même ordre de grandeur, et on espère que l’erreur de manière générale sera petite par rapport aux valeurs prises par la variable cible.
