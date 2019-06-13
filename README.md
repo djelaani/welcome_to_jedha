@@ -90,3 +90,6 @@ Une autre manière d’estimer la loi de <img src="https://latex.codecogs.com/sv
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\farall{x,x'}\in{E},x+x'\in{E}" />
 
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;E=\{\overrightarrow{v}\in{\mathbb{R^d}},\overrightarrow{x}\cdot\overrightarrow{v}=0\}" />, cette notion de droite supplémentaire et vecteur générateur sont importants pour comprendre le fonctionnement des support vector machines.
+
+
