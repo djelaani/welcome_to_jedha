@@ -67,7 +67,7 @@ C’est pourquoi on introduit la notion de **pénalité, **c’est une modificat
 
 Le biais et la variance sont deux notions omniprésentes en statistiques et particulièrement en machine learning lorsqu’on cherche à faire de l’estimation ou de la prédiction.
 
-Considérons un problème où ***Y*** est la variable cible, ***X*** la matrice des variables explicatives et ε le terme d’erreur de moyenne 0 et de variance <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum" />.
+Considérons un problème où ***Y*** est la variable cible, ***X*** la matrice des variables explicatives et ε le terme d’erreur de moyenne 0 et de variance <img src="https://latex.codecogs.com/svg.latex?\Large&space;\Sigma" />.
 
 On souhaite modéliser ***Y*** à l’aide des variables explicatives ***X*** et on suppose qu’il existe une fonction ***f***  qui représente la vraie relation entre ***Y*** et ***X*** telle que :
 
@@ -148,7 +148,7 @@ Idéalement on souhaite trouver β tel que:
 
 Cette equation signifie que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{\beta_n}" /> est le vecteur qui minimise la valeur <img src="https://latex.codecogs.com/svg.latex?\Large&space;||Y-X^{t}\beta||^{2}_{2}" /> sous la contrainte que le nombre d'éléments non-nuls dans β soit au maximum ***s***.
 
-Avec <img src="https://latex.codecogs.com/svg.latex?\Large&space;||||_{0}" /> est la “norme zéro” qui compte le nombre d’éléments non nuls dans β.
+Avec <img src="https://latex.codecogs.com/svg.latex?\Large&space;||{}||_{0}" /> est la “norme zéro” qui compte le nombre d’éléments non nuls dans β.
 
 Hors cette contrainte ne permet pas de faire de l’optimisation car elle ne définit pas un espace convexe. A la place, nous sommes dans l’obligation de choisir une contrainte moins forte qui permette d’obtenir une fonction de coût convexe qui reposera sur la “norme 1” <img src="https://latex.codecogs.com/svg.latex?\Large&space;||||_{1}" /> qui est défini comme la somme des valeurs absolues des composants d’un vecteur.  
 
