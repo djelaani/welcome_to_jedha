@@ -1,188 +1,222 @@
 ## Machine learning supervisé
 
 
-### Régressions linéaires régularisées
+### Arbre aléatoire et Random Forest
 
 
-[TOC]
 
+## Qu’est ce que vous apprendrez dans ce cours ?
 
+Ce cours va être très orienté pratique, le but est de vous faire comprendre les principes théoriques des arbres de décision, qui permettent d’établir des règles successives permettant de classer des observations ou de faire des régressions. Et vous allez pour la première fois dans ce cours apprendre à coder un algorithme de machine learning du début à la fin afin que vous puissiez voir et comprendre se qui se cache derrière les fonctions bien pratiques de python.
 
-##
+Dans un second temps vous apprendrez le principe du bagging qu’on illustrera grâce à la mise en pratique d’un modèle de forêt aléatoire ou random forest.
 
 
-## Qu’est ce que vous apprendrez dans ce cours
+## Random Forest (régression et classification)
 
-Ce cours a pour but de vous enseigner deux modèles de régressions linéaires dites régularisées. La régularisation est un principe très utilisé en statistique qui permet de contraindre les modèles à adopter certains comportements, dans le cas présent cela permet de réduire l’importance ou de supprimer des variables explicatives qui n’apportent pas d’information pertinente pour le modèle ou de faire face à des problèmes où les variables explicatives sont beaucoup plus nombreuses que le nombre d’observations dont on dispose.
+Les random forest (en français, forêts d’arbres aléatoires) s’inscrivent dans le champ des méthodes de partitionnement récursif, qu’on connait plutôt sous l’acronyme CART (Classification And Regression Tree). On parle de classification lorsque la variable cible est qualitative (catégorielle), cas que nous traiterons dans un second temps. Ici nous nous intéressons au Regression Trees qui interviennent dans le cas d’une variable cible quantitative. Leur avantage réside dans leur représentation graphique aisément lisible. L’arbre est composé de trois types d’éléments :
 
-Les modèles linéaires sont populaires pour estimer une variable cible continue ***Y*** qui dépend de variables explicatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...X_p" />. En général le volume d’observation (souvent noté ***n***) est grandement supérieur au nombres de variables explicatives ***p***, cependant, dans certains cas on se retrouve dans la situation inverse. On dispose d’un nombre de variables explicatives bien supérieur au nombre d’observations, c’est souvent le cas, par exemple dans le domaine des statistiques génétiques, où les ressources de temps et d’argent ne permettent pas de séquencer l’ADN de plus d’un millier d’individus en général, tandis que le nombre de gènes que compte notre ADN pour produire une protéine est d’environ 20 000! Les modèles linéaires classiques ne sont pas bien adaptés pour ce type de problème à la dimensionnalité très élevée. C’est pourquoi nous aborderons dans ce cours de nouveaux modèles linéaires qui contournent cette difficulté.
 
 
-### Modèle Ridge
+*   La racine, où réside l’ensemble des données d’apprentissage.
+*   Les noeuds/branches, qui représente les points à partir de la racine où les données sont séparées en deux groupes selon un critère lié aux variables explicatives.
+*   Les feuilles, qui sont les noeuds terminaux de l’arbre et auxquels sont associés un valeur dans le cas où ***Y*** est quantitative et une classe lorsque ***Y*** est qualitative.
 
+Ainsi à partir de la racine on défini un noeud qui divise l’ensemble des données selon un critère lié à une variable explicative, pour chacune des deux branches ainsi créées on répète le même procédé, et ainsi de suite jusqu’à ce qu’aucune division ne satisfasse le critère de construction d’un noeud et on définit alors un noeud terminal ou feuille.
 
 
-1. Pourquoi le modèle linéaire échoue?
+![decision_tree](https://drive.google.com/uc?export=view&id=1TRyOAoMAkQ7kq1Hx3Zn7H66RqX2W0sGr)
 
-Comme on l’a vu précédemment, le modèle linéaire s’écrit de la manière suivante :
+Voilà un exemple d’arbre aléatoire avec en haut la racine et la première division et l’enchaînement des branches, jusqu’aux feuilles. On constate d’ailleurs immédiatement l’aspect très clair et visuel des arbres aléatoires.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_i=\beta_{0}+X_{i,1}\beta_1+...+X_{i,p}\beta_p+\epsilon_i\forall{i}\in[[1,n]]" />
 
 
-Ou sous forme matricielle :
+1. Construction d’un arbre aléatoire
+    1. Principe général
 
+L’algorithme de construction de l’arbre aléatoire se structure de la façon suivante :
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y=X^{t}\beta+\epsilon" />
 
 
+*   Initialisation : On considère la racine comme l’ensemble des données de la base d’apprentissage.
+*   Pour chaque ensemble/sous-ensemble, on définit un noeud :
+    *   On sélectionne une variable explicative ***X*** et on définit un critère de coupure, un seuil si ***X*** est quantitative, ou un partage en groupes de modalités si ***X*** est qualitative.
+    *   On marque le noeud comme terminal si aucun critère de division n’est satisfaisant, et on lui associe une valeur ou une classe selon la nature de ***Y***.
+*   On interrompt la construction de l’arbre lorsque tous les noeuds sont terminaux.
 
-Si nous avons ***p > n***, dans la première représentation il s’agit de résoudre ***n*** équations à l’aide de ***p + 1*** paramètres que sont les <img src="https://latex.codecogs.com/svg.latex?\Large&space;\beta_0,\beta_1,...,\beta_p" />, or un système d’équations avec un nombre plus élevé de paramètres que d’équations indépendantes est non déterminé et possède une infinité de solutions.
+Afin de mener à son terme cet algorithme, nous avons besoin de plusieurs choses :
 
-En vision matricielle, <img src="https://latex.codecogs.com/svg.latex?\Large&space;X^{t}X" /> est une matrice de dimensions ***pxp*** alors que ses lignes et colonnes sont des combinaisons linéaires issues de ***n*** vecteurs, le rang de cette matrice est donc inférieur ou égal à ***n***, elle est donc non inversible et la résolution matricielle que nous avons montré plus haut n’est plus valide.
 
 
+1. Un critère de sélection de la meilleure division
+2. Une règle pour définir si un noeud est terminal
+3. Une méthode pour assigner à chaque feuille une valeur ou une classe
+    2. Critère de division
+        1. Admissibilité
 
-2. Quelle solution pour palier cette difficulté ?
-    1. Qu’est ce qu’une fonction de coût ?
+Un noeud est **admissible** si les branches qui en découlent portent des noeuds non vide (c’est à dire qu’au moins une observation appartient à chacun des noeuds enfant). Pour un noeud parent contenant ***M*** observations il existe ***M - 1*** divisions admissibles si la variables sélectionnée pour la division est quantitative ou qualitative ordinale, et <img src="https://latex.codecogs.com/svg.latex?\Large&space;2^{m-1}-1" /> divisions admissibles si la variable selectionnée est nominale.
 
-Une **fonction de coût** est un concept qui servira énormément par la suite puisqu’il est omniprésent dans l’univers du machine learning. La fonction de coût est la quantité mathématique que l’on souhaite minimiser lors de l’optimisation d’un modèle statistique. Dans le cadre d’une régression linéaire multiple, la fonction de coût est :
+Afin de sélectionner la meilleure division admissible, on construit une fonction **d’hétérogénéité** qui présente deux propriétés remarquables :
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;||y-X^{t}\beta||^{2}_{2}" />
 
+*   Elle vaut zéro lorsque tous les individus appartiennent à la même modalité ou présentent la même valeur de ***Y***.
+*   Elle est maximale lorsque les valeurs de ***Y*** sont équiréparties dans le noeud.
 
-qui est la norme euclidienne pour les vecteurs (c’est à dire la racine carré de la somme de ses composants au carré) au carré. De fait l’estimateur <img src="https://latex.codecogs.com/svg.latex?\Large&space;\beta" /> qui donne les coefficients du modèle est le vecteur qui minimise la fonction de coût, ce qui s’écrit mathématiquement :
+On cherche donc la division qui minimise la somme des hétérogénéités des noeuds enfants.
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\beta=arg\min_{\beta}||y-X^{t}\beta||^{2}_{2}" />
 
+        2. Critère d’arrêt
 
- Cette fonction de coût permet d’obtenir un estimateur peu biaisé, mais dans le cas présent et le nombre de variables explicatives, la variance est très élevée car beaucoup de paramètre ne seront pas pertinents pour l’estimation du modèle.
+Un noeud donné sera terminal lorsqu’il est homogène, c’est à dire que toutes les observations dans le noeud présente la même valeur ou la même modalité de ***Y***, lorsqu’il n’existe plus de divisions admissibles, ou bien lorsque le nombre d’observations dans le noeud est inférieur à une valeur définie à l’avance, en général de l’ordre de quelques unités.
 
-C’est pourquoi on introduit la notion de **pénalité, **c’est une modification qu’on apporte à la fonction de coût afin de maîtriser l’arbitrage entre **biais vs variance**.
 
 
+        3. Y quantitative
 
-    2. Biais vs Variance
+Dans le cas de la régression, l’hétérogénéité du noeud ***k*** s’écrit de la manière suivante :
 
-Le biais et la variance sont deux notions omniprésentes en statistiques et particulièrement en machine learning lorsqu’on cherche à faire de l’estimation ou de la prédiction.
 
-Considérons un problème où ***Y*** est la variable cible, ***X*** la matrice des variables explicatives et ε le terme d’erreur de moyenne 0 et de variance <img src="https://latex.codecogs.com/svg.latex?\Large&space;\Sigma" />.
 
-On souhaite modéliser ***Y*** à l’aide des variables explicatives ***X*** et on suppose qu’il existe une fonction ***f***  qui représente la vraie relation entre ***Y*** et ***X*** telle que :
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_k=\frac{1}{Card(k)}\cdot\sum_{i\in{k}}(y_i-\underline{y_k})^2" />
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y=f(X)+\epsilon" />
+Card(k) parfois aussi noté ***#(k)*** ou encore ***|k|*** est le nombre d’éléments dans le noeud ***k***, et <img src="https://latex.codecogs.com/svg.latex?\Large&space;\underline{y_k}" /> est la moyenne des valeurs de ***Y*** parmi les observations du noeud ***k***. Ce qui fait la variance du noeud ***k***. La division retenue est celle pour laquelle : <img src="https://latex.codecogs.com/svg.latex?\Large&space;H_{kG}+H_{kD}" /> la somme de l’hétérogénéité de la branche gauche et de la branche droite.
 
 
-A l’issue de notre travail de data scientist, nous aurons obtenu une estimation <img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{f}" /> de la fonction ***f***. Dans ce cas l’erreur au carré moyenne (souvent notée MSE pour Mean Square Error en anglais) peut se décomposer en un terme de biais (ou écart moyen à la vrai fonction) et un terme de variance (dispersion de l’estimateur par rapport à sa moyenne). Cette décomposition s’écrit ainsi :
 
+        4. Y qualitative
 
+Soit ***Y*** une variable qualitative à ***m*** modalités ou catégories numérotées de 1 à m. La fonction d’hétérogénéité privilégiée la plupart du temps est la concentration de GINI:
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[(Y-\widehat{f})^2]=E[f-\widehat{f}]^2+E[\hat{f}^2]-E[\widehat{f}]^2+\Sigma" />
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[(Y-\widehat{f})^2]=biais^2+variance+\Sigma" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_k=\sum_{i=1}^{m}p_{k}^{i}\cdot(1-p_{k}^{i})" />
 
 
 
-    3. Pénalité du modèle Ridge
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;p_{k}^{i}" /> est la proportion de la classe i de ***Y*** dans le noeud ***k***.
 
-Le modèle Ridge est une version pénalisée du modèle linéaire multiple dont la fonction de coût est :
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;||y-X^{t}\beta||^{2}_{2}+\lambda||\beta||^{2}_{2},\lambda\in\mathbb{R^{+*}}" />
+    3. Elagage de l’arbre
 
+On a vu précédemment avec les modèles LASSO et RIDGE qu’un risque important dans tout problème d’apprentissage supervisé est celui du sur-apprentissage. Le critère d’arrêt défini pour la construction de l’arbre est souvent propice au sur-apprentissage puisqu’il est très probables que la plupart des feuilles de l’arbre ne contiennent que quelques observations. Ainsi l’arbre de décision tel quel sera très instable, son biais est quasi-nul voir nul par définition, il dépend très fortement des observations de la base d’apprentissage et sera potentiellement peu généralisable aux données de la base de test.
 
+Le problème est donc de trouver un arbre intermédiaire qui vérifie un compromis biais variance intéressant pour les besoins de l’estimation de ***Y***. Le nombre de sous-arbres malheureusement est souvent très élevé c’est pourquoi on suit en général la méthode de Breiman, qui consiste à construire une suite emboîtée de sous-arbres (chaque arbre de la suite est un un sous-arbre de l’arbre précédent). Et de choisir parmi cette suite, l’arbre optimal selon un critère de généralisation.
 
-Cette pénalité entraîne que toute variation des paramètres β peut avoir un impact bénéfique sur la qualité de l’estimation (au niveau du premier terme) mais participe à l’augmentation du second terme. Cela force le modèle à favoriser les paramètres associés aux variables explicatives qui contiennent réellement une information pertinente pour décrire la variable cible et à maintenir à des valeurs plus proches de zéros des paramètres associés aux variables explicatives peu pertinentes.
 
-En terme d’arbitrage biais vs variance, le modèle Ridge se comporte de la manière suivante :
 
+        5. Construction 	de la suite emboîtée d’arbres
 
+Soit ***A*** un arbre, <img src="https://latex.codecogs.com/svg.latex?\Large&space;K_{A}" /> le nombres de ses feuilles ou noeuds terminaux, qu’on appellera la complexité de l’arbre ***A***.
 
-*   λ = 0 correspond au modèle linéaire, qui est non biaisé
-*   Le biais augmente lorsque λ augmente
-*   La variance diminue lorsque λ augmente
-*   λ = ∞ correspond au modèle où tous les paramètres sont à zéros, d’où β = 0 et l’estimateur vaut 0 ou
+La **qualité d’ajustement** de l’arbre est mesurée par :
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\underline{Y}" /> (la moyenne des valeurs de ***Y***) si on a inclus un intercept dans le modèle.
 
 
-    4. Cas particulier de l’intercept
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;H(A)=\sum_{k=1}^{k_A}H_{k}" />
 
-L’intercept est le paramètre <img src="https://latex.codecogs.com/svg.latex?\beta_0" /> du modèle, il n’est associé à aucune variable explicative, il représente l’estimation du niveau moyen de ***Y*** lorsque les autres variables explicatives valent 0. C’est pourquoi on ne le pénalise pas en pratique. La fonction de coût du modèle Ridge avec intercept est donc :
 
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;H_k" /> est l’hétérogénéité du noeud ***k***.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;||y-\beta_0-X^{t}\beta||^{2}_{2}+\lambda||\beta||^{2}_{2},\lambda\in\mathbb{R^{+*}}" />
+La construction repose sur une pénalisation de l’arbre indexée sur sa complexité :
 
 
 
-### Modèle Lasso
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;C(A)=H(A)+\gamma\cdot{k_A}" />
 
 
 
-1. Problème de sélection de variables en grande dimension
+Pour γ = 0, <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_{max}=A_{K_A}" /> minimise ***C(A)***. En faisant croître γ la division de <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_{K_A}" /> qui améliore le moins ***H(A)*** devra être supprimée afin d’optimiser ***C(A)***, car <img src="https://latex.codecogs.com/svg.latex?\Large&space;C(A_{K_{A}-1})-C(A_{K_{A}})=H_{K_A}-\gamma>0" />. Ce procédé permet bien de créer une suite emboîtée d’arbres puisque pour construire l’arbre suivant on lui retire un noeud.
 
-Le modèle Ridge, on l’a vu, est bien adapté lorsqu’une partie des variables explicatives n’est pas très informative dans le modèle, car il contracte les coefficients associés à ces variables. Cependant, dans le cas où la vraie valeur de nombreux coefficients est 0, c’est à dire que les variables explicatives auxquelles ils sont associés n’ont aucune influence sur la variable cible, le modèle Ridge donnera des résultats d’estimation corrects, mais l’interprétation du modèle est rendue plus compliquée car on ne fera pas la différence entre un coefficient qui représente une influence réelle mais faible sur la variable cible et un coefficient faible mais qui devrait être nul. C’est à dire que le modèle Ridge ne sélectionne pas les variables pertinentes.
+Une fois la suite construite, on peut sélectionner celui qui minimise l’erreur de prédiction sur la **base de validation** (base de test).
 
-C’est pourquoi un modèle du nom de Lasso existe, qui sélectionne les variables pertinentes et fixe à zéro les coefficients des variables parasites.
 
 
+    4. Remarques générales
+*   L’algorithme a tendance à favoriser la sélection de variables explicatives avec beaucoup de modalités, il convient donc de transformer les variables explicatives qualitatives en fusionnant les modalités par groupes cohérents pour éviter le sur-apprentissage.
+*   Les arbres de décision ne requièrent pas d’hypothèses particulières sur les distributions des variables et sont bien adaptés aux situations où les variables explicatives sont nombreuses puisque la sélection des variables fait partie de l’algorithme d’optimisation.
+*   La recherche d’une division dépendant uniquement de la position relative des valeurs des variables explicatives quantitatives, l’algorithme résiste donc aux valeurs atypiques et au distributions de valeurs asymétriques.
+*   La structure hiérarchique de l’arbre (les divisions se font une par une) favorise la propagation de l’erreur engendrée par une division à tous les noeuds enfants. Les arbres de décisions peuvent donc passer à côté d’un optimum global et donc de la vraie fonction de classification ou de régression qui lie les variables explicatives à la variable cible.
+*   Dans le cas de la régression, le résultat de l’arbre est une fonction étagée, toutes les observations d’une même feuille prendront la même valeur estimée de ***Y***
 
-2. Le modèle Lasso
-    1. Intuition
+. Si la vraie fonction présente des propriété de régularité (par exemple un polynôme ou une droite affine), ces propriétés ne seront pas conservées par le modèle d’arbre aléatoire.
+2. Random Forest (Forêt d’arbres aléatoire) plutôt à inclure dans le chapitre sur le boosting?
 
-L’intuition fondamentale pour utiliser un modèle Lasso est qu’un certain nombre de variables explicatives à notre disposition n’a aucune influence sur la variable cible, et donc que les coefficients associés auraient pour vraie valeur 0 dans le modèle linéaire.
+Comme son nom l’indique, la random forest n’est rien de plus qu’un ensemble d’arbres aléatoire qu’on va faire coopérer afin d’obtenir de meilleurs résultats de régression ou de classification.
 
-Cette intuition est caractérisée mathématiquement de la manière suivante : soit ***n*** le nombre d’observations, ***p*** le nombre de variables explicatives et ***s*** le nombres de variables explicatives pertinentes. Alors l’intuition (qu’on appelle hypothèse de **sparsité**) s’écrit de la manière suivante.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;s<<n<<p" />
 
-On espère en sélectionnant les ***s*** variables pertinentes de se ramener dans une situation où le modèle linéaire peut s’appliquer sans difficulté.
+    5. Principe du Bagging
 
-Idéalement on souhaite trouver β tel que:
+Le principe du Bagging est très simple. Soit ***Y*** la variable cible, liée aux variables explicatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,...,X_p" /> par une fonction ***f*** telle que <img src="https://latex.codecogs.com/svg.latex?\Large&space;Y=f(X)+\epsilon" /> et ***n*** le nombre d’observations. En tirant ***B*** échantillons indépendants <img src="https://latex.codecogs.com/svg.latex?\Large&space;\{Z_b\}_{b\in[[1,B]]}" /> à partir de l’ensemble des observations, la prévision agrégée donnée par les ***B*** modèles qui découlent des ***B*** échantillons s’écrit :
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{\beta_n}=arg\min_{\beta:||\beta||_{0}\leq{s}}||Y-X^{t}\beta||^{2}_{2}" />
 
 
-Cette equation signifie que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{\beta_n}" /> est le vecteur qui minimise la valeur <img src="https://latex.codecogs.com/svg.latex?\Large&space;||Y-X^{t}\beta||^{2}_{2}" /> sous la contrainte que le nombre d'éléments non-nuls dans β soit au maximum ***s***.
+*   ***Y*** quantitative : le modèle agrégé est la moyenne des fonctions estimées par les modèles, la moyenne des valeurs de ***Y*** pour une observation donnée..
 
-Avec <img src="https://latex.codecogs.com/svg.latex?\Large&space;||\:||_{0}" /> est la “norme zéro” qui compte le nombre d’éléments non nuls dans β.
 
-Hors cette contrainte ne permet pas de faire de l’optimisation car elle ne définit pas un espace convexe. A la place, nous sommes dans l’obligation de choisir une contrainte moins forte qui permette d’obtenir une fonction de coût convexe qui reposera sur la “norme 1” <img src="https://latex.codecogs.com/svg.latex?\Large&space;||||_{1}" /> qui est défini comme la somme des valeurs absolues des composants d’un vecteur.  
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{f}_B(.)=\frac{1}{B}\sum_{b=1}^{B}\hat{f}_{z_b}(.)" />
 
 
-    2. Estimateur Lasso
 
-Nous introduisons ici le _Least Absolute Shrinkage and Selection Operator_ (LASSO), défini par la fonction de coût suivante :
 
 
+*   ***Y*** qualitative : le modèle agrégé est le vote majoritaire parmi les fonctions estimées par les modèles, la modalité de ***Y*** la plus représentée parmi les réponses des différents modèles à une observation donnée.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;||Y-X^{t}\beta||^{2}_{2}+\lambda||\beta||_{1}" />
 
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{f}_B(.)=arg\max_{i}Card\{b|\hat{f}_B(.)=j\}" />
 
-Les choses importante à connaître sur le modèle LASSO sont les suivantes :
 
 
+La principale difficulté du bagging réside dans le fait de construire ***B***
 
-*   λ la constante de pénalisation doit être soigneusement choisie, en général les algorithme de résolution du LASSO procède à une cross-validation (dont la théorie est développée dans ce qui suit)  et calcule l’estimateur pour de nombreuses valeur de λ afin d’identifier les valeurs les plus pertinentes.
-*   Plus λ est élevé, plus la solution <img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{\beta}_{LASSO}" /> sera sparse (c’est à dire contiendra peu d’élément non nuls), on augmente le biais et on diminue la variance.
-*   Plus λ sera petit, plus le nombre de coefficients augmente, ceci diminue le biais du modèle mais peut augmenter dramatiquement la variance (c’est ce qu’on appelle une situation de sur-apprentissage).
-*   En pratique vous découvrirez bientôt que le biais introduit par l’estimation LASSO peut être important. En fonction de vos contraintes de précision des résultats, il est possible d’utiliser LASSO pour sélectionner les meilleurs variables et ensuite estimer un modèle linéaire en conservant uniquement ces variables pour ôter le biais.
-    3. Underfitting et Overfitting (sous-apprentissage et sur-apprentissage)
+ échantillons indépendants, en effet, à moins de disposer d’une base de données contenant un très grand nombre d’observations, il est difficile de respecter cette contrainte dans la plupart des cas.
 
-On a mentionné au-dessus deux notions qui s’expliquent ainsi :
 
 
+    6. Bootstrap
 
-*   Le sous-apprentissage est le fait qu’un modèle soit trop simple pour être une bonne estimation de la variable cible.
-*   Le sur-apprentissage est le phénomène inverse, lorsqu’on construit un modèle très complexe qui adhère parfaitement aux données d’apprentissage, mais inutile en pratique car il est très improbable qu’il se généralise bien à de nouvelles données inconnues.
+Le Bootstrapping est un procédé qui permet d’augmenter artificiellement le nombre d’observation d’un échantillon de données sans pour autant modifier la distribution des variables présentes dans le jeu de données. Le principe est simple, on dispose d’un jeu de données contenant ***n*** observations, pour créer un échantillon de taille ***m*** on tire avec remise ***m*** observations parmi le jeu de données original, et chaque observation du jeu de données original a <img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{n}" /> chance d’être tiré (c’est un tirage avec remise équiprobable). L’équiprobabilité du tirage est essentielle afin que la loi de distribution de l’échantillon soit la même que celle de la base initiale.
 
 
-![under_over_fitting](https://drive.google.com/uc?export=view&id=1W3Y-X__zrkB-fOBGnVmLb0_IheOEAt05)
 
+    7. Random Forest
 
-La figure ci-dessus représente de gauche à droite, une situation de sous-apprentissage, une situation de bonne estimation, et une situation de sur-apprentissage.
+La première idée derrière les random forest est d’effectuer un bagging de plusieurs arbres aléatoires. Plusieurs élagages des arbres ainsi construits sont possible :
+
+
+
+*   On peut conserver les arbres complets et éventuellement limiter le nombre minimum d’observations au niveau des noeuds terminaux.
+*   Conserver au plus ***q*** feuilles ou limiter la profondeur de l’arbre à ***q*** niveaux de noeuds.
+*   Adopter la méthode vue plus haut pour un arbre seul, c’est à dire construire l’arbre complet puis élaguer par validation croisée.
+
+En général on retiendra la première stratégie, car elle représente un bon compromis entre qualité d’estimation et quantité de calculs. Chaque arbre ainsi construit aura un biais très faible et une grande variance, cependant le fait d’agréger les modèles entre eux participe justement à réduire cette variance. Cet algorithme est très simple à mettre en place, ce qui est un grand avantage, cependant le nombre de modèles à calculer avant que l’erreur de test (appelée aussi erreur de validation) se stabilise peut être très important. Le modèle final sera volumineux en terme d’espace disque car il est nécessaire de stocker la structure complète de tous les arbres pour pouvoir faire des prévisions. Enfin la multiplication du nombre d’arbres participants au modèle rend plus difficile, voir impossible l’interprétation du modèle comme cela était possible avec un seul arbre.
+
+La seconde idée consiste à améliorer la méthode du bagging afin de créer des random forest s’appuyant sur des échantillons de données les plus “indépendants” possible. Non seulement le hasard intervient lors de la sélection des observations lors de la construction des échantillons d’apprentissage, mais on fera également intervenir le hasard dans le choix des variables explicatives retenues pour chaque échantillon sur lequel on construira un arbre aléatoire.
+
+Ce double hasard de sélection des observations et des variables explicatives a plusieurs avantages : il permet de s’approcher de l’hypothèse d’indépendance des échantillons, il réduit le nombre de calculs à effectuer pour le construction de chaque arbre et il réduit les risques d’erreurs liés à d’éventuelles corrélations entre variables explicatives.
+
+Dernière remarque, soit ***Y*** la variable cible et <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,...X_p" /> les ***p*** variables explicatives à notre disposition, en général le nombre de variables que l’on conservera par arbre pour une classification est <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sqrt{p}" /> et ***p/3*** pour une régression.
+
+
+
+    8. Interprétation
+
+Le fait d’agréger les modèles pour produire la prédiction finale rend difficile l’interprétation directe du modèle, cependant deux méthodes sont utilisées en pratique afin d’évaluer l’importance de chacune des variables pour la prédiction.
+
+
+
+        6. Mean decrease Accuracy
+
+Cette méthode consiste à permuter de manière aléatoire les valeurs d’une variables explicatives, on mesure ensuite la différence entre l’erreur de validation pré et post-permutation, plus elle est élevée, plus on considère la variable en question importante pour la prévision de la variable cible.
+
+
+
+        7. Mean decrease Gini
+
+Cette méthode permet d’évaluer l’importance d’une variable au niveau d’un noeud, elle mesure la décroissance de la fonction d’hétérogénéité si on utilise la variables explicative utilisée pour le noeud par celle que l’on souhaite évaluer. L’importance générale de la variable est alors une sommes des décroissance d’hétérogénéité mesurées, pondérée par le nombres d’observation à chaque noeud.
