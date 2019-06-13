@@ -64,7 +64,7 @@ Prenons un exemple, en fonction de certaines variables indépendantes, nous avon
 
     2. Régression logistique en python  
 
-        ```
+```
 from sklearn.linear_model import LogisticRegression
 logisticreg = LogisticRegression() # on définit le modèle de régression logistique à appliquer aux données
 
