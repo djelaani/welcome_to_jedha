@@ -1,3 +1,4 @@
+
 ## Machine learning supervisé
 
 
@@ -125,7 +126,7 @@ Une mesure simple et pertinente de la performance de votre modèle serait de com
 
     7. Matrice de confusion en python
 
-        ```
+```
 from sklearn import metrics
 cm = metrics.confusion_matrix(y, y_pred) # on calcule la matrice de confusion
 ```
@@ -154,7 +155,7 @@ L’AUC varie entre 0 et 1 en théorie, mais les modèles dont l’AUC est infé
 
     9. Courbe ROC, AUC en python
 
-        ```
+```
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import roc_curve
 logit_roc_auc = roc_auc_score(y, logisticreg.predict(X))
@@ -197,7 +198,7 @@ La figure ci dessus illustre le principe de la k-fold cross-validation. Chaque i
 
     11. Cross Validation en python
 
-        ```
+```
 ''' k fold cross validation'''
 from sklearn.model_selection import KFold
 kf = KFold(n_splits=10)
