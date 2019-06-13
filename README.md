@@ -80,11 +80,12 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
 Une autre manière d’estimer la loi de <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> sachant ***Y*** est de faire l’hypothèse que <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X_i|Y)" /> suit une loi normale dont on estime les paramètres <img src="https://latex.codecogs.com/svg.latex?\Large&space;\mu_i" /> et <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sigma_i" />
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=\frac{1}{\sqrt{2\pi\sigma_{iy}}exp(\frac{-(x_{ik}-\mu_{iy})^2}{2\sigma_{iy}^2}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=\frac{1}{\sqrt{2\pi\sigma_{iy}}}exp(\frac{-(x_{ik}-\mu_{iy})^2}{2\sigma_{iy}^2})" />
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=exp(\frac{-(x_{ik}-\mu_{iy})^2}{2\sigma_{iy}^2}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=exp(\frac{-(x_{ik}-\mu_{iy})^2}{2\sigma_{iy}^2})" />
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=\frac{1}{\sqrt{2\pi\sigma_{iy}}}" />
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\farall{x,x'}\in{E},x+x'\in{E}" />
 
