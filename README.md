@@ -68,3 +68,5 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(A/B)=\frac{P(B/A)\cdot{P(A)}}{P(A)}" />
 
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|Y)=\frac{P(Y)P(X_1|Y)P(X_2|Y)...P(X_p|Y)}{P(X)}" />
+
