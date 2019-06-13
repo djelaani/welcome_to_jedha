@@ -136,3 +136,6 @@ Les modèles bayésiens naïfs peuvent faire l’objet d’une agrégation au m�
 
 Les vecteurs propres de la matrice des variances-covariances sont des combinaisons linéaires des variables <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...,X_p" /> que l’on note <img src="https://latex.codecogs.com/svg.latex?\Large&space;{X'}_1^,{X'}_2^,...,{X'}_p" />
 
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;B=\frac{1}{n}\sum_{k=1}^{m}n_k(\mu_k-\mu)^T\cdot(\mu_k-\mu)" />
+
