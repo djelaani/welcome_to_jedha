@@ -141,3 +141,14 @@ Les vecteurs propres de la matrice des variances-covariances sont des combinaiso
 
 
 Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;n_k" /> est le nombre d’observations qui prennent la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;Q_k,\;\mu" /> est le centre de gravité de l’ensemble des observations, <img src="https://latex.codecogs.com/svg.latex?\Large&space;\mu_k" /> est le centre de gravité des observations prenant la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;Q_k" />.
+
+
+Le <img src="https://latex.codecogs.com/svg.latex?\Large&space;l^{eme}" /> profil ligne est
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{l1}}{n_{X_l}},...,\frac{n_{lr}}{n_{X_l}}\}=\frac{1}{n}T^{T}D_{X}^{-1}=A" />
+
+Le <img src="https://latex.codecogs.com/svg.latex?\Large&space;h^{eme}" />  profil colonne est
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{1h}}{n_{Y_h}},...,\frac{n_{mh}}{n_{Y_h}}\}=\frac{1}{n}T^{T}D_{Y}^{-1}=B" />
