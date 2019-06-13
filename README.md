@@ -93,3 +93,4 @@ Une autre manière d’estimer la loi de <img src="https://latex.codecogs.com/sv
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;E=\{\overrightarrow{x}\in{\mathbb{R}^d},\overrightarrow{x}\cdot\overrightarrow{v}=0\}" />, cette notion de droite supplémentaire et vecteur générateur sont importants pour comprendre le fonctionnement des support vector machines.
 
 
+![reg_logistique1](https://drive.google.com/open?id=1PM8NiLz9yydMsPErNg1sF5Rl-xS6U4s8")
