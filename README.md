@@ -70,3 +70,7 @@ Les modèles linéaires sont populaires pour estimer une variable cible continue
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|Y)=\frac{P(Y)P(X_1|Y)P(X_2|Y)...P(X_p|Y)}{P(X)}" />
 
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=\frac{Card(X_i=x_{ik},Y=y)}{Card(Y=y)}" />
+
+
