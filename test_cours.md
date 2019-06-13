@@ -49,7 +49,7 @@ Lorsque nous avons les régressions linéaires, nous avons vu que notre prédict
 
 L’allure de la courbe est la représentation pour une variable explicative (ici l’âge) de l’équation introduite plus haut.
 
-Dans cet exemple, nous n’avons qu’une variable indépendante et une constante. L’équation ressemble beaucoup à une régression linéaire comme vous pouvez le constater, seulement ici une fonction logistique est appliquée à la variable explicative utilisée pour la régression. Cette fonction contraint les valeurs de <img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X^t \beta)" /> à rester dans l’intervalle [0,1] qui est l’ensemble des valeurs que peut prendre une probabilité. En fonction de la probabilité obtenue, l’algorithme va savoir dans quelle catégorie placer notre individu. 	
+Dans cet exemple, nous n’avons qu’une variable indépendante et une constante. L’équation ressemble beaucoup à une régression linéaire comme vous pouvez le constater, seulement ici une fonction logistique est appliquée à la variable explicative utilisée pour la régression. Cette fonction contraint les valeurs de <img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X^t\beta)" /> à rester dans l’intervalle [0,1] qui est l’ensemble des valeurs que peut prendre une probabilité. En fonction de la probabilité obtenue, l’algorithme va savoir dans quelle catégorie placer notre individu. 	
 
 
 
