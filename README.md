@@ -94,4 +94,4 @@ Une autre manière d’estimer la loi de <img src="https://latex.codecogs.com/sv
 
 
 
-![](https://drive.google.com/uc?export=view&id=1KKDqtiiimdfHZK59JkZ2wyvDOQUJA8ER)
+![](https://drive.google.com/uc?export=view&id=1PM8NiLz9yydMsPErNg1sF5Rl-xS6U4s8)
