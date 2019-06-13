@@ -148,7 +148,7 @@ Idéalement on souhaite trouver β tel que:
 
 Cette equation signifie que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{\beta_n}" /> est le vecteur qui minimise la valeur <img src="https://latex.codecogs.com/svg.latex?\Large&space;||Y-X^{t}\beta||^{2}_{2}" /> sous la contrainte que le nombre d'éléments non-nuls dans β soit au maximum ***s***.
 
-Avec <img src="https://latex.codecogs.com/svg.latex?\Large&space;||{}||_{0}" /> est la “norme zéro” qui compte le nombre d’éléments non nuls dans β.
+Avec <img src="https://latex.codecogs.com/svg.latex?\Large&space;||\ ||_{0}" /> est la “norme zéro” qui compte le nombre d’éléments non nuls dans β.
 
 Hors cette contrainte ne permet pas de faire de l’optimisation car elle ne définit pas un espace convexe. A la place, nous sommes dans l’obligation de choisir une contrainte moins forte qui permette d’obtenir une fonction de coût convexe qui reposera sur la “norme 1” <img src="https://latex.codecogs.com/svg.latex?\Large&space;||||_{1}" /> qui est défini comme la somme des valeurs absolues des composants d’un vecteur.  
 
