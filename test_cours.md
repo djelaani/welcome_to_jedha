@@ -1,219 +1,188 @@
-
 ## Machine learning supervisé
 
 
-### Régression logistique
+### Régressions linéaires régularisées
 
 
 [TOC]
 
 
 
-## Ce que vous apprendrez dans ce cours
+##
 
-Ce cours a pour but de vous enseigner les principes de la régression logistique et comment appliquer ce modèle à des problème de classification binaire. Vous apprendrez également comment vous protéger du sur-apprentissage grâce à une méthode très utile en machine learning supervisé : la cross validation.
 
+## Qu’est ce que vous apprendrez dans ce cours
 
+Ce cours a pour but de vous enseigner deux modèles de régressions linéaires dites régularisées. La régularisation est un principe très utilisé en statistique qui permet de contraindre les modèles à adopter certains comportements, dans le cas présent cela permet de réduire l’importance ou de supprimer des variables explicatives qui n’apportent pas d’information pertinente pour le modèle ou de faire face à des problèmes où les variables explicatives sont beaucoup plus nombreuses que le nombre d’observations dont on dispose.
 
-1. Définition
+Les modèles linéaires sont populaires pour estimer une variable cible continue ***Y*** qui dépend de variables explicatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...X_p" />. En général le volume d’observation (souvent noté ***n***) est grandement supérieur au nombres de variables explicatives ***p***, cependant, dans certains cas on se retrouve dans la situation inverse. On dispose d’un nombre de variables explicatives bien supérieur au nombre d’observations, c’est souvent le cas, par exemple dans le domaine des statistiques génétiques, où les ressources de temps et d’argent ne permettent pas de séquencer l’ADN de plus d’un millier d’individus en général, tandis que le nombre de gènes que compte notre ADN pour produire une protéine est d’environ 20 000! Les modèles linéaires classiques ne sont pas bien adaptés pour ce type de problème à la dimensionnalité très élevée. C’est pourquoi nous aborderons dans ce cours de nouveaux modèles linéaires qui contournent cette difficulté.
 
-A la différence des régressions linéaires qui vous prédisent un nombre, les modèles de classifications vous prédisent une catégorie. Par exemple, si vous essayez de prédire si quelqu’un va vous acheter un produit en fonction de certaines variables indépendantes, vous entrez dans une problématique de classification car les catégories que vous essayez de prédire sont “oui, la personne va acheter le produit” ou “non, la personne ne va pas acheter mon produit”.
 
-Les régressions logistiques sont une catégorie dans les modèles de classification mais vous en avez beaucoup d’autres comme les arbres de décisions (_decision tree_), SVM (_support vector machine_) ou Naive Bayes
+### Modèle Ridge
 
 
 
-2. Equation
+1. Pourquoi le modèle linéaire échoue?
 
-Lorsqu’on construit un modèle de régression logistique, on suppose qu’il existe une fonction *f* qui lie la variables cible *Y* aux variables explicatives représentées dans la matrice *X* de la manière suivante :
+Comme on l’a vu précédemment, le modèle linéaire s’écrit de la manière suivante :
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(Y=1)=f(X)+\epsilon" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_i=\beta_{0}+X_{i,1}\beta_1+...+X_{i,p}\beta_p+\epsilon_i\forall{i}\in[[1,n]]" />
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X)=\frac{1}{1+exp(-(\beta_{0}+X_{1}\beta_{1}+...+X_{p}\beta_{p}))}" />
+Ou sous forme matricielle :
 
-Où ε est l’erreur.
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y=X^{t}\beta+\epsilon" />
 
 
-3. Régression logistique
 
-####
+Si nous avons ***p > n***, dans la première représentation il s’agit de résoudre ***n*** équations à l’aide de ***p + 1*** paramètres que sont les <img src="https://latex.codecogs.com/svg.latex?\Large&space;\beta_0,\beta_1,...,\beta_p" />, or un système d’équations avec un nombre plus élevé de paramètres que d’équations indépendantes est non déterminé et possède une infinité de solutions.
 
+En vision matricielle, <img src="https://latex.codecogs.com/svg.latex?\Large&space;X^{t}X" /> est une matrice de dimensions ***pxp*** alors que ses lignes et colonnes sont des combinaisons linéaires issues de ***n*** vecteurs, le rang de cette matrice est donc inférieur ou égal à ***n***, elle est donc non inversible et la résolution matricielle que nous avons montré plus haut n’est plus valide.
 
 
 
-![reg_logistique1](https://drive.google.com/uc?export=view&id=1PM8NiLz9yydMsPErNg1sF5Rl-xS6U4s8)
+2. Quelle solution pour palier cette difficulté ?
+    1. Qu’est ce qu’une fonction de coût ?
 
+Une **fonction de coût** est un concept qui servira énormément par la suite puisqu’il est omniprésent dans l’univers du machine learning. La fonction de coût est la quantité mathématique que l’on souhaite minimiser lors de l’optimisation d’un modèle statistique. Dans le cadre d’une régression linéaire multiple, la fonction de coût est :
 
-Lorsque nous avons les régressions linéaires, nous avons vu que notre prédicteur était la ligne que traçait notre modèle. Dans une régression logistique, la ligne est simplement une frontière qui sépare deux catégories. Dans le graphique du dessus, nous essayons de voir si une personne va acheter un produit (représenté par le chiffre 1) ou ne va pas acheter un produit (représenté par le chiffre 0) la ligne représente la probabilité qu’une personne achète (_purchased) _ou non en fonction de son Âge.
 
-L’allure de la courbe est la représentation pour une variable explicative (ici l’âge) de l’équation introduite plus haut.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;||y-X^{t}\beta||^{2}_{2}" />
 
-Dans cet exemple, nous n’avons qu’une variable indépendante et une constante. L’équation ressemble beaucoup à une régression linéaire comme vous pouvez le constater, seulement ici une fonction logistique est appliquée à la variable explicative utilisée pour la régression. Cette fonction contraint les valeurs de <img src="https://latex.codecogs.com/svg.latex?\Large&space;f(X^t\beta)" /> à rester dans l’intervalle [0,1] qui est l’ensemble des valeurs que peut prendre une probabilité. En fonction de la probabilité obtenue, l’algorithme va savoir dans quelle catégorie placer notre individu. 	
 
+qui est la norme euclidienne pour les vecteurs (c’est à dire la racine carré de la somme de ses composants au carré) au carré. De fait l’estimateur <img src="https://latex.codecogs.com/svg.latex?\Large&space;\beta" /> qui donne les coefficients du modèle est le vecteur qui minimise la fonction de coût, ce qui s’écrit mathématiquement :
 
 
-    1. Comment faire notre classification  
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\beta=arg\min_{\beta}||y-X^{t}\beta||^{2}_{2}" />
 
-Maintenant que nous avons dessiné la ligne, nous pouvons commencer nos interprétations. Puisque notre modèle est cette fois probabiliste, les points qui auront une probabilité supérieure à 50% appartiendront à la catégorie A tandis que les points qui auront une probabilité inférieure à 50% appartiendront à une catégorie B. Selon le problème considéré, un autre seuil pourra être choisi, par exemple dans des problématiques de fraude bancaires, on aura tendance à classer dans la catégorie des fraudeurs des individus qui ont des probabilités de fraude inférieures à 50% car on souhaite sécuriser au maximum le système bancaire de menaces frauduleuses. \
 
+ Cette fonction de coût permet d’obtenir un estimateur peu biaisé, mais dans le cas présent et le nombre de variables explicatives, la variance est très élevée car beaucoup de paramètre ne seront pas pertinents pour l’estimation du modèle.
 
-Prenons un exemple, en fonction de certaines variables indépendantes, nous avons découvert qu’une personne A a 60% de chance d’acheter le produit. Elle sera donc considérée comme un “acheteur” pour notre modèle. De l’autre côté, si nous avons cette fois une personne B qui a seulement 45% de chances d’acheter le produit, elle sera considérée comme “non-acheteur”.
+C’est pourquoi on introduit la notion de **pénalité, **c’est une modification qu’on apporte à la fonction de coût afin de maîtriser l’arbitrage entre **biais vs variance**.
 
 
 
-    2. Régression logistique en python  
+    2. Biais vs Variance
 
-```
-from sklearn.linear_model import LogisticRegression
-logisticreg = LogisticRegression() # on définit le modèle de régression logistique à appliquer aux données
+Le biais et la variance sont deux notions omniprésentes en statistiques et particulièrement en machine learning lorsqu’on cherche à faire de l’estimation ou de la prédiction.
 
-logisticreg.fit(X, y) # estimation du modèle
-y_pred = logisticreg.predict(X) # predictions du modèle
-MSE = np.sqrt(np.mean((y_pred-y)**2)) # on calcule la racine carré de l'erreur carré moyenne
-compare_y_ypred = pd.DataFrame() # on créé un data frame pour comparer les prédictions et la réalité
-compare_y_ypred['pred'] = y_pred
-compare_y_ypred['y'] = y
-logisticreg.score(X, y) # la précision du modèle
-```
+Considérons un problème où ***Y*** est la variable cible, ***X*** la matrice des variables explicatives et ε le terme d’erreur de moyenne 0 et de variance <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum" />.
 
+On souhaite modéliser ***Y*** à l’aide des variables explicatives ***X*** et on suppose qu’il existe une fonction ***f***  qui représente la vraie relation entre ***Y*** et ***X*** telle que :
 
-4. Faux positifs - Faux Négatifs
 
-Puisque notre modèle est fondé sur des probabilités, il peut arriver qu’il ait tort parfois. Les faux positifs et les faux négatifs représentent les erreurs commise par notre modèle de classification.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y=f(X)+\epsilon" />
 
 
+A l’issue de notre travail de data scientist, nous aurons obtenu une estimation <img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{f}" /> de la fonction ***f***. Dans ce cas l’erreur au carré moyenne (souvent notée MSE pour Mean Square Error en anglais) peut se décomposer en un terme de biais (ou écart moyen à la vrai fonction) et un terme de variance (dispersion de l’estimateur par rapport à sa moyenne). Cette décomposition s’écrit ainsi :
 
-    3. Faux positif
 
-Continuons sur l’exemple du dessus. Si notre modèle catégorise notre personne A comme “acheteur” et que cette personne dans la réalité n’achète pas le produit alors nous avons affaire à un faux positif. Le modèle s’attendait à un résultat positif qui n’est finalement pas arrivé.
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[(Y-\widehat{f})^2]=E[f-\widehat{f}]^2+E[\hat{f}^2]-E[\widehat{f}]^2+\Sigma" />
 
 
-    4. Faux négatif
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[(Y-\widehat{f})^2]=biais^2+variance+\Sigma" />
 
-A l’inverse, si la personne B, que le modèle avait prédit comme non-acheteuse, achète finalement le produit, c’est un faux négatif. Nous avons prédit un résultat négatif mais il n’est pas arrivé.
 
 
+    3. Pénalité du modèle Ridge
 
-    5. Soyez attentifs aux faux positif et SURTOUT faux négatifs
+Le modèle Ridge est une version pénalisée du modèle linéaire multiple dont la fonction de coût est :
 
-Soyez vigilant des faux positifs et négatifs car une erreur de prédiction peut avoir des conséquences plus ou moins graves en fonction de ce que vous essayez de prédire. Par exemple, si vous êtes scientifiques et que vous essayez de prédire un tremblement de terre et que vous tombez sur une faux négatif (c’est à dire que vous aviez prédit que le tremblement n’arriverait pas alors qu’il est arrivé), personne n’était de fait préparé à l’événement.
 
-De manière général, les faux négatifs sont pires que les faux positifs car dans le premier cas, personne n’est préparé à ce que l’événement se passe. Dans le second, vous y êtes préparé et même s’il n’arrive pas, ce n’est pas le plus grave.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;||y-X^{t}\beta||^{2}_{2}+\lambda||\beta||^{2}_{2},\lambda\in\mathbb{R^{+*}}" />
 
 
 
-5. Comment évaluer votre modèle
+Cette pénalité entraîne que toute variation des paramètres β peut avoir un impact bénéfique sur la qualité de l’estimation (au niveau du premier terme) mais participe à l’augmentation du second terme. Cela force le modèle à favoriser les paramètres associés aux variables explicatives qui contiennent réellement une information pertinente pour décrire la variable cible et à maintenir à des valeurs plus proches de zéros des paramètres associés aux variables explicatives peu pertinentes.
 
-La régression logistique est une transposition dans l’intervalle [0,1] de la régression linéaire multiple, les méthodes de sélection et d’évaluation utilisées pour les modèles de régressions linéaires peuvent donc être utilisés pour cette dernière. Cependant, nous aborderons ici d’autres méthodes spécifiquement adaptées aux problèmes de classification binaires.
+En terme d’arbitrage biais vs variance, le modèle Ridge se comporte de la manière suivante :
 
 
 
-    6. Matrice de confusion
+*   λ = 0 correspond au modèle linéaire, qui est non biaisé
+*   Le biais augmente lorsque λ augmente
+*   La variance diminue lorsque λ augmente
+*   λ = ∞ correspond au modèle où tous les paramètres sont à zéros, d’où β = 0 et l’estimateur vaut 0 ou
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\underline{Y}" /> (la moyenne des valeurs de ***Y***) si on a inclus un intercept dans le modèle.
 
-###
-![mat_confusion](https://drive.google.com/uc?export=view&id=11g8FW4ZB-4LSEq2Z_xj426xuhYJ7a3jf)
 
+    4. Cas particulier de l’intercept
 
-Une des façons rapides et faciles de mesurer la performance de votre modèle grâce aux matrices de confusion. L’idée est de voir les prédictions que votre modèle a vu juste ainsi que les faux-positifs et faux-négatifs. En faisant les sommes des erreurs sur le total de prédiction vous avez le taux de précision de votre modèle.
+L’intercept est le paramètre <img src="https://latex.codecogs.com/svg.latex?\beta_0" /> du modèle, il n’est associé à aucune variable explicative, il représente l’estimation du niveau moyen de ***Y*** lorsque les autres variables explicatives valent 0. C’est pourquoi on ne le pénalise pas en pratique. La fonction de coût du modèle Ridge avec intercept est donc :
 
-Une mesure simple et pertinente de la performance de votre modèle serait de comparer le taux de précision du modèle avec la proportion de positifs dans la base. En effet, le modèle de plus simple dans le cas d’un problème de classification et de classer tous les individus dans la même classe, dans le cas de ce modèle trivial, le taux de précision sera égal à la proportion occupée par le groupe majoritaire dans les données. Mettons que nous avons à notre disposition une base de données qui donne les résultats du baccalauréat pour un échantillon de population. Si l’échantillon contient 70% d’individus qui ont eu leur bac, alors si notre modèle prédit que tout le monde aura son bac, il a raison 70% du temps. De fait, on a intérêt à construire une modèle plus complexe uniquement si sa précision peut être plus élevée que 70%.
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;||y-\beta_0-X^{t}\beta||^{2}_{2}+\lambda||\beta||^{2}_{2},\lambda\in\mathbb{R^{+*}}" />
 
 
-    7. Matrice de confusion en python
 
-```
-from sklearn import metrics
-cm = metrics.confusion_matrix(y, y_pred) # on calcule la matrice de confusion
-```
+### Modèle Lasso
 
 
-    8. Courbe ROC, AUC et indice de GINI
 
-La courbe ROC (receiver operating characteristic curve) qui permet de visualiser les performances d’un modèle de classification binaire en fonction de son critère de discrimination (le seuil de probabilité à partir duquel le modèle estime qu’une observation est classée comme “positif”).
+1. Problème de sélection de variables en grande dimension
 
-Cette courbe est obtenue en traçant le taux de vrais positifs (sensitivity) détectés en fonction du taux de faux positifs (*fall out* or *1 - specificity*) pour différentes valeurs du seuil.
+Le modèle Ridge, on l’a vu, est bien adapté lorsqu’une partie des variables explicatives n’est pas très informative dans le modèle, car il contracte les coefficients associés à ces variables. Cependant, dans le cas où la vraie valeur de nombreux coefficients est 0, c’est à dire que les variables explicatives auxquelles ils sont associés n’ont aucune influence sur la variable cible, le modèle Ridge donnera des résultats d’estimation corrects, mais l’interprétation du modèle est rendue plus compliquée car on ne fera pas la différence entre un coefficient qui représente une influence réelle mais faible sur la variable cible et un coefficient faible mais qui devrait être nul. C’est à dire que le modèle Ridge ne sélectionne pas les variables pertinentes.
 
-![courbe_roc](https://drive.google.com/uc?export=view&id=1uno8_q_YU183T7xwDRoRggr_Zy0i13uW)
+C’est pourquoi un modèle du nom de Lasso existe, qui sélectionne les variables pertinentes et fixe à zéro les coefficients des variables parasites.
 
 
-Une courbe ROC revêt en général un aspect similaire à l’illustration ci-dessus. Il est très rare et très mauvais signe que la courbe ROC se trouve sous la diagonale, cela signifierait que pour chaque vrai positif détecté, on récupère une quantité plus grande en proportion de faux positifs. La courbe ROC permet immédiatement de décrire les performances du modèle en termes de détection des observations positives, cependant elle permet aussi d’avoir une appréciation générale du modèle. Le biais par lequel la courbe évalue la performance générale du modèle est un indicateur numérique appelé AUC (Area Under the Curve). L’AUC est littéralement le calcul de l’aire délimitée par la courbe ROC et les côtés du carré unité.
 
- L’AUC s'interprète comme la probabilité que le modèle donne un score plus élevé à une observation positive choisie aléatoirement qu’à une observation négative choisie aléatoirement. L’AUC est également lié à l’indice de GINI qui décrit la dispersion statistique de la population et qui est très utilisé en économie pour quantifier les inégalités.
+2. Le modèle Lasso
+    1. Intuition
 
+L’intuition fondamentale pour utiliser un modèle Lasso est qu’un certain nombre de variables explicatives à notre disposition n’a aucune influence sur la variable cible, et donc que les coefficients associés auraient pour vraie valeur 0 dans le modèle linéaire.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;GINI=2AUC-1" />
+Cette intuition est caractérisée mathématiquement de la manière suivante : soit ***n*** le nombre d’observations, ***p*** le nombre de variables explicatives et ***s*** le nombres de variables explicatives pertinentes. Alors l’intuition (qu’on appelle hypothèse de **sparsité**) s’écrit de la manière suivante.
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;s<<n<<p" />
 
-L’AUC varie entre 0 et 1 en théorie, mais les modèles dont l’AUC est inférieure à 0.5 (50%) sont à exclure immédiatement car cela signifie que le modèle est moins bien performant que le hasard total.
+On espère en sélectionnant les ***s*** variables pertinentes de se ramener dans une situation où le modèle linéaire peut s’appliquer sans difficulté.
 
+Idéalement on souhaite trouver β tel que:
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{\beta_n}=arg\min_{\beta:||\beta||_{0}\leq{s}}||Y-X^{t}\beta||^{2}_{2}" />
 
-    9. Courbe ROC, AUC en python
 
-```
-from sklearn.metrics import roc_auc_score
-from sklearn.metrics import roc_curve
-logit_roc_auc = roc_auc_score(y, logisticreg.predict(X))
-fpr, tpr, thresholds = roc_curve(y, logisticreg.predict_proba(X)[:,1])
-plt.figure()
-plt.plot(fpr, tpr, label='Logistic Regression (area = %0.2f)' % logit_roc_auc)
-plt.plot([0, 1], [0, 1],'r--')
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('Receiver operating characteristic')
-plt.legend(loc="lower right")
-plt.savefig('Log_ROC')
-plt.show()
-```
+Cette equation signifie que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{\beta_n}" /> est le vecteur qui minimise la valeur <img src="https://latex.codecogs.com/svg.latex?\Large&space;||Y-X^{t}\beta||^{2}_{2}" /> sous la contrainte que le nombre d'éléments non-nuls dans β soit au maximum ***s***.
 
+Avec <img src="https://latex.codecogs.com/svg.latex?\Large&space;||||_{0}" /> est la “norme zéro” qui compte le nombre d’éléments non nuls dans β.
 
-    10. Comment se protéger du sur-apprentissage ?
+Hors cette contrainte ne permet pas de faire de l’optimisation car elle ne définit pas un espace convexe. A la place, nous sommes dans l’obligation de choisir une contrainte moins forte qui permette d’obtenir une fonction de coût convexe qui reposera sur la “norme 1” <img src="https://latex.codecogs.com/svg.latex?\Large&space;||||_{1}" /> qui est défini comme la somme des valeurs absolues des composants d’un vecteur.  
 
-Les situations de sous-apprentissage interviennent peu en pratique, ou elles sont souvent dues à un manque de données pertinentes ou d’autres problèmes qui ne peuvent pas être réglés directement par les data sciences. Le véritable ennemi des data scientists est le sur-apprentissage, car il donne l’illusion de la performance, mais est en réalité un piège!
 
-Une manière simple et efficace de se garantir de ce piège est de pratiquer la cross-validation (ou k-fold cross validation). C’est un procédé qui consiste à choisir un entier k (souvent on choisit 10 par défaut), on répartit les observations au hasard dans k groupes de taille égale. Puis on répète k fois la méthode suivante :
 
+    2. Estimateur Lasso
 
+Nous introduisons ici le _Least Absolute Shrinkage and Selection Operator_ (LASSO), défini par la fonction de coût suivante :
 
-*   On isole un groupe i parmi 10 groupes, qu’on appellera **base de test**, et on rassemble les 9 autres, qu’on appellera base **d’apprentissage**.
-*   On estime le modèle choisi à l’aide de la base d’apprentissage.
-*   On calcule l’erreur commise par le modèle i sur la base de test (le groupe i) que l’on compare à l’erreur commise sur la base d’apprentissage après optimisation.
 
-La comparaison de l’erreur d’apprentissage et l’erreur de test permet de comprendre le réel pouvoir explicatif d’un modèle, car elle quantifie la performance du modèle sur des données inconnues par rapport à sa performance sur des données connues.
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;||Y-X^{t}\beta||^{2}_{2}+\lambda||\beta||_{1}" />
 
-![sur_apprentissage](https://drive.google.com/uc?export=view&id=1Dx7vSLocMMcjiYmowVS2GzKXbvxgkN5l)
 
 
-La figure ci dessus illustre le principe de la k-fold cross-validation. Chaque itération produit des résultat en termes d’erreurs de test et d’apprentissage dont on se sert pour évaluer le modèle. Pour calculer ces erreurs on se base en général sur la fonction de coût qu’on a choisit pour optimiser le modèle, ou bien tout simplement la moyenne des erreur au carré. En général on s’attend à ce que l’erreur de test et de validation soient du même ordre de grandeur, et on espère que l’erreur de manière générale sera petite par rapport aux valeurs prises par la variable cible.
+Les choses importante à connaître sur le modèle LASSO sont les suivantes :
 
 
 
-    11. Cross Validation en python
+*   λ la constante de pénalisation doit être soigneusement choisie, en général les algorithme de résolution du LASSO procède à une cross-validation (dont la théorie est développée dans ce qui suit)  et calcule l’estimateur pour de nombreuses valeur de λ afin d’identifier les valeurs les plus pertinentes.
+*   Plus λ est élevé, plus la solution <img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{\beta}_{LASSO}" /> sera sparse (c’est à dire contiendra peu d’élément non nuls), on augmente le biais et on diminue la variance.
+*   Plus λ sera petit, plus le nombre de coefficients augmente, ceci diminue le biais du modèle mais peut augmenter dramatiquement la variance (c’est ce qu’on appelle une situation de sur-apprentissage).
+*   En pratique vous découvrirez bientôt que le biais introduit par l’estimation LASSO peut être important. En fonction de vos contraintes de précision des résultats, il est possible d’utiliser LASSO pour sélectionner les meilleurs variables et ensuite estimer un modèle linéaire en conservant uniquement ces variables pour ôter le biais.
+    3. Underfitting et Overfitting (sous-apprentissage et sur-apprentissage)
 
-```
-''' k fold cross validation'''
-from sklearn.model_selection import KFold
-kf = KFold(n_splits=10)
+On a mentionné au-dessus deux notions qui s’expliquent ainsi :
 
-# le code ci-dessous permet de générer les 10 séparation train/test pour
-# la 10-folds cross-validation
-for train_index, test_index in kf.split(X):
-      print("Train:", train_index, "Validation:",test_index)
-      X_train, X_test = X[train_index], X[test_index]
-      y_train, y_test = y[train_index], y[test_index]
 
-# cette méthode permet d'obtenir rapidement des score de précisions
-# pour e=les différents modèles estimés par cross-validation      
-from sklearn.cross_validation import cross_val_score, cross_val_predict
-from sklearn import metrics
-scores = cross_val_score(logisticreg, X, y, cv=10)
-predictions = cross_val_predict(logisticreg, X, y, cv=10)
-```
+
+*   Le sous-apprentissage est le fait qu’un modèle soit trop simple pour être une bonne estimation de la variable cible.
+*   Le sur-apprentissage est le phénomène inverse, lorsqu’on construit un modèle très complexe qui adhère parfaitement aux données d’apprentissage, mais inutile en pratique car il est très improbable qu’il se généralise bien à de nouvelles données inconnues.
+
+
+![under_over_fitting](https://drive.google.com/uc?export=view&id=1W3Y-X__zrkB-fOBGnVmLb0_IheOEAt05)
+
+
+La figure ci-dessus représente de gauche à droite, une situation de sous-apprentissage, une situation de bonne estimation, et une situation de sur-apprentissage.
