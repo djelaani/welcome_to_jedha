@@ -152,3 +152,18 @@ Le <img src="https://latex.codecogs.com/svg.latex?\Large&space;h^{eme}" />  prof
 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{1h}}{n_{Y_h}},...,\frac{n_{mh}}{n_{Y_h}}\}=\frac{1}{n}T^{T}D_{Y}^{-1}=B" />
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_{(k)}(i)=\{1,\;si\;X(i)=X_k,\;0\;sinon\}" />
+
+
+Où *i* est un indice qui représente un individu dans la population.
+
+
+
+    2. Matrice des indicatrices
+
+La matrice des indicatrices des modalités de *X* la matrice notée <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_l" /> et définie de la manière suivante :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1=\{X_{(k)}(i),i\in\llbracket{1,n}\rrbracket,k\in\llbracket{1,m}\rrbracket\}" />
