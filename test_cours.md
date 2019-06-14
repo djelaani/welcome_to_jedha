@@ -167,3 +167,7 @@ La matrice des indicatrices des modalités de *X* la matrice notée <img src="ht
 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1=\{X_{(k)}(i),i\in[1,n],k\in[1,m]\}" />
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;h_t:X\longrightarrow\{-1,+1\}" />
