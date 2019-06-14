@@ -171,3 +171,6 @@ La matrice des indicatrices des modalités de *X* la matrice notée <img src="ht
 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;h_t:X\rightarrow\{-1,+1\}" />
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t=\frac{1}{n}\sum_{i=1}^{n}1[h_t(X_i)\neq{Y_i}]\cdot{D_t(i)}" />
