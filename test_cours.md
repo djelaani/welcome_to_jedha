@@ -49,11 +49,10 @@ L’algorithme s’écrit ainsi
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_{t+1}(i)=\frac{D_t(i)exp(-\alpha_t{Y_i}h_t(X_i))}{Z_t}" />
 
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;Z_t" /> est simplement le facteur de normalisation pour que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i=1}^{n}D_{t+1}(i)=1" />
 
-        Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;Z_t" /> est simplement le facteur de normalisation pour que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i=1}^{n}D_{t+1}(i)=1" />
 
-
-	**Résultat :** le modèle final obtenu à l’issu de l’algorithme AdaBoost est le suivant :
+**Résultat :** le modèle final obtenu à l’issu de l’algorithme AdaBoost est le suivant :
 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;H(X)=sign(\sum_{t=1}^{T}\alpha_t{h_t}(X))=sign(F(x))" />
