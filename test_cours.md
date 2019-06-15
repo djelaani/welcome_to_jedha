@@ -52,7 +52,9 @@ L’algorithme s’écrit ainsi
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_{t+1}(i)=\frac{D_t(i)exp(-\alpha_t{Y_i}h_t(X_i))}{Z_t}" />
 
 
-Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;Z_t" /> est simplement le facteur de normalisation pour que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i=1}^{n}D_{t+1}(i)=1" />
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;Z_t" /> est simplement le facteur de normalisation pour que 
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i=1}^{n}D_{t+1}(i)=1" />
 
 
 **Résultat :** le modèle final obtenu à l’issu de l’algorithme AdaBoost est le suivant :
@@ -78,7 +80,9 @@ Ces conditions essentielles doivent être formalisées mathématiquement afin d�
 
 Le deuxième critère de performance, communément appelé la _weak learning condition_ correspond à l’idée que chaque modèle de classification binaire qui compose le modèle final présente une erreur d’entraînement plus faible que le pure hasard. En termes mathématiques cela signifie que : 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t\;<\frac{1}{2-\gamma}" /> où <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma\;>0" />.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t\;<\frac{1}{2-\gamma}" />
+
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma\;>0" />.
 
 
 
