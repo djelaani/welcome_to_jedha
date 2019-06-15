@@ -106,7 +106,7 @@ On a vu dans l’exemple précédent qu’il arrive que l’algorithme AdaBoost 
 Pour expliquer ce cadre théorique, on introduit la notion de marge. On à notre disposition un modèle construit par agrégation de plusieurs modèles élémentaires dont les résultats sont obtenus à l’aide d’un vote pondéré des différents modèles élémentaires. Hors on accordera pas nécessairement la même confiance aux résultats issus du modèle pour toutes les observations en fonction du résultats du vote. Tout comme lors d’une élection dans le monde réel, on aura plus tendance à faire confiance à une décision qui recueille une forte majorité des voix plutôt qu’une faible majorité. Derrière cette idée de vote fortement ou faible majoritaire se cache la notion de marge. La marge est une valeur qui oscille dans l’intervalle *[-1,1]* qu’on définit de la manière suivante :
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_{i}F(x)=\sum_{t:Y_i=h_t(X_i)}\alpha_t-\sum_{t:Y_i\neq{h_t}(X_i)}\alpha_t" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_{i}F(x)=\sum_{t:Y_i=h_t(X_i)}\alpha_t\;\;-\sum_{t:Y_i\neq{h_t}(X_i)}\alpha_t" />
 
 
 C’est donc la différence entre le poids cumulé des modèles qui ont raison et le poids cumulé des modèles qui ont tort.
