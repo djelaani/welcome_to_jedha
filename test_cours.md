@@ -1,185 +1,32 @@
 
+## Analyse des données
 
-## Machine learning supervisé
 
-
-### Naive Bayes
+### AFC ACM
 
 
 [TOC]
 
 
 
-## Qu’est ce que vous apprendrez dans ce cours ?
+## Ce que vous apprendrez dans ce cours
 
-Ce cours est dédié à l’enseignement du modèle bayésien dit naïf, ou Naive Bayes en anglais. C’est un modèle qui repose sur l’indépendance des variables explicatives entre elles, c’est une hypothèse très forte et très rarement vérifée en pratique, néanmoins, ce modèle peut se montrer très utile et permet d’avoir une bonne vision de l’influence de chaque variable sur la variable cible au sein du modèle.
+Ce cours introduit deux techniques permettant d’analyser des données qualitatives, cela est très utile lorsque l’on doit par exemple s’intéresser à des réponses à des questionnaires par exemple. La première technique, l’analyse factorielle des correspondances permet d’analyser les relations entre deux variables qualitatives. La seconde, l’analyse des correspondances multiples est une généralisation de cette dernière à une collection de plusieurs variables qualitatives.
 
-En statistiques, les classification naïves Bayésienne appartiennent à une famille de classifications probabilistes reposant sur le théorème de Bayes.
 
+### Analyse factorielle des correspondances
 
 
-1. Théorème de Bayes
 
-Le théorème de Bayes correspond à l’affirmation suivante :
+1. Intuition
 
-Soit ***A*** et ***B*** deux variables aléatoires, alors l’égalité suivante est vérifiée :
+L’analyse factorielle des correspondances est une méthode de réduction de dimension pour l’exploration de deux variables qualitatives simultanément. On dispose donc de deux variables qualitatives *X* qui possède *m* modalités <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,..,X_m" /> et *Y* qui possède *r* observations <img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_1,...,Y_r" />.
 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(A/B)=\frac{P(B/A)\cdot{P(A)}}{P(A)}" />
 
+2. Tableau de contingence
 
-La probabilité conditionnelle de ***A*** sachant ***B*** est égale au produit de la probabilité conditionnelle de ***B*** sachant ***A*** et la probabilité de ***A*** divisé par la probabilité de ***B***.
-
-
-
-2. Naive Bayes
-
-On considère la situation où on dispose de ***Y***
- la variable cible qualitative (c’est donc un problème de classification) que l’on cherche à prédire, et une collection de variables explicatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;X=(X_1,X_2,...,X_p)" />. Le problème revient à estimer pour chaque observation la loi ***P(Y/X)***, qui donne la probabilité pour ***Y*** de prendre chacune de ses valeurs possibles sachant les valeurs de ***X*** pour cette observation.
-
-Le théorème de Bayes intervient ici et nous donne l’écriture suivante :
-
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(Y|X)=\frac{P(X|Y)\cdot{P(Y)}}{P(X)}" />
-
-
-
-Le dénominateur ne fait pas intervenir ***Y*** et n’a donc aucune influence sur les résultats du modèle, on s’intéressera uniquement au numérateur qu’on peut décomposer récursivement grâce aux propriétés des probabilités conditionnelles.
-
-
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|Y)\cdot{P(Y)}=P(X_1,X_2,...,X_p,Y)" />
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|Y)\cdot{P(Y)}=P(X_1|X_2,...,X_p,Y)\cdot{P(X_2,...,X_p,Y)}" />
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|Y)\cdot{P(Y)}=P(X_1|X_2,...,X_p,Y)\cdot{P(X_2|X_3,...,X_p,Y)}\cdot{P(X_3,...,X_p,Y)}" />
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|Y)\cdot{P(Y)}=P(X_1|X_2,...,X_p,Y)\cdot{P(X_2|X_3,...,X_p,Y)}\cdot{P(X_3,...,X_p,Y)}...P(X_p|Y)\cdot{P(Y)}" />
-
-
-C’est ici qu’on a besoin de l’hypothèse fondamentale et naïve qui nous permet de construire nos estimations et qui dit que toutes les variables explicatives doivent être indépendantes, car ainsi on a quelque soit ***i*** entre 1 et ***p***:
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X_i|X_{i+1},...,X_p,Y)=P(X_i|Y)" />
-
-
-De fait on obtient :
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|Y)=\frac{P(Y)P(X_1|Y)P(X_2|Y)...P(X_p|Y)}{P(X)}" />
-
-
-
-Qui est très simple à calculer puisqu’il suffit d’estimer pour chaque valeur de ***Y*** la loi de distribution des <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" />.
-
-
-
-    1. Cas où <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> est qualitative
-
-Dans le cas où <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> est une variable explicative qualitative qui prend les modalités <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_{i1},...,x_{iq}" /> alors on peut écrire :
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=\frac{Card(X_i=x_{ik},Y=y)}{Card(Y=y)}" />
-
-
-On estime la probabilité que <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> prenne la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_{ik}" /> sachant que ***Y = y*** comme la proportion d’observations où <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i=x_{ik}" /> parmi toutes les observations où ***Y = y***.
-
-
-
-    2. Cas où <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> est quantitative
-
-Pour les cas où <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> est quantitative en général on se ramène au cas qualitatif en découpant l’intervalle des valeurs de <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> en ***K*** morceaux indexés par <img src="https://latex.codecogs.com/svg.latex?\Large&space;k\in{[[1,K]]}" /> et délimité par les valeurs <img src="https://latex.codecogs.com/svg.latex?\Large&space;-\infty=\alpha_0,\alpha_1,...,\alpha_{k-1},+\infty=\alpha_k" /> et la loi de probabilité devient :
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}\in[\alpha_j,\alpha_{j+1}]|Y=y)=\frac{Card(X_i\in[\alpha_j,\alpha_{j+1}],Y=y)}{Card(Y=y)}" />
-
-
-C’est à dire la proportion d’observations pour lesquelles la valeurs de <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> appartient à l’intervalle <img src="https://latex.codecogs.com/svg.latex?\Large&space;[\alpha_j,\alpha_{j+1}]" /> parmi toutes les observations pour lesquelles ***Y = y***.
-
-Une autre manière d’estimer la loi de <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> sachant ***Y*** est de faire l’hypothèse que <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X_i|Y)" /> suit une loi normale dont on estime les paramètres <img src="https://latex.codecogs.com/svg.latex?\Large&space;\mu_i" /> et <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sigma_i" /> grâce aux données disponibles sur <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" />. Sous l’hypothèse de normalité, <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X_i|Y)" /> sui une loi normale de paramètres :
-
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\mu_{iy}=\frac{1}{N_y}\sum_{j=1}^{N-y}x_{ij}" />
-
-
-Qui est la valeur moyenne de <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> parmi les <img src="https://latex.codecogs.com/svg.latex?\Large&space;N_y" /> individus pour qui ***Y = y***. De même on calcule la variance de la loi normale :
-
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\sigma_{iy}^2=\frac{1}{N_y-1}\sum_{j=1}^{N-y}(x_{ij}-\mu_{iy})^2" />
-
-
-
-L’estimateur de la variance de <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_i" /> parmi les individus pour qui ***Y = y***. Une fois cette estimation effectuée, on obtient:
-
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{P}(X_i=x_{ik}|Y=y)=\frac{1}{\sqrt{2\pi\sigma_{iy}}}exp(\frac{-(x_{ik}-\mu_{iy})^2}{2\sigma_{iy}^2})" />
-
-
-Une fois toutes les probabilités conditionnelles calculées on obtient pour chaque observation et pour chaque modalité de ***Y*** une probabilité qui détermine notre classification. Chaque observation sera classée dans la modalité de ***Y*** la plus probable en fonction des valeurs des variables explicatives ***X***.
-
-
-
-3. Remarques générales
-
-Un avantage du modèle bayésien naïf est qu’il permet de ne pas faire d’hypothèse sur les lois de distribution des variables explicatives si on transforme ces dernières en variables quantitatives. Cependant il est très rare que l’hypothèse fondamentale d’indépendance des variables explicatives soit vérifiée en pratique.
-
-Les modèles bayésiens naïfs peuvent faire l’objet d’une agrégation au même titre que les arbres aléatoires, cela permet en général d’obtenir des résultats bien plus stables et également de mieux respecter l’hypothèse d’indépendance des variables explicatives si, comme on l’a vu dans le cas des random forest, on utilise qu’une partie des variables explicatives pour construire chaque modèle.
-
-
-Les vecteurs propres de la matrice des variances-covariances sont des combinaisons linéaires des variables <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...,X_p" /> que l’on note <img src="https://latex.codecogs.com/svg.latex?\Large&space;{X'}_1^,{X'}_2^,...,{X'}_p" />
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;B=\frac{1}{n}\sum_{k=1}^{m}n_k(\mu_k-\mu)^T\cdot(\mu_k-\mu)" />
-
-
-Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;n_k" /> est le nombre d’observations qui prennent la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;Q_k,\;\mu" /> est le centre de gravité de l’ensemble des observations, <img src="https://latex.codecogs.com/svg.latex?\Large&space;\mu_k" /> est le centre de gravité des observations prenant la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;Q_k" />.
-
-
-Le <img src="https://latex.codecogs.com/svg.latex?\Large&space;l^{eme}" /> profil ligne est
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{l1}}{n_{X_l}},...,\frac{n_{lr}}{n_{X_l}}\}=\frac{1}{n}T^{T}D_{X}^{-1}=A" />
-
-Le <img src="https://latex.codecogs.com/svg.latex?\Large&space;h^{eme}" />  profil colonne est
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{1h}}{n_{Y_h}},...,\frac{n_{mh}}{n_{Y_h}}\}=\frac{1}{n}T^{T}D_{Y}^{-1}=B" />
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_{(k)}(i)=\{1,\;si\;X(i)=X_k,\;0\;sinon\}" />
-
-
-Où *i* est un indice qui représente un individu dans la population.
-
-
-
-    2. Matrice des indicatrices
-
-La matrice des indicatrices des modalités de *X* la matrice notée <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_l" /> et définie de la manière suivante :
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1=\{X_{(k)}(i),i\in[1,n],k\in[1,m]\}" />
-
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;h_t:X\rightarrow\{-1,+1\}" />
-
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t=\frac{1}{n}\sum_{i=1}^{n}1[h_t(X_i)\neq{Y_i}]\cdot{D_t(i)}" />
-
-
-Les vecteurs propres de la matrice des variances-covariances sont des combinaisons linéaires des variables <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...,X_p" /> que l’on note <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1^{'},X_2^{'},...,X_p^{'}" />, ils ont pour propriétés d’être perpendiculaires entre eux et la valeur propre associée à chacun d’entre eux correspond à la quantité de variance existant dans cette direction (En d’autre termes, c’est la variance qu’on obtient si l’on calcule la variance de la population une fois projetée sur un des vecteurs propres). Les vecteurs propres construits lors de la décomposition de la matrice des variances-covariances sont aussi appelés facteurs. En utilisant les facteurs comme nouvelles collection de variables explicatives, on peut représenter la matrice des variances-covariances initiales sous la forme d’une matrice diagonale (c’est à dire que tous ses éléments valent zéro, à l’exception des éléments se trouvant sur la diagonale) dont les éléments sur la diagonale sont respectivement égaux aux valeurs propres de la matrice des variance-covariances initiale.
-
-
-
+Le tableau de contingence de deux variables qualitatives *X* et *Y* correspond à un tableau possédant *m* lignes et *r* colonnes correspondant au nombre de modalités respectives de *X* et *Y* de la forme suivante :
 
 
 <table>
@@ -188,7 +35,7 @@ Les vecteurs propres de la matrice des variances-covariances sont des combinaiso
    </td>
    <td>
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_k" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_1" />
 
    </td>
    <td>
@@ -227,7 +74,7 @@ Les vecteurs propres de la matrice des variances-covariances sont des combinaiso
    </td>
    <td>
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{x1}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{X_1}" />
 
    </td>
   </tr>
@@ -289,3 +136,139 @@ Les vecteurs propres de la matrice des variances-covariances sont des combinaiso
    </td>
   </tr>
 </table>
+
+
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{ij}" /> est le nombre d’observations qui prennent la modalité *i* pour la variable *X* et la modalité *j* pour la variable *Y*. Le tableau de contingence est noté *Y*.
+
+
+
+3. Fréquences marginales, profils lignes et profils colonnes
+
+Les fréquences marginales de *X* sont les éléments du vecteur :
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{X_1}}{n},...,\frac{n_{X_m}}{n}\}" /> notées <img src="https://latex.codecogs.com/svg.latex?\Large&space;\{f_{X_1},...,f_{X_m}\}" />
+
+
+Les fréquences marginales de *Y* sont les éléments du vecteur :
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{Y_1}}{n},...,\frac{n_{Y_r}}{n}\}" /> notées <img src="https://latex.codecogs.com/svg.latex?\Large&space;\{f_{Y_1},...,f_{Y_r}\}" />
+
+
+On définit d’ailleurs des matrices diagonales <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_X" /> dont les éléments diagonaux sont les <img src="https://latex.codecogs.com/svg.latex?\Large&space;f_{X_l}" /> et une matrice <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_Y}" /> dont les éléments sont les <img src="https://latex.codecogs.com/svg.latex?\Large&space;f_{Y_l}" /> et qui serviront à définir des distances dans les parties qui suivent.
+
+On définit les profils-lignes et les profils-colonnes sont des vecteurs qu’on peut extraire de *T* et qu’on définit ainsi :
+
+Le <img src="https://latex.codecogs.com/svg.latex?\Large&space;l^{ème}" /> profil ligne est
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{l1}}{n_{X_l}},...,\frac{n_{lr}}{n_{X_l}}\}=\frac{1}{n}T^{T}D_{X}^{-1}=A" />
+
+
+Le <img src="https://latex.codecogs.com/svg.latex?\Large&space;h^{ème}" /> profil colonne est
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\{\frac{n_{1h}}{n_{Y_h}},...,\frac{n_{mh}}{n_{Y_h}}\}=\frac{1}{n}T^{T}D_{Y}^{-1}=B" />
+
+
+
+Ces deux vecteurs contiennent respectivement, pour *X* les proportions d’observations prenant la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_1,...,Y_r" /> parmi les observations prenant la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_l" />, et pour *Y* les proportions d’observations prenant la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,...,X_m" /> parmi les observations prenant la modalité <img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_h" />.
+
+
+
+4. Calcul des liaisons entre les variables explicatives
+
+Pour comprendre la liaison entre les variables *X* et *Y*, on peut procéder à une double ACP :
+
+
+*   Une ACP sur les profils-colonnes
+
+Cette ACP revient à trouver les valeurs et les vecteurs propres de la matrice *BA*
+
+
+*   Une ACP sur les profils-lignes
+
+Cette ACP revient à trouver les valeurs et les vecteurs propres de la matrice *AB*
+
+
+Ces deux ACP donneront des facteurs qui permettent de représenter facilement les relations entre *X* et *Y*, la première permet de représenter *X* à l’aide de combinaisons des modalités de *Y* et la deuxième de représenter les modalités de *Y* en fonctions des modalités de *X*.
+
+
+
+### Analyse factorielle multiple des correspondances
+
+
+
+1. Intuition
+
+L’analyse factorielle multiple des correspondances est une généralisation de l’analyse factorielle des correspondance au cas où l’on étudie plus de deux variables qualitatives simultanément.
+
+
+
+2. Tableau disjonctif complet
+    1. Variable indicatrice
+
+Considérons une variable qualitative *X* avec *m* modalités, on définit la variable indicatrice de la <img src="https://latex.codecogs.com/svg.latex?\Large&space;k^{ème}" /> modalité la variable <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_{(k)}" /> :
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_{(k)}(i)=\{1,\;si\;X(i)=X_k,\;0\;sinon\}" />
+
+
+
+Où *i* est un indice qui représente un individu dans la population.
+
+
+
+    2. Matrice des indicatrices
+
+La matrice des indicatrices des modalités de *X* la matrice notée <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1" /> et définie de la manière suivante :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1=\{X_{(k)}(i),\;{i}\in[1,n],\;{k}\in[1,m]\}" />
+
+
+C’est la matrice dont les lignes correspondent aux variables indicatrices de *X* pour chaque individu *i*.
+
+
+
+    3. Tableau disjonctif complet
+
+Si on considère maintenant une collection de variables qualitatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;X^{(1)},...,X¨{(p)}" />, le tableau disjonctif complet correspond à la concaténation des matrices des indicatrices de chaque variable :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;T=[X_{I}^{(1)}|...|X_{1}^{(p)}]" />
+
+
+La somme de tous les éléments d’une ligne vaut toujours *p* puisqu’on a *p* variable et que chaque individu ne prend qu’une modalité par variable. De plus, la somme de tous les éléments du tableau vaut *np*, car le tableau comprends *n* lignes.
+
+
+
+3. Analyse factorielle multiple des correspondances
+
+L’analyse factorielle multiple des correspondances correspond à une ACP que l’on applique au tableau disjonctif complet. Pour cela on introduit le tableau de Burt qui est en quelque sorte la matrice des variances-covariances du tableau disjonctif complet :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;B=T^{T}T" />
+
+
+On définit également une matrice des poids qui est une matrice diagonale et chaque portion est de taille égale au nombre de modalités de chacunes des variables explicatives <img src="https://latex.codecogs.com/svg.latex?\Large&space;m^{(1)},...,m^{(p)}" />. On défini chaque portion de diagonale :
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;D_k=\frac{1}{n}\{n_{I}^{k},...,n_{m^{(1)}}^{k}]" />
+
+Et la matrice des poids est définie comme:
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\Delta=diag(D_1,...,D_p)" />
+
+Et l’ACP consiste ici à chercher les valeurs et les vecteurs propres de la matrice suivante :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{np}B\Delta^{-1}" />
+
+
+On obtiendra donc une représentation résumée des individus en fonction de combinaisons des diverses modalités des variables qualitatives considérées.
