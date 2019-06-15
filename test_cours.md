@@ -37,27 +37,29 @@ L’algorithme s’écrit ainsi
 
 *   Entraîner un modèle sur les données d’apprentissage en pondérant les observations grâce à <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_{1}" />
 
-*   On obtient un prédicteur qu’on notera 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;h_t:\;X\rightarrow[-1,+1]" />
+*   On obtient un prédicteur qu’on notera <img src="https://latex.codecogs.com/svg.latex?\Large&space;h_t:\;X\rightarrow[-1,+1]" />
 
 *   On calcule l’erreur de prédiction pondérée 
+
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t=\frac{1}{n}\sum_{i=1}^{n}1[h_t(X_i)\neq{Y_i}]\cdot{D_t(i)}" />
 
-*   On calcule 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t}{\epsilon_t})" />, le poids de ce modèle lors de l’agrégation finale
+*   On calcule
+
+ <img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t}{\epsilon_t})" />, le poids de ce modèle lors de l’agrégation finale
 
 *   On met à jour les poids des observations :
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_{t+1}(i)=\frac{D_t(i)exp(-\alpha_t{Y_i}h_t(X_i))}{Z_t}" />
 
-Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;Z_t" /> est simplement le facteur de normalisation pour que
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i=1}^{n}D_{t+1}(i)=1" />
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;Z_t" /> est simplement le facteur de normalisation pour que <img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i=1}^{n}D_{t+1}(i)=1" />
 
 
 **Résultat :** le modèle final obtenu à l’issu de l’algorithme AdaBoost est le suivant :
 
+
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;H(X)=sign(\sum_{t=1}^{T}\alpha_t{h_t}(X))=sign(F(x))" />
+
 
 On commence donc par attribuer le même poids à toutes les observations, on construit ensuite itérativement des modèles de prédictions, par exemple une régression logistique, à chaque itération on modifie les poids des différentes observations, ces poids auront une influence sur la manière dont les paramètres du modèles seront optimisés par le modèle. En définitive le modèle produit est une agrégation par vote pondéré des différents en modèle en fonction de leurs performances individuelles sur les données d’entraînement.
 
@@ -74,10 +76,9 @@ De manière intuitive, un modèle de classification binaire a besoin de rassembl
 
 Ces conditions essentielles doivent être formalisées mathématiquement afin d’avoir un sens concret lorsqu’on se lance dans la modélisation. Il est assez difficile de dire précisément à priori qu’elle nombre d’observations sont nécessaire pour constituer un jeu d’entraînement de taille suffisante, cela dépend de la proportion relative des observations positives et négatives et de la nature du modèle que l’on souhaite utiliser dans la méthode AdaBoost, par exemple on aura sans doute besoin de moins d’observations pour pouvoir optimiser correctement une régression logistique (cela ne veut pas dire qu’on aura de bon résultats mais au moins on atteindra la convergence des paramètres), et plus d’observations si notre modèle de classification binaire est plus complexe, comme par exemple un réseau de neurones.
 
-Le deuxième critère de performance, communément appelé la _weak learning condition_ correspond à l’idée que chaque modèle de classification binaire qui compose le modèle final présente une erreur d’entraînement plus faible que le pure hasard. En termes mathématiques cela signifie que :
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t\;<\frac{1}{2-\gamma}" /> où
+Le deuxième critère de performance, communément appelé la _weak learning condition_ correspond à l’idée que chaque modèle de classification binaire qui compose le modèle final présente une erreur d’entraînement plus faible que le pure hasard. En termes mathématiques cela signifie que : 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma\;>0" />.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t\;<\frac{1}{2-\gamma}" /> où <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma\;>0" />.
 
 
 
