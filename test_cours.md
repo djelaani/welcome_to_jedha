@@ -177,3 +177,115 @@ La matrice des indicatrices des modalités de *X* la matrice notée <img src="ht
 
 
 Les vecteurs propres de la matrice des variances-covariances sont des combinaisons linéaires des variables <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1,X_2,...,X_p" /> que l’on note <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1^{'},X_2^{'},...,X_p^{'}" />, ils ont pour propriétés d’être perpendiculaires entre eux et la valeur propre associée à chacun d’entre eux correspond à la quantité de variance existant dans cette direction (En d’autre termes, c’est la variance qu’on obtient si l’on calcule la variance de la population une fois projetée sur un des vecteurs propres). Les vecteurs propres construits lors de la décomposition de la matrice des variances-covariances sont aussi appelés facteurs. En utilisant les facteurs comme nouvelles collection de variables explicatives, on peut représenter la matrice des variances-covariances initiales sous la forme d’une matrice diagonale (c’est à dire que tous ses éléments valent zéro, à l’exception des éléments se trouvant sur la diagonale) dont les éléments sur la diagonale sont respectivement égaux aux valeurs propres de la matrice des variance-covariances initiale.
+
+
+
+
+
+<table>
+  <tr>
+   <td>
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_k" />
+
+   </td>
+   <td>
+
+...
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_r" />
+
+   </td>
+   <td>Sommes
+   </td>
+  </tr>
+  <tr>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{11}" />
+
+   </td>
+   <td>
+
+...
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{1r}" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{x1}" />
+
+   </td>
+  </tr>
+  <tr>
+   <td>...
+   </td>
+   <td>...
+   </td>
+   <td>...
+   </td>
+   <td>...
+   </td>
+   <td>...
+   </td>
+  </tr>
+  <tr>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_m" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{m1}" />
+
+   </td>
+   <td>...
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{mr}" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{X_m}" />
+
+   </td>
+  </tr>
+  <tr>
+   <td>Sommes
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{Y_1}" />
+
+   </td>
+   <td>...
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{Y_r}" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n" />
+
+   </td>
+  </tr>
+</table>
