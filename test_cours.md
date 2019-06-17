@@ -464,7 +464,7 @@ Comme le montre l’exemple montré précédemment, le lissage exponentiel simpl
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_t=\alpha{X_t}+(1-\alpha)(S_{t-1}+b_{t-1}),\;0\leq\alpha\leq{1}" />
 
-img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t=\gamma(S_t-S_{t-1)+(1-\gamma)b_{t-1}),\;0\leq\gamma\leq{1}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t=\gamma(S_t-S_{t-1)+(1-\gamma)b_{t-1}),\;0\leq\gamma\leq{1}" />
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" /> est l’élément censé représenter la tendance générale de la série temporelle, et d’éviter ainsi les décrochages observés dans l’exemple précédent. Il s’agit en tout cas dans un premier temps de choisir la valeur initiale de ce terme <img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" />. Les suggestions les plus courantes sont :
 
@@ -474,7 +474,9 @@ img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t=\gamma(S_t-S_{t-1
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;b_1=\frac{X_n-1}{n-1}" />
 
-Peu importe quelle formule l’on choisit pour l’initialisation, tant que cette dernière représente d’une certaine façon la tendance de la série. Schématiquement, plus <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamme" /> est proche de 0, plus les variations antérieures de la série auront de l’importance dans l’estimation du terme de tendance, inversement plus <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamme" /> sera grand, plus le terme de tendance sera la réflexion des variations immédiates de la série.
+
+
+Peu importe quelle formule l’on choisit pour l’initialisation, tant que cette dernière représente d’une certaine façon la tendance de la série. Schématiquement, plus <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma" /> est proche de 0, plus les variations antérieures de la série auront de l’importance dans l’estimation du terme de tendance, inversement plus <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma" /> sera grand, plus le terme de tendance sera la réflexion des variations immédiates de la série.
 
 
     vi.  Prédiction par lissage exponentiel double
