@@ -605,11 +605,11 @@ Ce modèle est très utile car en théorie toute série stationnaire peut être 
 
 Les coefficients d’autocorrélation sont définis par le calcul des corrélations entre la série originale et la série décalée dans le temps.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamme_d=Cov(X_t,X_{t-d})" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma_d=Cov(X_t,X_{t-d})" />
 
 En pratique on est obligé de calculer une estimation de ces coefficients d’autocorrélation de la manière suivante :
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\overhat{r_d}=\frac{1}{T-d}\sum_{t-d+1}^{T}(X_T-\mu)(X_{t-d}-\mu)" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{r_d}=\frac{1}{T-d}\sum_{t-d+1}^{T}(X_T-\mu)(X_{t-d}-\mu)" />
 
 Les valeurs des coefficients vont pouvoir être visualisés sous forme graphique et permettre de déduire la nature du modèle qui décrit les données.
 
