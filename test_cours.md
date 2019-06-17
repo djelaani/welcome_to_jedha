@@ -609,7 +609,7 @@ Les coefficients d’autocorrélation sont définis par le calcul des corrélati
 
 En pratique on est obligé de calculer une estimation de ces coefficients d’autocorrélation de la manière suivante :
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\hat{r_d}=\frac{1}{T-d}\sum_{t-d+1}^{T}(X_T-\mu)(X_{t-d}-\mu)" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{r_d}=\frac{1}{T-d}\sum_{t-d+1}^{T}(X_T-\mu)(X_{t-d}-\mu)" />
 
 Les valeurs des coefficients vont pouvoir être visualisés sous forme graphique et permettre de déduire la nature du modèle qui décrit les données.
 
