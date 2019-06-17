@@ -388,15 +388,15 @@ Deux usages courants des séries temporelles sont :
 Les champs d’application des séries temporelles sont très variés : économie, prévision de ventes, analyse budgétaire, analyse boursière, prévision de rendement, logistique et inventaire et bien d’autres encore.
 
 
-3.	Analyse des séries temporelles
+3.  Analyse des séries temporelles
 
 Nous allons ici voir différentes manières d’analyser les séries temporelles de différentes techniques et explorer différentes caractéristiques remarquables des séries temporelles.
 
-a.	Moyennes mobiles et techniques de lissage
+a.  Moyennes mobiles et techniques de lissage
 
 La plupart des séries temporelles ne se comportent pas comme des fonctions simples du temps, leurs variations peuvent souvent sembler assez imprévisible, c’est pourquoi il existe un certain nombres de techniques qui vont permettre de transformer une série temporelle difficilement compréhensible en une version très simplifiée. C’est techniques sont ce qu’on appelle du lissage et permettent comme leur nom l’indique, d’obtenir des versions résumées des séries temporelles dont les variations sont très atténuées afin d’en extraire la tendance générale.
 De manière générale il existe deux grandes familles de techniques de lissage, les moyennes mobiles et les technique de lissage exponentiel.
 
-i.	Moyenne mobile simple
+i.  Moyenne mobile simple
 
 Une technique de lissage très courante et très simple à comprendre et interpréter des séries temporelles. Imaginons que nous étudions la séries temporelle qui donne les montants dépensés par une entreprise en matières premières par jour cette série temporelle est notée X est la réalisation de X à la date t est notée X_t. On définit l’ensemble des moyennes mobiles associées à cette série, l’ensemble des séries temporelles de la forme :
