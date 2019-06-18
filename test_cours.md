@@ -400,12 +400,13 @@ L’algorithme s’écrit ainsi
 *   Entraîner un modèle sur les données d’apprentissage en pondérant les observations grâce à <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_1" />
 
 
-*   On obtient un prédicteur qu’on notera <img src="https://latex.codecogs.com/svg.latex?\Large&space;h_t:X\longrightarrow\{-1,+1\}" />
+*   On obtient un prédicteur qu’on notera <img src="https://latex.codecogs.com/svg.latex?\Large&space;h_t:X\rightarrow\{-1,+1\}" />
 
 
 *   On calcule l’erreur de prédiction pondérée <img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t=\frac{1}{n}\sum_{i=1}^{n}1[h_t(X_i)\neq{Y_i}]\cdot{D_t(i)}" />
 
-*   On calcule <img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t}){\epsilon_t}" />, le poids de ce modèle lors de l’agrégation finale
+*   On calcule 
+    <img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t}){\epsilon_t}" />, le poids de ce modèle lors de l’agrégation finale
 
 *   On met à jour les poids des observations :
 
