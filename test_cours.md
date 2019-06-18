@@ -405,7 +405,9 @@ L’algorithme s’écrit ainsi
 
 *   On calcule l’erreur de prédiction pondérée <img src="https://latex.codecogs.com/svg.latex?\Large&space;\epsilon_t=\frac{1}{n}\sum_{i=1}^{n}1[h_t(X_i)\neq{Y_i}]\cdot{D_t(i)}" />
 
-*   On calcule <img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t}{\epsilon_t})" />, le poids de ce modèle lors de l’agrégation finale
+*   On calcule
+
+    <img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t){\epsilon_t})" />, le poids de ce modèle lors de l’agrégation finale
 
 *   On met à jour les poids des observations :
 
@@ -630,8 +632,7 @@ Le modèle de Holt-Winter ne peut être estimé si l’on ne dispose pas au mini
     b.  Propriétés des séries temporelles
 
 
-On prendra comme exemples dans cette partie deux jeux de données communément utilisés pour illustrer les notions de modélisation que nous verrons dans ce qui suit. Il s’agit d’une série de concentration ce CO2 dans l’air, mesurée par un observatoire, l’autre série mesure la différentiel de pression atmosphérique au niveau de la mer entre deux points de la planète : [tahiti](https://www.itl.nist.gov/div898/handbook/datasets/MLCO2MON.DAT) et [les îles Darwin](https://www.itl.nist.gov/div898/handbook/datasets/ELNINO.DAT)
-
+On prendra comme exemples dans cette partie deux jeux de données communément utilisés pour illustrer les notions de modélisation que nous verrons dans ce qui suit. Il s’agit d’une série de concentration ce CO2 dans l’air, mesurée par un observatoire, l’autre série mesure la différentiel de pression atmosphérique au niveau de la mer entre deux points de la planète : [Hawaii](https://www.itl.nist.gov/div898/handbook/datasets/MLCO2MON.DAT) et [Tahiti les îles Darwin](https://www.itl.nist.gov/div898/handbook/datasets/ELNINO.DAT)
 Nous allons maintenant découvrir des propriétés des séries temporelles qui correspondent à des hypothèses de bases nous permettant d’appliquer certains modèles d’analyse des séries temporelles.
 
 
@@ -645,7 +646,7 @@ La stationnarité est certainement la propriété des séries temporelles dont a
 *	<img src="https://latex.codecogs.com/svg.latex?\Large&space;Cov(X_t,X_{t-d})=\rho_d" />, les autocorrélations de la série avec elle même possède une structure qui ne dépend pas du temps, mais uniquement du décalage entre les périodes observées.
 Les séries temporelles sont malheureusement très rarement stationnaires, il est donc souvent nécessaire de les différencier afin d’obtenir une série temporelle stationnaire à partir des données dont on dispose. Différencier une série temporelle correspond au fait de remplacer la série originale *X* par la série suivante :
 
-                <img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_t=X_t-X_{t-1}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_t=X_t-X_{t-1}" />
 
 
 Si la série originale suit une certaine tendance, linéaire par exemple, on peut estimer la nature de cette tendance et la soustraire aux données originales avec l’espoir que les résidus ainsi obtenus auront un comportement stationnaire.
