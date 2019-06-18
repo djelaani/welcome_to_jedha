@@ -19,8 +19,7 @@ En pratique il est très difficile de produire des visualisations simples de jeu
 Graphiquement, si on a ***p*** variables, on cherche un espace vectoriel de dimension <img src="https://latex.codecogs.com/svg.latex?\Large&space;p'<p" /> sur lequel on puisse projeter chaque observation en modifiant le moins possible l’allure du nuage de points de dimension ***p*** originel. Pour donner une intuition visuelle de ce que représente mathématiquement l’analyse en composantes principales on prend un exemple jouet en deux dimensions qu’on souhaite réduire à une seule dimension. On dispose d’un nuage de point en deux dimensions et on trouve la droite de projection qui permette le mieux de représenter les données en une seule dimension. On en profite pour remarquer que cette droite de projection correspond à la direction suivant laquelle la variance est la plus grande.
 
 
-![alt_text](images/Semaine-50.png "image_tooltip")
-
+![intro_ACP](https://drive.google.com/uc?export=view&id=1NydGu6Lc4mupX-RuPjoT7lpyjFYQNoJo)
 
 
 2. Remarque importante
@@ -119,7 +118,7 @@ Les facteurs qui permettent de résumer l’information le mieux possible tout e
 On voit ici le lien avec l’ACP dans le fait de devoir trouver les valeurs et les vecteurs propres d’une matrice qui représente la dispersion des observations. Cependant, contrairement à une ACP classique, l’AFD travaille sur une matrice qui représente à la fois la dispersion totale et aussi l’éloignement des différentes modalités de la variable qualitative les unes par rapport aux autres.
 
 
-![alt_text](images/Semaine-51.jpg "image_tooltip")
+![ACP_iris](https://drive.google.com/uc?export=view&id=1A4-Vvbzo9wxuTn4FNROzi457Vxo4YJw-)
 
 
 On montre ici un exemple de la représentation d’observations représentant différentes espèces d’iris dans le plan défini par les facteurs.
@@ -139,7 +138,114 @@ L’analyse factorielle des correspondances est une méthode de réduction de di
 Le tableau de contingence de deux variables qualitatives *X* et *Y* correspond à un tableau possédant *m* lignes et *r* colonnes correspondant au nombre de modalités respectives de *X* et *Y* de la forme suivante :
 
 
-![alt_text](images/Semaine-51.jpg "image_tooltip")
+<table>
+  <tr>
+   <td>
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_1" />
+
+   </td>
+   <td>
+
+...
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_r" />
+
+   </td>
+   <td>Sommes
+   </td>
+  </tr>
+  <tr>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{11}" />
+
+   </td>
+   <td>
+
+...
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{1r}" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{X_1}" />
+
+   </td>
+  </tr>
+  <tr>
+   <td>...
+   </td>
+   <td>...
+   </td>
+   <td>...
+   </td>
+   <td>...
+   </td>
+   <td>...
+   </td>
+  </tr>
+  <tr>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_m" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{m1}" />
+
+   </td>
+   <td>...
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{mr}" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{X_m}" />
+
+   </td>
+  </tr>
+  <tr>
+   <td>Sommes
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{Y_1}" />
+
+   </td>
+   <td>...
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{Y_r}" />
+
+   </td>
+   <td>
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;n" />
+
+   </td>
+  </tr>
+</table>
+
 
 
 Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;n_{ij}" /> est le nombre d’observations qui prennent la modalité *i* pour la variable *X* et la modalité *j* pour la variable *Y*. Le tableau de contingence est noté *T*.
@@ -285,10 +391,10 @@ La manière peut être la plus simple d’introduire la méthode Adaboost est de
 
 L’algorithme s’écrit ainsi
 
-	**Initialisation :**  <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_1(i)=\frac{1}{n}\;pour\;i\in\;[1,n]" />
+**Initialisation :**  <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_1(i)=\frac{1}{n}\;pour\;i\in\;[1,n]" />
 
 
-	**Pour**  <img src="https://latex.codecogs.com/svg.latex?\Large&space;t\;\in\;[1,T]" /> **:**
+**Pour**  <img src="https://latex.codecogs.com/svg.latex?\Large&space;t\;\in\;[1,T]" /> **:**
 
 
 *   Entraîner un modèle sur les données d’apprentissage en pondérant les observations grâce à <img src="https://latex.codecogs.com/svg.latex?\Large&space;D_1" />
@@ -311,7 +417,7 @@ Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;Z_t" /> est simp
 
 
 
-	**Résultat :** le modèle final obtenu à l’issu de l’algorithme AdaBoost est le suivant :
+**Résultat :** le modèle final obtenu à l’issu de l’algorithme AdaBoost est le suivant :
 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;H(X)=sign(\sum_{t=1}^{T}\alpha_t{h_t}(X))=sign(F(x))" />
@@ -341,7 +447,7 @@ Le deuxième critère de performance, communément appelé la _weak learning con
 Avec ces deux conditions vérifiées, l’algorithme AdaBoost permet de réduire l’erreur d’apprentissage à zéro en relativement peu d’itérations. Cependant comme souvent en statistiques, on s’attend à tomber dans le sur-apprentissage à force de coller trop prêt des données d’apprentissage comme le montre la figure ci-dessous :
 
 
-![alt_text](images/Semaine-52.png "image_tooltip")
+![sur_appr_adaboost](https://drive.google.com/uc?export=view&id=1-FEy8xiAoDBYtDwOjq8UOUv4x27-8kyY)
 
 
 A droite, on peut voir le comportement théorique du modèle qu’on s’attend à observer si on réalise un trop grand nombre d’itérations lors de l’apprentissage. A gauche, on présente un exemple utilisant le _Cleveland heart disease dataset_ comme jeu de données.
@@ -361,7 +467,7 @@ C’est donc la différence entre le poids cumulé des modèles qui ont raison e
 Ce concept de marges est essentiel car on peut montrer que le modèle produit par l’algorithme AdaBoost, et l’ensemble des modèles reposant sur un vote majoritaire de modèles élémentaires, présentent une erreur de généralisation (erreur sur la base de validation) qui dépend non pas du nombre d’itérations (du nombres de modèles élémentaires utilisés pour construire le prédicteur final), mais uniquement des marges obtenues pour les observations dans l’échantillon d’apprentissage. Autrement dit, peu importe combien de modèles sont utilisés pour le vote final, plus les marges des observations du set d’entraînement sont élevées, plus notre erreur de validation sera petite. De fait, si l’ajout de nouveaux modèles participe à augmenter les marges de confiance, alors on ne risque pas le sur-apprentissage, au contraire, le modèle final devrait obtenir de meilleurs résultats sur les données de validation.
 
 
-![alt_text](images/Semaine-53.png "image_tooltip")
+![AdaBoost_perf](https://drive.google.com/uc?export=view&id=17DMihsYDzdH46VyuwJTZGxDPtYbWPiZY)
 
 
 Cette exemple montre les performance d’Adaboost appliqué à un dataset de reconnaissance optique de caractères alphanumériques. On constate à droite que malgré une erreur d’apprentissage qui atteint zéro, la multiplication des itérations continue à faire baisser l’erreur de validation. A gauche on visualise en petit pointillés la distribution cumulée des marges pour cinq itérations, en tirets après cent itérations et en plein après mille itérations. Dans les situations où l’algorithme permet d’augmenter les marges des observations du jeu d’entraînement, on constate bien que la multiplication des itérations augmente le pouvoir prédictif du modèle final.
@@ -411,7 +517,8 @@ Une technique de lissage très courante et très simple à comprendre et interpr
 
 Dit simplement, une moyenne mobile d’ordre par exemple 3 est la moyenne de l’observation courante et des deux observations précédentes à chaque date (c’est à dire chaque date pour lesquelles on dispose d’au moins deux observations précédentes).
 
-![alt_text](images/Semaine-53.png "tableau")
+
+![tab_moy_mobile_simple](https://drive.google.com/uc?export=view&id=1JyGFi5y9re0zsr7xuf6-8PHeOXJa5l9c)
 
 
 Afin d’évaluer la qualité d’adhésion entre la moyenne mobile et les données réelles on calcule souvent la moyenne des erreurs au carré (Mean Squared Error MSE) qui ici vaut 7.71.
@@ -423,7 +530,8 @@ Afin d’évaluer la qualité d’adhésion entre la moyenne mobile et les donn�
 Dans l’exemple précédent, on a calculé la moyenne mobile d’ordre 3, la première date à laquelle la moyenne mobile était définie était *t=3*. On aurait pu choisir par exemple de placer cette valeur au niveau de l’observation *t=2* afin de centrer la première valeur au centre de l’intervalle utilisé pour son calcule, et on procède de la même manière pour toutes les valeurs suivantes. Cette méthode fonctionne bien pour les ordres de moyenne mobile impaires car le centre de l’intervalle est un nombre entier, mais pas si bien que ça pour les ordres pairs car la valeur qui coupe l’intervalle en deux partie égale est un nombre décimal.
 
 
-![alt_text](images/Semaine-53.png "tableau2")
+
+![tab_moy_mobile_centree](https://drive.google.com/uc?export=view&id=1jMLArRoLEZVjS22wBlczv2rFVAT-JEvR)
 
 
 
@@ -464,7 +572,7 @@ Comme le montre l’exemple montré précédemment, le lissage exponentiel simpl
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_t=\alpha{X_t}+(1-\alpha)(S_{t-1}+b_{t-1}),\;0\leq\alpha\leq{1}" />
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t=\gamma(S_t-S_{t-1)+(1-\gamma)b_{t-1}),\;0\leq\gamma\leq{1}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t=\gamma(S_t-S_{t-1)+(1-\gamma)b_{t-1}},\;0\leq\gamma\leq{1}" />
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" /> est l’élément censé représenter la tendance générale de la série temporelle, et d’éviter ainsi les décrochages observés dans l’exemple précédent. Il s’agit en tout cas dans un premier temps de choisir la valeur initiale de ce terme <img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" />. Les suggestions les plus courantes sont :
 
@@ -501,7 +609,8 @@ Qui est la somme de la dernière valeur disponible de la série lissée à laque
 Le lissage exponentiel triple est un nouveau niveau de raffinement pour le lissage des séries temporelles qui cette fois prendra en compte une éventuelle saisonnalité de la série temporelle considérée. La saisonnalité est un terme utilisé pour décrire tout phénomène qui affecte les valeurs d’une série temporelle à intervalle régulier. Par exemple, une série temporelle qui mesure les ventes d’un magasin comme les galeries Lafayette aura des périodes de comportement normal et des périodes de forte augmentation pendant les soldes et les périodes de fêtes, qui sont des événements qui reviennent chaque année autour des mêmes périodes.
 Le lissage exponentiel triple est décrit par un jeu de plusieurs équations qui sont appelé la méthode de Holt-Winters pour l’analyse des séries temporelles, nommée ainsi d’après le nom de ses deux inventeurs.
 
-![alt_text](images/Semaine-53.png "tableau3")
+
+![tab_formules](https://drive.google.com/uc?export=view&id=1oAiZuvpStOJWcisdv_cVJpU2B-h20E2X)
 
 
 Dans les formules ci-dessus les paramètres on les significations suivantes:
@@ -535,7 +644,7 @@ La stationnarité est certainement la propriété des séries temporelles dont a
 *	<img src="https://latex.codecogs.com/svg.latex?\Large&space;Cov(X_t,X_{t-d})=\rho_d" />, les autocorrélations de la série avec elle même possède une structure qui ne dépend pas du temps, mais uniquement du décalage entre les périodes observées.
 Les séries temporelles sont malheureusement très rarement stationnaires, il est donc souvent nécessaire de les différencier afin d’obtenir une série temporelle stationnaire à partir des données dont on dispose. Différencier une série temporelle correspond au fait de remplacer la série originale *X* par la série suivante :
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_t=X_t-X_{t-1}" />
+                <img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_t=X_t-X_{t-1}" />
 
 
 Si la série originale suit une certaine tendance, linéaire par exemple, on peut estimer la nature de cette tendance et la soustraire aux données originales avec l’espoir que les résidus ainsi obtenus auront un comportement stationnaire.
@@ -633,7 +742,9 @@ De la même manière, on peut les visualiser pour obtenir des indices quand à l
 L’allure du graphique des autocorrélations permet de déterminer la nature du modèle de la manière suivante :
 
 
-![alt_text](images/Semaine-53.png "tableau4")
+
+![tab_ts_specif](https://drive.google.com/uc?export=view&id=1LF9379zg_QgIX_Gs3WNBKi85rw6VDqJ6)
+
 
 
 Une fois l’analyse du graphe des autocorrélations effectuée, on utilise le graphe des autocorrélations partielles afin de déterminer l’éventuel ordre de la composante *AR* du modèle, la position du dernier coefficient d’autocorrélation partielle non nulle indique l’ordre du modèle *AR*.
