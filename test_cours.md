@@ -407,7 +407,7 @@ L’algorithme s’écrit ainsi
 
 *   On calcule
 
-    <img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t){\epsilon_t})" />, le poids de ce modèle lors de l’agrégation finale
+    <img src="https://latex.codecogs.com/svg.latex?\Large&space;\alpha_t=\frac{1}{2}ln(\frac{1-\epsilon_t{\epsilon_t})" />, le poids de ce modèle lors de l’agrégation finale
 
 *   On met à jour les poids des observations :
 
