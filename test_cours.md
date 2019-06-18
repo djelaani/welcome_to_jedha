@@ -630,7 +630,7 @@ Le modèle de Holt-Winter ne peut être estimé si l’on ne dispose pas au mini
     b.  Propriétés des séries temporelles
 
 
-On prendra comme exemples dans cette partie deux jeux de données communément utilisés pour illustrer les notions de modélisation que nous verrons dans ce qui suit. Il s’agit d’une série de concentration ce CO2 dans l’air, mesurée par un observatoire, l’autre série mesure la différentiel de pression atmosphérique au niveau de la mer entre deux points de la planète : tahiti et les îles Darwin. [NIST](https://www.itl.nist.gov/div898/handbook/datasets/MLCO2MON.DAT https://www.itl.nist.gov/div898/handbook/datasets/ELNINO.DAT)
+On prendra comme exemples dans cette partie deux jeux de données communément utilisés pour illustrer les notions de modélisation que nous verrons dans ce qui suit. Il s’agit d’une série de concentration ce CO2 dans l’air, mesurée par un observatoire, l’autre série mesure la différentiel de pression atmosphérique au niveau de la mer entre deux points de la planète : tahiti et les îles Darwin. ![NIST](https://www.itl.nist.gov/div898/handbook/datasets/MLCO2MON.DAT https://www.itl.nist.gov/div898/handbook/datasets/ELNINO.DAT)
 Nous allons maintenant découvrir des propriétés des séries temporelles qui correspondent à des hypothèses de bases nous permettant d’appliquer certains modèles d’analyse des séries temporelles.
 
 
