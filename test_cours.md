@@ -23,7 +23,7 @@ La classification ascendante hiérarchique est une autre technique d’apprentis
 
 
 *   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\Omega\in\;H" />, l’ensemble contenant toute la population appartient à la hiérarchie
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\farall{omega}\in\Omega,\;\{\omega\}\in\;H" />, tous les ensembles contenant une seule observation appartiennent à la hiérarchie
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\farall{h,h'}\in\;H,h\cap\;h'=\emptyset\;ou\;h\subset{h'}\;ou\;\supset{h'}" />, les classes de la hiérarchie sont soit distinctes soit incluses l’une dans l’autre.
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\forall{omega}\in\Omega,\;\{\omega\}\in\;H" />, tous les ensembles contenant une seule observation appartiennent à la hiérarchie
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\forall{h,h'}\in\;H,h\cap\;h'=\emptyset\;ou\;h\subset{h'}\;ou\;\supset{h'}" />, les classes de la hiérarchie sont soit distinctes soit incluses l’une dans l’autre.
 
 Ces propriétés peuvent se comprendre facilement à l’aide d’une visualisation de l’arbre des classes, aussi appelé _dendrogramme._
