@@ -60,10 +60,8 @@ Lorsque les classes contiennent plusieurs éléments, il existe différentes man
 *   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\min_{x\in{h},x'\in{h'}}d(x,x')" />, la dissimilarité entre deux classes peut être égale à la dissimilarité minimum entre deux individus pris dans chaque classe.
 
 *   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\max_{x\in{h},x'\in{h'}}d(x,x')" />, la dissimilarité entre deux classes peut être égale à la dissimilarité maximale entre deux observations prises dans chacune des classes.
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{1}{Card(h)\cdot{Card(h')}}\sum_{x\in{h}}\sum_{x\in{h'}}d(x,x')" />
-, la dissimilarité entre deux classes peut être calculée comme la moyenne des dissimilarités entre chaque couples d’observations pris dans chaque classe.
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{1}{Card(h)\cdot{Card(h')}}\sum_{x\in{h}}\sum_{x\in{h'}}d(x,x')" />, la dissimilarité entre deux classes peut être calculée comme la moyenne des dissimilarités entre chaque couples d’observations pris dans chaque classe.
 
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{Card(h)\cdot{Card(h')}}{Card(h)+Card(h')}d(G,G')" />
-, où sont les centres de gravité de *h, h'* respectivement. Cette mesure de dissimilarité est appelée la distance de Ward.
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{Card(h)\cdot{Card(h')}}{Card(h)+Card(h')}d(G,G')" />, où sont les centres de gravité de *h, h'* respectivement. Cette mesure de dissimilarité est appelée la distance de Ward.
 
 Dans tous les exemples de mesure de dissimilarité ci-dessus intervient l’objet mathématique *d* qui est une distance définie pour mesurer la distance entre deux observations et qui doit donc être choisie par le data scientist. On choisit souvent par défaut la distance euclidienne que nous avons vu précédemment, à condition d’avoir traité les données en amont afin qu’elles soient quantitatives et normalisées, pour éviter qu’une variables dont les valeurs sont plus grandes ne capture tout le pouvoir discriminant pour elle.
