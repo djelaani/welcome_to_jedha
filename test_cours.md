@@ -23,8 +23,8 @@ La classification ascendante hiérarchique est une autre technique d’apprentis
 
 
 *   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\Omega\in\;H" />, l’ensemble contenant toute la population appartient à la hiérarchie
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\farall{\omega}\in\Omega,\;\{\omega\}\in\;H" />, tous les ensembles contenant une seule observation appartiennent à la hiérarchie
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\farall{h,h'}\in\;H,h\cap\;h'=\emptyset\;ou\;h\subset{h'}\;ou\;h\supset{h'}" />, les classes de la hiérarchie sont soit distinctes soit incluses l’une dans l’autre.
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\forall{\omega}\in\Omega,\;\{\omega\}\in\;H" />, tous les ensembles contenant une seule observation appartiennent à la hiérarchie
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;\forall{h,h'}\in\;H,h\cap\;h'=\emptyset\;ou\;h\subset{h'}\;ou\;h\supset{h'}" />, les classes de la hiérarchie sont soit distinctes soit incluses l’une dans l’autre.
 
 Ces propriétés peuvent se comprendre facilement à l’aide d’une visualisation de l’arbre des classes, aussi appelé _dendrogramme._
 
@@ -78,18 +78,22 @@ L’algorithme de la classification ascendante hiérarchique peut se décrire de
 
 *   **Initialisation :**
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_0=\{\{x_1\},...\{x_n\}}" />, la hiérarchie contient toutes les classes à une seule observation.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_0=\{\{x_1\},...\{x_n\}\}" />, la hiérarchie contient toutes les classes à une seule observation.
 
 
-*   **Tant que** <img src="https://latex.codecogs.com/svg.latex?\Large&space;\Omega\;\notin\;H_1" />**:** <img src="https://latex.codecogs.com/svg.latex?\Large&space;i=0\;\\i=i+1" />
+*   **Tant que** 
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\Omega\;\notin\;H_1:\\i=0\;\\i=i+1" />
 
 
+Pour tout 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;h,h'\in\;H_{i-1},h\neq{h'}" />, 
+calculer 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')" />
 
-Pour tout <img src="https://latex.codecogs.com/svg.latex?\Large&space;h,h'\in\;H_{i-1},h\neq{h'}" />, calculer <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_i=H_{i-1}-\{h_{min}\}-\{h_{min}^{'}\}+\{h_{min},h_{min}^{'}\}" />, on retire de la hiérarchie précédente les deux classes les plus proches et on ajoute la fusion des deux classes les plus proches qui vérifient
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_i=H_{i-1}-\{h_{min}\}-\{h_{min}}\}^'+\{h_{min},h_{min}^'\}" />, on retire de la hiérarchie précédente les deux classes les plus proches et on ajoute la fusion des deux classes les plus proches qui vérifient
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h_{min},h_{min}^')=\min_{h,h'\in{H_{i-1}},h\neq{h'}}d(h,h')" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h_{min},h_{min}^{'})=\min_{h,h'\in{H_{i-1}},h\neq{h'}}d(h,h')" />
 
 
 *   **Résultat :** <img src="https://latex.codecogs.com/svg.latex?\Large&space;\{H_0,H_1,...,H_1,\Omega\}" />. On obtient la hiérarchie complète.
@@ -140,7 +144,7 @@ Il n’existe pas de technique qui fasse l’unanimité en termes de partition �
 
 
 
-***Inertie intraclasse:*** <img src="https://latex.codecogs.com/svg.latex?\Large&space;I_a=\frac{1}{n}\sum_{i=1}^{k}\sum_{j=1}^{n_i}d(x_i,g_i)^2}" />
+***Inertie intraclasse:*** <img src="https://latex.codecogs.com/svg.latex?\Large&space;I_a=\frac{1}{n}\sum_{i=1}^{k}\sum_{j=1}^{n_i}{d(x_i,g_i)^2}" />
 
 
 
