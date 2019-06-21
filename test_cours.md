@@ -60,8 +60,91 @@ Lorsque les classes contiennent plusieurs éléments, il existe différentes man
 *   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\min_{x\in{h},x'\in{h'}}d(x,x')" />, la dissimilarité entre deux classes peut être égale à la dissimilarité minimum entre deux individus pris dans chaque classe.
 
 *   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\max_{x\in{h},x'\in{h'}}d(x,x')" />, la dissimilarité entre deux classes peut être égale à la dissimilarité maximale entre deux observations prises dans chacune des classes.
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{1}{Card(h)\cdot{Card(h')}}\sum_{x\in{h}}\sum_{x\in{h'}}d(x,x')" />, la dissimilarité entre deux classes peut être calculée comme la moyenne des dissimilarités entre chaque couples d’observations pris dans chaque classe.
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{1}{Card(h)\cdot{Card(h')}}\sum_{x\in{h}}\sum_{x\in{h'}}d(x,x')" />
+, la dissimilarité entre deux classes peut être calculée comme la moyenne des dissimilarités entre chaque couples d’observations pris dans chaque classe.
 
-*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{Card(h)\cdot{Card(h')}}{Card(h)+Card(h')}d(G,G')" />, où sont les centres de gravité de *h, h'* respectivement. Cette mesure de dissimilarité est appelée la distance de Ward.
+*   <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')=\frac{Card(h)\cdot{Card(h')}}{Card(h)+Card(h')}d(G,G')" />
+, où *G,G'* sont les centres de gravité de *h, h'* respectivement. Cette mesure de dissimilarité est appelée la distance de Ward.
 
 Dans tous les exemples de mesure de dissimilarité ci-dessus intervient l’objet mathématique *d* qui est une distance définie pour mesurer la distance entre deux observations et qui doit donc être choisie par le data scientist. On choisit souvent par défaut la distance euclidienne que nous avons vu précédemment, à condition d’avoir traité les données en amont afin qu’elles soient quantitatives et normalisées, pour éviter qu’une variables dont les valeurs sont plus grandes ne capture tout le pouvoir discriminant pour elle.
+
+
+
+    3. Algorithme
+
+L’algorithme de la classification ascendante hiérarchique peut se décrire de manière simple en utilisant du pseudo-code :
+
+
+
+*   **Initialisation :**
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_0=\{\{x_1\},...\{x_n\}}" />, la hiérarchie contient toutes les classes à une seule observation.
+
+
+*   **Tant que** <img src="https://latex.codecogs.com/svg.latex?\Large&space;\Omega\;\notin\;H_1" />**:** <img src="https://latex.codecogs.com/svg.latex?\Large&space;i=0\;\\i=i+1" />
+
+
+
+Pour tout <img src="https://latex.codecogs.com/svg.latex?\Large&space;h,h'\in\;H_{i-1},h\neq{h'}" />, calculer <img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h,h')" />
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;H_i=H_{i-1}-\{h_{min}\}-\{h_{min}}\}^'+\{h_{min},h_{min}^'\}" />, on retire de la hiérarchie précédente les deux classes les plus proches et on ajoute la fusion des deux classes les plus proches qui vérifient
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;d(h_{min},h_{min}^')=\min_{h,h'\in{H_{i-1}},h\neq{h'}}d(h,h')" />
+
+
+*   **Résultat :** <img src="https://latex.codecogs.com/svg.latex?\Large&space;\{H_0,H_1,...,H_1,\Omega\}" />. On obtient la hiérarchie complète.
+
+Et ainsi on obtient le dendrogramme que nous avons pu observé précédemment.
+
+
+
+![alt_text](images/Apprentissage-non1.png "image_tooltip")
+
+
+On peut maintenant parler de l’axe des ordonnées que nous n’avions jusqu’alors pas commenté, il correspond à l’indices d’agrégation que nous calculons à chaque étape de l’algorithme, lorsque deux classes *h,h'* sont rassemblées en une, on forme un noeud dans le dendrogramme, la hauteur de ce noeud correspond à la valeur de *d(h,h')*.
+
+
+
+2. Comment déterminer la partition la plus pertinente.
+
+Dans l’algorithme de classification ascendante hiérarchique que nous avons vu, les classes sont formées par agrégation de classes plus petites jusqu’à se retrouver avec une seule classe contenant toute la population. La hiérarchie obtenue permet de définir un grand nombre de partition des données possible, imaginez-vous que nous coupons l’arbre selon un axe vertical à une certaine hauteur, les classes que nous retiendrons seront les classes les plus basses parmi les classes se trouvant au-dessus de l’axe de coupe.
+
+
+
+![drawing](https://docs.google.com/a/google.com/drawings/d/12345/export/png)
+
+Si on adopte cette coupe, on obtient en définitive les 5 classes suivantes :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;h_1=\{2,10\},h_2=\{5,8,9\},h_3=\{1,4\},h_4=\{3\},h_5=\{6,7\}" />
+
+
+Il n’existe pas de technique qui fasse l’unanimité en termes de partition à retenir, cependant il existe des règles qui permettent de guider de votre choix afin de retenir la partition des données qui réponde le mieux à vos besoin ou à vos attentes.
+
+
+
+*   Privilégier les troncatures de l’arbre au niveau de branches longues/hautes, plus la hauteur en ordonnée mesurée entre deux branches consécutives du dendrogramme, plus les classes ainsi formées seront éloignées les unes des autres. Si on coupe entre deux noeuds qui sont très proches au niveau du axes des ordonnées, cela signifie qu’on forme deux classes très proches quand on pourrait les rassembler pour n’en former qu’une qui resterait malgré tout assez cohérente. Une règle facile à mettre en application est de regarder la hauteur entre chaque noeuds consécutifs et de couper là où la différence entre deux hauteurs calculées est la plus grande. C’est ce qu’on a fait dans l’exemple au-dessus.
+*   Si votre objectif n’est pas nécessairement d’obtenir les classes les plus grosses et les plus disparates possibles, mais qu’au contraire vous souhaitez également obtenir des classes dont les effectifs sont comparables, vous pourrez couper, si l’arbre s’y prête, au niveau qui vous donnera les classes les plus équilibrées. Attention, car il arrive souvent que les observations ne puissent pas naturellement être partitionnée de manière équilibrée.
+*   Un critère populaire existe qui porte le nom de _critère de Ward _, qui repose sur une nouvelle mesure appelée _l’inertie._
+
+    L’inertie d’une classe est définie de la manière suivante :
+
+
+
+
+***Inertie totale:*** <img src="https://latex.codecogs.com/svg.latex?\Large&space;I_t=\frac{1}{n}\sum_{i=1}^{n}d(x_i,g)^2" />
+
+
+
+***Inertie interclasse:*** <img src="https://latex.codecogs.com/svg.latex?\Large&space;I_e=\frac{1}{n}\sum_{i=1}^{k}n_i\cdot{d(g_i,g)^2}" />
+
+
+
+***Inertie intraclasse:*** <img src="https://latex.codecogs.com/svg.latex?\Large&space;I_a=\frac{1}{n}\sum_{i=1}^{k}\sum_{j=1}^{n_i}d(x_i,g_i)^2}" />
+
+
+
+Où *n*  est le nombre d’observations, <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_1,...,x_n" /> est l’ensemble des observations, *d* est la distance choisie pour l’algorithme, *g* est le centre de gravité de la population, et <img src="https://latex.codecogs.com/svg.latex?\Large&space;g_1,...,g_k" /> sont les centres gravité respectifs des *k* classes formées par la classification ascendante hiérarchique avec une certaine coupure.
+
+
+La méthode de Ward correspond à calculer l’inertie interclasse pour chaque niveau d’agrégation des données (c’est à dire à chaque étape de l’algorithme quand deux classes fusionnent) et retiendra comme dernière étape d’agrégation l’étape qui correspond à l’augmentation maximale de l’inertie interclasse.
