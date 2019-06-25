@@ -23,7 +23,7 @@ data = pd.read_csv(file, sep = ';')
   4. Créez un objet x1_freq et un objet x2_freq qui contiennent respectivement la fréquence d’apparition des modalités de x1 et des modalités de x2 (où x1 et x2 sont simplement des noms qu’on donne aux variables choisies) grâce à la fonction pd.value_counts
   5. Utilisez la fonction `pd.DataFrame` et grâce à ses arguments index et columns remettez dans le même ordre les index et colonnes le tableau de contigence et x1_freq et x2_freq dans un objet que vous appelerez T_sort
   6. Créez une matrice diagonale Dx1 à partir de x1_freq et une matrice Dx2 diagonale à partir de x2_freq `np.diag`
-  7. Créez une matrice <img src="https://latex.codecogs.com/svg.latex?\Large&space;A=\frac{1}{n}T^{T}D_{X_{1}^{-1}" /> et une matrice <img src="https://latex.codecogs.com/svg.latex?\Large&space;B=\frac{1}{n}TD_{X_{2}^{-1}" />
+  7. Créez une matrice <img src="https://latex.codecogs.com/svg.latex?\Large&space;A=\frac{1}{n}T^{T}D_{X_{1}^{-1}}" /> et une matrice <img src="https://latex.codecogs.com/svg.latex?\Large&space;B=\frac{1}{n}TD_{X_{2}^{-1}}" />
 
  avec n le nombre d’observations, à l’aide des fonctions `np.transpose` `np.linalg.inv` et `np.matmul`
   8. Importez la fonction PCA
