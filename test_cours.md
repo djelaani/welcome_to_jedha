@@ -38,11 +38,11 @@ On dispose d’un jeu de données contenant 12 observations et deux variables qu
 
 ![S5_intro2](https://drive.google.com/uc?export=view&id=1wRnUU_ol_BVUvdTEUjLly2huv3Fc-vTk)
 
-![S5_intro3](https://drive.google.com/uc?export=view&id=1dqc7fSwE1FqKGfpeKt9zpRBQ9n3abjz)
+![S5_intro3](https://drive.google.com/uc?export=view&id=1dqc7fSwE1FqKGfpeKt9zpRBQ9n3abjz_)
 
 ![S5_intro4](https://drive.google.com/uc?export=view&id=12LbH-jL5h4QepmUP-0jP7UZeX38_6eNd)
 
-![S5_intro5](https://drive.google.com/uc?export=view&id=1nVYfEoJn1693JWQvjF4NgRdUdlZeTd-L)
+![S5_intro5](https://drive.google.com/uc?export=view&id=1Eqlwe3MS26yTY0jN6BP3dx22pRN3ZhoT)
 
 
 
