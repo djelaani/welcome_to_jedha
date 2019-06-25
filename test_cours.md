@@ -46,7 +46,6 @@ On dispose d’un jeu de données contenant 12 observations et deux variables qu
 
 
 
-
     2. Caractéristiques des K-Means
 
 D’après l’algorithme que nous venons d’exposer, nous pouvons remarquer plusieurs caractéristiques remarquables de K-means.
@@ -57,16 +56,11 @@ D’après l’algorithme que nous venons d’exposer, nous pouvons remarquer pl
 *   Les centres des classes sont déterminé au départ. Puisque les centres ne correspondent pas à des observations de notre jeu de donnée, on doit commencer par choisir leur position initiale. On peut évidemment choisir la position initiale des centres au hasard, mais ce choix n’est pas très judicieux car la position initiale des centres aura un impact à la fois sur la partition finale qu’on obtiendra et sur la vitesse de convergence des classes. Une méthode plus couramment utilisée est de choisir comme centres de départ les coordonnées des *K* observations les plus éloignées.
 *   Choix de la distance. Les classes que l’on obtiendra au terme de l’algorithme dépendront de la distance choisie afin de mesurer l’éloignement des observations. Introduisons ici quelques exemple de distances qui sont utiles en machine learning et leurs différentes caractéristiques :
 
-
-
-
 ![S5_intro6](https://drive.google.com/uc?export=view&id=1W6pFxNWKRiinqVGXETSY5MdI_MMBLST6)
-
 ![S5_intro7](https://drive.google.com/uc?export=view&id=1b7tNnwUO49v5ZPvLsvknkIAJdJrzOxxJ)
 
 
-
-    De nombreuses autres distances peuvent être utilisées si la situation est propice, mais ces exemples sont de loin les plus communément utilisés et permettent de résoudre la plupart des problèmes auxquels sont confrontés les data scientists.
+  De nombreuses autres distances peuvent être utilisées si la situation est propice, mais ces exemples sont de loin les plus communément utilisés et permettent de résoudre la plupart des problèmes auxquels sont confrontés les data scientists.
 
 
 
