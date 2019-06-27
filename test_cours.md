@@ -1,310 +1,281 @@
 
-## Coaching Carrière
+## Big data et calcul distribué
 
 
-### Révision CV + Profil LinkedIn
+## Qu’est ce le Big Data ?
 
+Le Big Data est un phénomène qui découle de la digitalisation progressive de notre société. Cette digitalisation est liée à l’omniprésence des appareils électroniques connectés à internet, que ce soit les ordinateurs, les smartphones ou les autres objets connectés. A travers leur usage nous créons en permanence de la donnée de façon volontaire, par exemple en publiant sur les réseaux sociaux, ou involontaire, car en effet tout ce que nous faisons sur un site web est inscrit dans des fichiers appelés logs (des fichiers retraçant l’ensemble des événements qui ont eu lieu comme le fait d’arriver sur une page, de cliquer, de scroller ...).
 
-## Ce que vous apprendrez dans ce cours
+L’accroissement rapide de la quantité de données que l’on peut posséder sur les utilisateurs amène à réfléchir à la fois aux nouveaux usages que l’on peut faire de cette donnée et aux nouveaux problèmes que ces usages vont engendrer d’un point de vue technique. C’est tout cela que le Big Data désigne, de nouvelles opportunités mais aussi de nouveaux obstacles.
 
-Nous sommes aujourd’hui prêt à mettre notre CV et notre profil LinkedIn à jour. Nous allons donc vous livrer quelques astuces sur les choses à mettre en avant et les différences entre un profil LinkedIn. Vous apprendrez à :
+Pour rendre ce terme un peu plus concret  nous pouvons reprendre la définition du Big Data faite par Gartner, une entreprise spécialisé dans le conseil et la recherche. Gartner défini le Big Data avec les 3V: Volume, Variété et Vélocité.
 
 
+## Les framework de calcul distribué
 
-*   Mettre vos projets en avant sur un CV et Profil LinkedIn
-*   Vous démarquer sur les réseaux sociaux
+Les frameworks de calcul distribué sont essentiels dans l’exploitation du Big Data. Ils apportent une solution au problème de volumétrie de la donnée en rendant les traitements scalables, notion que nous allons expliciter dans un instant. Par ailleurs, même si ce n’est pas leur utilité première, ils offrent aussi pour la plupart des outils permettant de traiter des données en temps réel et dans différents formats, pour résoudre le problème de la vélocité et de variété que nous avons évoqué précédemment.
 
 
-## CV
+### Comprendre l’utilité des frameworks distribués
 
-Commençons tout d’abord par le CV qui est la chose la plus simple à mettre en forme. Nous allons voir tout d’abord la forme d’un CV puis nous attaquerons le fond.
+Les frameworks de calculs distribués vous permettent de créer des programmes qui peuvent s’exécuter sur un cluster. Un cluster est un ensemble de machines qui exécutent plusieurs taches en parallèle pour effectuer un traitement. Cela vous permet de ne plus être limité par la puissance de calcul d’une seule machine et donc de vous assurer que votre programme sera scalable. La scalabilité, ou le passage à l’échelle, signifie simplement que quelle que soit la volumétrie de vos données à l’avenir votre programme sera toujours en mesure de les traiter à condition qu’il y ait suffisamment de machines dans votre cluster.
 
+C’est en effet assez différent lorsque vous faites un programme basé sur python et pandas. Pandas ne permet de faire du calcul distribué, donc si vos la volumétrie de vos données augmente et que votre machine ne permet plus d’exécuter votre programme vous devrez nécessairement en prendre une plus puissante. A un moment donné vous risquez sans doute de ne plus trouver de machines suffisamment puissantes et votre programme ne sera donc plus en mesure de s’exécuter correctement.
 
-### Pourquoi un CV ?
+Le calcul distribué sur un cluster va finalement permettre de lever l’obstacle de la volumétrie dans vos traitements de données. Afin de mieux comprendre le fonctionnement du calcul distribué vous pouvez voir cela comme une forme de division du travail entre plusieurs machine. Comme vous pouvez le voir sur le schéma ci-dessous il y a une machine maître qui se charge de découper un traitement en plusieurs taches qui vont s’exécuter en parallèle sur des machines esclaves. La machine maître va ensuite récupérer et combiner les résultats de ces taches pour finaliser le traitement.
 
-Avant de commencer à formater votre CV, nous voudrions simplement revenir sur les fondements de pourquoi faire un CV. En fonction de vos recherches, vous trouverez des informations différentes. Cependant, chez Jedha, nous vous conseillons de garder simplement en tête que votre CV a pour but de vous faire décrocher un **entretien**. Tout le reste est annexe par rapport à ce but précis.
 
-De fait, vous devez axer votre CV autour de ce seul but. Nous allons donc faire en sorte d’attirer l’oeil de la personne qui va le lire, à savoir un **recruteur RH.**
 
+![](https://drive.google.com/uc?export=view&id=15uLJQxzxlGB5ODV_lBU2oM7TvPGxde7G)
 
-### Forme
 
-Selon des[ recherches américaines spécialisés en psychologie](http://sante.lefigaro.fr/actualite/2014/02/21/22030-premieres-impressions-sont-inebranlables), la première impression que vous laissez est celle qui restera gravé dans la mémoire de votre interlocuteur. De fait, on voit bien que la forme et la façon dont vous allez vous présenter est d’une importance capitale.
 
+### Les principaux frameworks de calcul distribué
 
-#### La structure d’un CV
+Il existe aujourd’hui plusieurs frameworks de calcul distribués parmi lesquels Hadoop, Spark, Storm et Flink.
 
-Dans un CV vous devez trouver, au minimum, les blocs suivants :
+Historiquement Hadoop est le premier framework de ce type à avoir été créée, le projet démarre en 2004 et c’est seulement en 2011 que sort la première version stable. Le fonctionnement d’Hadoop repose principalement sur l’utilisation d’un algorithme appelé MapReduce pour effectuer des traitements distribué ainsi que sur un ensemble de composants logiciels nécessaires pour gérer un cluster de machine et un système stockage adaptée aux systèmes distribué (HDFS). Au moment où la première version stable d’Hadoop est annoncée c’est une véritable révolution qui laisse entrevoir de nombreuse possibilité dans l’usage de données volumineuses. Cependant il demeure encore de nombreuse barrière dans son utilisation, l’utilisation de MapReduce est extrêmement complexe car elle requiert d’écrire les programmes d’une façon totalement nouvelle et peu intuitive pour les développeurs. Par ailleurs, si le framework permet de traiter d’énorme volume, son fonctionnement souffre d’importantes latence ce qui le rend très lent en comparaison des autres frameworks que nous allons évoquer.
 
+C’est justement pour pallier les principaux problèmes d’Hadoop que Spark a était créé en 2009 par un étudiant de Berkeley qui poursuivait son doctorat. Spark permet d’écrire des programmes qui sont à la fois plus simple à concevoir qu’avec MapReduce mais surtout bien plus rapide à exécuter (dans certains cas plus de 100 fois plus rapide, voir le graphique ci-contre pour l'exécution d’une régression logistique). La première version stable de Spark sort en 2014 et à partir de là il devient le framework que l’on choisit de façon quasi systématique pour traiter de gros volume de données.
 
+Plus récemment d’autres frameworks de calculs distribués ont vu le jour, notamment Storm et Flink dont les premières versions stables sont respectivement apparues en 2017 et 2018. Ces deux solutions sont encore peu utilisées et n’apportent pour l’instant pas d’améliorations majeures comme ce fut le cas de Spark par rapport à Hadoop.
 
-*   Formations
-*   Expériences professionnelles
-*   Langues & Compétences techniques
-*   Vos hobbies
-*   Vos coordonnées
+Le graphique ci-dessus vous aidera à vous faire une idée de la popularité actuelle de chacun des quatre frameworks que nous avons évoqués. On y voit clairement que c’est Spark qui domine, alors qu’Hadoop et Storm sont plutôt sur le déclin. Quant à Flink, il reste encore très en retrait mais cela est principalement dû à sa jeunesse.
 
- \
-Ces blocs doivent être organisé de manière à ce qu’on puisse les différencier simplement. Des exemples parlent mieux que de la théories, voici donc quelques CV pour vous inspirer :
 
-![](https://drive.google.com/uc?export=view&id=1zHfgGmz2zVBV5dXPVlqOH3qL23arHNoS)
+![](https://drive.google.com/uc?export=view&id=1b4pAD7qOKkOqXQxA9Gg0PiJJWdgyGNg5)
 
-![](https://drive.google.com/uc?export=view&id=1w1Mke0VYM65_6Z_9ifty_iszc2dhJ_wi)
 
-![](https://drive.google.com/uc?export=view&id=1lJs4LROUQWyx4HiNU_TZDbge0grX58ru)
+Il faut cependant garder à l’esprit que ces frameworks n’ont pas tout réinventé, ils ont remplacé Hadoop mais ont la plupart du temps gardé les autres éléments de son écosystème, c’est à dire son système de fichier HDFS et les briques logiciels permettant de gérer des clusters de machines.
 
+Etant donnée la domination de Spark nous ne pouvons que vous conseiller de focaliser votre apprentissage sur ce framework si vous souhaitez pouvoir travailler sur des problématiques Big Data, et c’est d’ailleurs celui que nous allons apprendre à utiliser dans ce cours.
 
 
+## Présentation de Spark
 
+Nous allons maintenant faire une rapide présentation de ce framework pour vous puissiez clairement savoir ce qu’il vous permettra de faire.
 
-#### Photo / Pas photo ?
+Comme le montre le schéma ci-dessous, Spark est composé de plusieurs briques et c’est d’ailleurs pour cela qu’il s’agit d’un framework et non d’une librairie.
 
-Les élèves se demandent souvent s’ils doivent ajouter une photo sur leur CV. Certains ont tendance à dire qu’en France, il **faut** mettre une photo tandis qu’elle n’est pas obligatoire à l’international.  \
- \
-Nous vous conseillons plutôt :
 
+![](https://drive.google.com/uc?export=view&id=1R0lbJD4fOev1OmVTxmn_vYaDuJBYd-3g)
 
 
-1. Si vous avez une belle photo professionnelle, mettez là sur votre CV
-2. Sinon, ne mettez pas de photo
+Chacune de ces briques est une librairie à part entière qui vous apportera des outils pour faire des choses spécifiques :
 
-Il existe des moyens simple d’avoir une photo professionnelle. Si vous n’en avez pas, contactez notre community manager sur Slack qui prendra un rendez-vous avec vous pour faire votre photo.
 
-Voici un exemple de CV avec photo :
 
+*   Spark SQL est ce qui vous permet d’effectuer des transformations similaires à celles que vous feriez en SQL, en réalité elle remplit essentiellement la même fonction que la librairie Pandas dans un contexte distribué. Attention le fait que la librairie s’appelle Spark SQL ne signifie pas que vous allez forcément taper du code SQL pour effectuer des transformations sur vos données. En réalités vous pourrez au choix manipuler vos données avec un code pseudo SQL ou bien manipuler des Dataframe et appliquer des fonctions dessus comme vous le feriez avec Pandas. Les dataframes spark sont bien évidemment assez différents de ceux que vous connaissez avec Pandas.
+*   MLlib est la librairie qui vous permet d’utiliser des algorithmes de machine learning sur des dataframes Spark. Vous pouvez également faire l’analogie entre Spark ML et scikit-learn. Malheureusement Spark ML est une librairie moins complète que cette dernière mais vous y trouverez tout de même la grande majorité des algorithmes que vous connaissez.
+*   Spark streaming est une librairie permettant de traiter des flux de données alimenté en continu, notamment pour des traitements en temps réel.
+*   GraphX est une librairie permettant d’effectuer des opérations de graphes de façon distribuée. L’usage de cet API est rare mais elle peut être très intéressante dans un contexte où il est nécessaire de modéliser des relations complexes entre différentes entités, par exemple les relations entre individus sur des réseaux sociaux.
 
+Dans ce cours nous nous focaliserons sur le fonctionnement de Spark dans son ensemble et sur les librairies Spark SQL et MLlib. Bien que Spark streaming et GraphX soient également des solutions très utiles pour certains cas d’usage, ces derniers sont encore peu répandus. Il est donc préférable de reporter leur apprentissage à plus tard pour privilégier la maîtrise des composants incontournable de Spark pour un Data scientist.
 
-![](https://drive.google.com/uc?export=view&id=1gpmxnOmtWfvNvUkWPMSz6u7xTCd2MN6k)
 
+## Les concepts essentiels de Spark
 
+Avant de commencer à utiliser Spark il est important de comprendre certains concepts.
 
-### Fond
 
+### Le partitionnement
 
-#### Comment mettre en valeur ses expériences
+Le partitionnement est un concept inhérent à tous les systèmes distribués.
 
-Il est toujours difficile d’obtenir son premier job dans la data lorsqu’on ne justifie pas d’une expérience préalable. C’est pour cela que les projets vous seront utiles.
+En effet dans un système distribué plusieurs machine se répartissent le travail et par là on entend que chaque machine effectue exactement la même tâche mais sur des données différentes. Cela signifie donc que lorsque l’on charge les données à l’aide d’un framework de calcul distribué, celui-ci va d’abord commencé par découper les données en différents paquets, que l’on appel partition, puis distribuer ces paquets entre les différentes machines du cluster.
 
-Considérez vos projets comme une expérience professionnelle, vous allez donc la décrire comme telle en respectant le plan suivant :
+Si le principe est assez simple à comprendre c’est en réalité un problème qui peut parfois devenir complexe à gérer. En effet la plupart de temps vous n’allez trop vous soucier du partitionnement, Spark s’occupera du découpage des données et de leur distribution sur le cluster. Mais lorsque les données deviennent volumineuse il se peut que les traitements soit trop long voire même qu’ils échouent par manque de mémoire. Un mauvais partitionnement est souvent à l’origine de ce type de problème.
 
+Pour en comprendre la raison il suffit d’imaginer une situation dans laquelle les partitions sont de tailles très déséquilibrées. Certaines machines devront traiter de petites partitions de données tandis que d’autres en traiteront de plus grosse. Bien évidemment les machines ayant de petites partitions auront finies leur traitement bien avant les autres. Le temps de traitement globale va donc ici être essentiellement déterminer par le temps nécessaire pour traiter les plus grosses partitions. Une meilleur équilibre des partitions aura sans aucun doute accéléré le traitement et évité que des machines soit inutilisée le temps que d’autres finissent leur traitement. Il est également possible qu’une partition soit de taille trop importante pour que la machine qui la traite puisse disposer de suffisamment de mémoire, dans ce cas il y aura une erreure qui empêchera le traitement global de finir.
 
 
-1. Explication du problème
-2. Implémentation
-3. Résultat
+### Les transformations et les actions
 
-Dans le premier point, vous allez expliquer pourquoi votre projet a de l’intérêt et ce que vous essayez de résoudre par cette occasion.  \
- \
-Dans la seconde partie, vous tenterez d’expliquer succinctement ce que vous avez construit, les technologies que vous avez utilisées et surtout pourquoi vous les avez utilisé.
+Une autre concept essentiellement en Spark est le mode d’évaluation des commandes que vous utilisez. \
 
-La troisième partie sert à expliquer ce que vous avez réussit à faire grâce à votre solution. C’est le moment de donner des chiffres sur votre réussite !
 
-Voici un exemple avec une expérience professionnelle :
+Concrètement il y a deux types de choses que vous pouvez faire en Spark : Les transformations et les actions. Avant de voir plus en détail ce que sont les transformations et les actions il faut comprendre pourquoi on cherche à les différencier.
 
+Les transformations sont toutes les opérations que vous allez effectuer sur vos données mais Spark ne va pas réellement exécuter que vous exécuterez votre code. Si nous prenons un exemple concret: Vous avez un dataset avec des informations sur différents individus venus de différents pays. Vous souhaitez simplement filtrer ce dataset pour ne garder que les individus français et enregistrer le résultat dans une variable. Pour Spark le filtrage est une transformation, donc au moment où vous allez exécuter le code permettant de filtrer le dataset et de stocker le résultat dans une variable, Spark ne va en réalité rien filtrer. Il ne fera rien d’autre que de garder en mémoire le fait que cette variable contient le produit du chargement du dataset puis de son filtrage. C’est ce qu’on appel une évaluation paresseuse (on dit plus souvent évaluation lazy), le framework à bien compris ce que vous souhaitez faire et il effectuera le filtrage du dataset uniquement quand cela sera vraiment nécessaire.
 
+Les transformations sont en réalité évaluée au moment ou vous produisez une action. Pour reprendre notre exemple si vous souhaitez afficher le résultat du dataset filtré il faudra bien que Spark le filtre. L’affichage de la donnée est une action et il en va de même pour l’écriture du résultat dans un fichier. Autrement dit:
 
-![](https://drive.google.com/uc?export=view&id=1CotrFIZNpHgZs2PwWo_pesU3sGscB8b_)
 
 
-Voici maintenant un exemple avec un projet de Data Science :
+*   Je filtre mon dataset et je stocke le résultat dans une variable que j’appel X : Spark ne fait rien que de garder en mémoire que X correspond à mon Dataframe filtré.
+*   J’affiche X : Spark filtre mon dataset et affiche X
+*   J’enregistre X dans un fichier : Spark filtre à nouveau mon dataset et enregistre X
 
+Vous devriez maintenant vous demander pourquoi on a dû filtrer le dataset deux fois. En réalité le dataset stocké dans la variable X n’a jamais été conservé en mémoire par Spark. A chaque fois que je ferais une action utilisant X l’ensemble des transformations qui ont été nécessaire pour le produire seront réévaluées. Dans notre cas il n’y a qu’un filtrage mais il y aurait aussi pu y avoir tout un tas d’autres transformations. Bien évidemment cela peut paraître très inefficient et il heureusement possible dans Spark de garder en mémoire les données que l’on va réutiliser à de multiple reprise. On pourrait alors adapter notre exemple de la façon suivante:
 
-![](https://drive.google.com/uc?export=view&id=1ZudQ4at7mzIVcjjdyGVXTziykaop1s6s)
 
 
+*   Je filtre mon dataset, je stocke le résultat dans une variable que j’appel X et je demande à Spark de garder X en mémoire : Spark ne fait rien que de garder en mémoire que X correspond à mon Dataframe filtré et qu’il devra le garder en mémoire
+*   J’affiche X: Spark filtre mon dataset, l’enregistre en mémoire et affiche X
+*   J’enregistre X: Spark va chercher X en mémoire et enregistre X
 
-#### Comment mettre en valeur ses compétences
+Certes, vous avez maintenant compris comment contourner le problème de l'évaluation paresseuse qui peut vous amener à refaire plusieurs fois les mêmes opérations inutilement. Mais il est important de comprendre que c’est en réalité une bonne chose de gérer soit même le fait de garder ou non les résultats de vos transformations en mémoire. Cela est principalement utile pour les raisons suivantes :
 
-En tant que recruteur, on s’attend à ce qu’un Data Scientist ait des connaissances solides en :
 
 
+*   Éviter de saturer la mémoire car dans un contexte big data les traitements intermédiaire sont parfois très volumineux. Il est donc parfois nécessaire d’effectuer plusieurs fois les mêmes calculs quand l’espace disponible n’est pas suffisant pour stocker ces derniers.
+*   L’évaluation partielle est parfois suffisante. Si vous filtrez le dataset mais souhaitez afficher que les dix premières lignes, Spark va effectuer le filtrage des lignes au fur et à mesure et s'arrêtera quand il pourra afficher 10 lignes correctement filtrées
+*   L’optimisation des traitements. Spark va ajouter les transformations que vous faites au fur et à mesure dans un DAG (en français un Graphe Orienté Acyclique). Ce graphe va simplement représenté pour Spark l’ensemble des étapes qu’il devra effectuer en partant des données brutes pour arriver au résultat qui découle de l’ensemble des transformations que vous avez effectués. L'intérêt est ici que Spark ne va pas naïvement exécuter le code qu’on lui fournit, il va au contraire chercher à l'exécuter d’une façon optimisée en agençant comme il le pourra des opérations bas niveau qui correspondent à votre code.
 
-*   Python & ses librairies connues
-*   Machine Learning ou _Analyse Predictive_
-*   SQL
-*   Data Visualisation avec un outil comme Tableau ou QlikView
+Pour rester simple on peut dire que tout ce qui concerne l’affichage et l’enregistrement de la données (que ce soit dans un fichier ou une base) est une action. Quasiment tout le reste entre dans la catégorie des transformations. Vous apprendrez très rapidement dans un cadre pratique à distinguer les deux. Ce qui est difficile en revanche c’est de bien juger quelles données vous devrez garder en mémoire lorsque le programme devient complexe. Vous aurez en effet souvent trop de résultats intermédiaires pour tous les conserver, il faudra alors faire des choix avec discernement et surtout ne pas hésiter à effectuer des tests.
 
-Ceci est indispensable et vous le retrouverez dans beaucoup d’offres d’emploi. Ensuite, les plus sont :
 
+## Premier pas avec Spark
 
 
-*   Outils Big Data comme Spark / Hadoop
-*   Connaissance des outils cloud comme Microsoft Azure ou AWS
-*   Deep Learning avec NLP & Réseaux de neurones
+[TOC]
 
-L’anglais sera aussi une compétence très demandée par les recruteurs car, quoique vous fassiez, vous serez sur une fonction support et vous serez amené à travailler avec des internationaux.
 
-Voici un exemple d’une offre en Data Science :
 
-**_Imaginez demain… _**
+## L’objet SparkSession
 
-_Au sein de l’équipe R&D Système d’information, vous aurez en charge des missions d’analyse de données et de Machine Learning._
+L'objet SparkSession est le point d'entré de votre programme. Dans la plateforme Databricks cet objet est directement créé pour vous lors de l'utilisation d'un notebook. Vous n’aurez donc pas besoin de le créer vous-même et à ce stade il n’est pas utile d’entrer plus dans les détails, dites vous simplement que cet objet est nécessaire pour pouvoir exécuter du code sur un cluster Spark.
 
-_Votre rôle est d’élaborer, tester et valider des méthodes statistiques, structurelles et hybrides de traitement de données pour résoudre des problématiques concrètes : convergence des releases, optimisation et ciblage des tests unitaires à rejouer, correction automatique des bugs, etc..._
+Vous pouvez d’ailleurs constater que cet objet est stocké dans une variable qui s'appel "spark".
 
-_Vous serez également en charge d’implémenter vos solutions sous forme de Dashboard dans notre plateforme interne._
 
-_Vous avez des rêves plein la tête ? Vous aimez le challenge ? Rejoignez-nous !_
+![](https://drive.google.com/uc?export=view&id=1AsUnxc8Q1O5DZIZxo0vh5IjH3y3p9qHp)
 
-_Poste basé à Vélizy-Villacoublay (78)._
 
-**_Votre Contribution_**
+Si vous vous souhaitez interagir avec un compte de stockage Azure pour pouvoir lire ou écrire des données dans un container vous devez systématiquement le déclarer dans l’objet SparkSession. Voici comment vous pouvez faire cela :
 
 
+![](https://drive.google.com/uc?export=view&id=1Gd-tFRx93is1f02VHptkXfFZUww8R109)
 
-*   _La collecte des données depuis des sources hétérogènes : SI, BI, moteur de recherche, …_
-*   _La détection des anomalies dans les données collectées et la supervision des corrections._
-*   _La production des KPIs issue d’un traitement de larges volumes de données._
-*   _L'application et la construction de modèles mathématiques de prédiction. _
-*   _La mise en forme et la présentation des résultats._
-*   _L’industrialisation de modèles et algorithmes (Machine Learning, IA), leur supervision ainsi que les analyses statistiques descriptives ou/et prédictives, la création d’indicateurs (etc…) sont autant d’activités qui pourront vous être confiées._
 
-**_Vos atouts pour réussir _**
+Nous allons voir que vous aurez également besoin de cet objet pour le chargement de données.
 
 
+## Chargement de données
 
-*   _Vous avez une première expérience significative en statistiques traditionnelles et modernes_
-*   _Vous êtes familier avec les approches d’analyse de données et de Machine Learning sur des données structurées ou non._
-*   _Vous maîtrisez Python ou R et ses librairies de Machine Learning (par exemple, NLTK, Scikit-learn, Pandas, Numpy, Matplotlib, Jupyter, …)_
-*   _Vous maîtrisez les systèmes de base de données (SQL et NoSQL)_
-*   _Vous avez des compétences dans les architectures BigData (HortonWorks, Hadoop, Spark, …)_
-*   _Vous êtes passionné(e) par la data science, vous avez le goût du challenge_
-*   _Vous savez utiliser les mathématiques pour traiter des problèmes concrets_
-*   _Vous êtes autonome, vous savez faire preuve de proactivité et d'esprit d'initiative_
-*   _La maitrise du français et de l’anglais, à l’écrit comme à l’oral est indispensable. _
+La chargement de données est sans doute la première chose que aurez à faire dans votre programme.
 
-Celle vient de Dassault System. Voici une autre d’une startup du nom de Heetch
 
-**_WHO WE ARE_**
+### Depuis Azure
 
-_Heetch is a ride-sharing app with a simple mission: we want people to enjoy going out. Every night and every day, our drivers are doing their all to make your ride unforgettable and friendly! We are focusing on young peoples expectations and are competing within a competitive and fast paced market._
+Nous allons commencer par charger des données depuis un compte de stockage Azure. Pour cela vous devrez fournir un chemin d’accès à la SparkSession qui sera toujours de la forme :
 
-_The service was launched in Paris on September 2013 and has seen exponential growth since then, with thousands of rides every night in France, Italy, Sweden, Belgium and Morocco._
+wasbs://**container**@**compte_de_stockage**.blob.core.windows.net/**chemin_relatif**
 
-_With more than 1 million users in Europe, we are proud to be one of the fastest growing startups coming out of France!_
+Le wasbs:// indique simplement le protocole d’accès aux données de la même manière que le https:// dans votre navigateur. Vous devrez également ajouter le suffixe .blob.core.windows.net au nom du compte de stockage.
 
-**_WHAT YOULL DO_**
+Voyons cela avec un exemple concret. Nous allons charger des données relative à des applications disponible sur l’App Store. Ces données se situent dans le compte de stockage **jedha **(que nous avons déclaré précédemment), à l’intérieur que container **test. **Son chemin relatif à l’intérieur du container est **app-store-apple-data-set-10k-apps/AppleStore.csv**.
 
-_You will join the Data Science team. It's a cross-functional team using data to support strategic decision-making and build better experiences for our passengers and drivers alike._
+Voici le chemin d’accès dont la SparkSession a besoin pour pouvoir accéder aux données :
 
-_As a Data Scientist focused on Analytics, you will be ideally positioned to draw insights from our rich datasets and drive impact in various areas of the business._
+wasbs://**test**@**[jedha.blob.core.windows.net/app-store-apple-data-set-10k-apps/AppleStore.csv](http://jedha.blob.core.windows.net/app-store-apple-data-set-10k-apps/AppleStore.csv)**
 
-_In particular, you will:_
+Le code ci-dessous va charger ce fichier dans un DataFrame Spark qui sera stocké dans une variable “df” :
 
-_• Work with Product, Engineering, Marketing and Operations to identify and prioritise information needs_
 
-_• Define metrics, build analytical frameworks and dashboards to monitor performance and improve our passenger/driver products_
+![](https://drive.google.com/uc?export=view&id=1s4zgDv5t2vAcLcbmco2qaf94HORdR2TG)
 
-_• Team up with data engineers to develop and optimise data pipelines_
 
-_• Uncover hidden opportunities for growth and efficiency for Heetch_
+En plus de fournir le chemin d’accès vous remarquerez que nous avons également indiqué que ce fichier est au format csv, séparé par des virgules et qu’il contient le nom des colonnes à la première ligne.
 
-_• Conduct and present quantitative analysis that results in actionable recommendations_
+Par ailleurs vous pouvez voir que le notebook Databricks affiche en dessous des cellules le nom des variables qui y ont été déclarées, en l'occurrence il n’y a ici que la variable “df”. Quand la variable est un DataFrame le notebook affiche également le nom des colonnes ainsi que leur type.
 
-**_SOME QUALIFICATIONS WE LOOK FOR_**
 
-_• You have a degree in Computer Science, Engineering, Economics, Physics, Statistics or another quantitative field (MS and above preferred)_
+## Affichage des donnés
 
-_• You have 2+ years of industry experience in an analytical role_
+Pour afficher le contenu du dataframe (df) que nous venons de créer, vous pourriez être tenté de simplement taper le nom de la variable dans une cellule puis de l’exécuter. Avec Pandas cela vous aurait permis d’afficher les données mais avec Spark on obtient le résultat suivant :
 
-_• You write clean and efficient SQL queries_
 
-_• You have some data manipulation language experience (preferably Python or R)_
+![](https://drive.google.com/uc?export=view&id=1IrX6Gao4qhSCE9SJLzQDWfKyHkiMl1Os)
 
-_• You create clear and powerful data visualisations (dashboards, presentations...)_
 
-_• You can communicate effectively with colleagues from various backgrounds and technical levels_
+Ce qui s’affiche ici vous indique juste le nom et le type des colonnes du dataframe df. Cela est dû au fait que le chargement des données est une transformation et non une action, par conséquent vous n’avez donc pas réellement chargé les données et il n’est donc pas possible de les afficher.
 
-_• You are fluent in English_
+Pour pouvoir afficher les données d’un DataFrame vous devez utiliser la méthode **show** de ce dernier :
 
-**_BONUS POINTS IF YOU_**
 
-_• Have prior exposure to startup environments_
+![](https://drive.google.com/uc?export=view&id=13kbudJDTPmumlgEVA1Yo6KSHhksh58jl)
 
-_• Have experience with VCS, cloud computing and big data frameworks_
 
-_• Have already worked with reporting/BI tools (Looker, Tableau)_
+La méthode **show** est une action, elle va donc occasionnée l'exécution réelle du chargement des données nécessaires pour effectuer l’action. Notez bien que seules les premières lignes qui sont affichées dans le notebook seront réellement chargées.
 
-_Are able to model and run experiments_
+Pour avoir un affichage des données plus clair vous pouvez également utiliser la fonction **display** qui est uniquement disponible dans un notebook Databricks.
 
-_• Are an explorer and enjoy going out!_
 
-**_PERKS_**
+![](https://drive.google.com/uc?export=view&id=1VO1A-oLqx5fR-JtQKTZOmlu7NsyB7LbR)
 
-_• Travel budget to visit your colleagues abroad (1000 per year)_
 
-_• Flexible ways of working_
+Il existe une méthode **describe** qui permet d’obtenir des statistiques de bases sur vos colonnes. Celle-ci vous renvoie un DataFrame, il ne s’agit donc pas d’une action. Si vous exécutez simplement **df.describe()** vous obtiendrez le résultat suivant :
 
-_• Heetch credits_
 
-_• Spotify subscription_
+![](https://drive.google.com/uc?export=view&id=1H4Hm7uf47Z88v2W1S5zQtOFpZSyxeAnh)
 
-_• Gym membership discount_
 
-_• Fruits and small treats_
 
-_Heetch SAS is collecting your personal data (identity, contact details, academic background, professional experience and optionally a covering letter) for the processing of your application to our job offer, based on your consent._
+Faites donc plutôt :
 
-_Your personal data will only be accessible to our hiring team, our co-founders, and the manager of the position you are applying to. In addition, data are stored by our processor in order to use its applications tracking system. Your data may be stored outside of the EU/EEA but are protected by appropriated safeguards._
 
-_Your data are stored for a maximum duration of two years. If we do not reply to your application, you allow us to store your data during this term in order to potentially contact you for another position within our company or affiliates and subsidiaries._
 
-_You have a right to access to your data, to rectify them, under some conditions to erase them, and to limit the processing. Also, you have a right of portability on your data. In addition, you may revoke your consent and we shall stop processing your data. Eventually, you have a right to define directives about the fate of your data if your death should occur._
+![](https://drive.google.com/uc?export=view&id=1zhtJEWYNeEjqWApFrtqc7_--VAAEe9em)
 
-_For more information about your rights, please see our privacy policy._
 
-Vous maitrisez beaucoup de ces compétences et vous aurez une expérience professionnelle grâce à vos projets. Nous vous conseillons donc de bien mettre dans la catégorie “Compétence Professionnelles” tout ce qui doit être indispensable dans votre rôle d’analyste.
+## Sélection des colonnes
 
+Pour afficher les colonnes du DataFrame utilisez l’attribut **columns:**
 
-## LinkedIn
 
+![](https://drive.google.com/uc?export=view&id=10GdAI0jUXD-IzzYXX1yEeObLcmDJOX6q)
 
-### LinkedIn VS CV
 
-Les élèves se demande souvent quelle est la différence entre son CV et son profil LinkedIn. La différence majeure est que le premier doit être une synthèse de vos compétences pour le job que vous visez alors que le second est une liste exhaustive de vos expériences professionnelles.
+Pour afficher les colonnes et leur types utilisez **printSchema** :
 
-A la différence de votre Linkedin, vous allez énumérer toutes vos expériences, vos certificats, vos langues, vos articles etc.
 
+![](https://drive.google.com/uc?export=view&id=1O886kELTBBQyjU0ksSh91AtmEcZfafV-)
 
-### Comment avoir un “beau” profil LinkedIn ?
 
+Pour sélectionner des colonnes utilisez la méthode **select** avant le nom des colonnes en argument :
 
-#### La photo
 
-Tout d’abord une belle photo est importante. Si vous n’avez pas un ami photographe, n’hésitez pas à trouver quelqu’un qui pourra faire une belle photo professionnelle de vous. Cela fait réellement la différence d’avoir une photo professionnelle sur vos réseau.
+![](https://drive.google.com/uc?export=view&id=1RDuA0qbSLug51qfta0Wql5grK0cN-1we)
 
 
-#### Mettez en valeur vos expériences
+Alternativement vous pouvez passer en argument les objets colonnes comme ci-dessous avec la fonction **col. **Notez que la fonction **col** se trouve dans le package **pyspark.sql.functions** auquel nous avons donné l’alias F.
 
-Vous pouvez être plus exhaustif dans vos expériences sur votre profil LinkedIn plutôt que dans votre CV, n’hésitez pas donc à décrire vos projet dans les détails avec la même structure que vous avez suivi plus haut.
+![](https://drive.google.com/uc?export=view&id=1UR2D_TB8g1qJSj4-juR0jz9mq7Spq1Ea)
 
 
-#### Quelle phrase de sous-titre ?
+Cela vous sera utile quand vous aurez besoin d’effectuer des opérations sur des colonnes directement dans la fonction select, nous verrons de  nombreux exemples dans le cours suivant. Par exemple pour convertir le type d’une colonne on peut utiliser la méthode **cast** directement sur l'objet colonne. Dans le cas présent la colonne price est considérée comme étant de type String, le code ci-dessous permet de la convertir en type Double :
 
-Le sous-titre en dessous de votre nom est extrêmement important sur votre profil LinkedIn puisque c’est la deuxième chose que va voir le recruteur (après votre nom). Vous devez donc être percutant et dire ce que vous faîtes.  \
- \
-Vous pouvez écrire simplement :
+![](https://drive.google.com/uc?export=view&id=1gQt-zHewOZl5MHkc_yqapB1blmc69-BE)
 
-“Data Scientist” mais vous pouvez être aussi plus créatif en proposant “Data Scientist : Machine Learning & Big Data” où vous explicitez légèrement vos spécialités
 
+Parmi les autres types Spark couramment utilisé il y a StringType, IntegerType, LongType, FloatType, BooleanType, DateType, ArrayType, MapType.
 
-#### Des exemples de profil
+Encore une fois n’oubliez pas d’utiliser la fonction **display** ou la méthode **show** pour afficher le contenu du DataFrame :
 
-Plutôt que de simples conseils, voici des profil LinkedIn sur lesquels vous pouvez vous inspirer :
 
+![](https://drive.google.com/uc?export=view&id=1TKUd5ojezTcPPcOlmIT-XCDaxWZTplvW)
 
 
-*   [https://www.linkedin.com/in/dimitricabaud/](https://www.linkedin.com/in/dimitricabaud/)
-*   [https://www.linkedin.com/in/zhenlihec/](https://www.linkedin.com/in/zhenlihec/)
-*   [https://www.linkedin.com/in/charles-tanguy-7450b185/](https://www.linkedin.com/in/charles-tanguy-7450b185/)
-*   [https://www.linkedin.com/in/louisvilpoux/](https://www.linkedin.com/in/louisvilpoux/)
-*   [https://www.linkedin.com/in/antoine-nuttinck-78144b87/](https://www.linkedin.com/in/antoine-nuttinck-78144b87/)
-*   [https://www.linkedin.com/in/romain-burgot-77a7532/](https://www.linkedin.com/in/romain-burgot-77a7532/)
+La méthode **drop** vous permettra de supprimer des colonnes :
 
 
-##
+![](https://drive.google.com/uc?export=view&id=1OmnIaJXltHQXCtxnYdzfnmepv9YhF8iw)
 
 
-## Ressources
+## Enregistrement des données
 
-Devenir Data Scientist sans diplôme d’ingénieur - [https://jedha.co/blog/2018/09/28/devenir-data-scientist-sans-diplome-dingenieur-lexperience-par-les-projets/](https://jedha.co/blog/2018/09/28/devenir-data-scientist-sans-diplome-dingenieur-lexperience-par-les-projets/)
+
+### Dans un compte Azure
+
+L’enregistrement dans un compte s’effectue de façon similaire au chargement au chargement. Vous devez obligatoirement indiquer le chemin avec le protocole wasb. Dans cet exemple les données sont stockées au format parquet, il n’y a donc pas besoin de préciser le séparateur comme pour le csv. Il n’y a pas non plus besoin d’indiquer que l’on souhaite enregistrer le nom des colonnes car cela est obligatoire en parquet. Le mode d’enregistrement overwrite indique que l’on souhaite écrasé le fichier AppleStore.parquet s’il existe (le mode append combine les deux fichiers et le mode error lève une exception si le fichier existe).
+
+
+![](https://drive.google.com/uc?export=view&id=1_vjwIFumterBcqlMesAxW3_KA3dztedm)
+
+
+## Quelques liens pour aller plus loin
+
+**Hadoop is dead, long live hadoop !**
+
+https://blogs.gartner.com/svetlana-sicular/hadoop-is-dead-long-live-hadoop/
