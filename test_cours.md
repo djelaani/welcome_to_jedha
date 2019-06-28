@@ -1,222 +1,265 @@
 
-## Spark Mllib
+## Moteurs de recommandations
+
+## Les moteurs de recommandations
+
+Tout comme les moteurs de recherche, les moteurs de recommandation font partie de la famille des algorithmes de filtrage d’informations. Le filtrage d’informations consiste à utiliser des données d’interaction entre des utilisateurs et des items pour produire un modèle capable d’ordonner ces items selon l'intérêt qu’ils peuvent avoir pour un utilisateur donné. Dans le cas plus spécifique des moteurs de recommandation, il s’agit de proposer à un utilisateur les produits qu’il est le plus susceptible de consommer ou d’apprécier.
+
+La création d’un moteur de recommandation est l’un des cas d’usage les plus courant du machine learning. Cependant, en terme de business, il n’a d'intérêt que pour un certains type d’entreprises. En effet, celles-ci doivent effectuer leur activité au moins en partie sur internet, et elles doivent par ailleurs disposer de suffisamment de produits et d’utilisateurs pour que la recommandation soit utile et pertinente. C’est donc principalement des entreprises présentent dans les secteurs du commerces en ligne et des médias qui font usage de la recommandation. L'intérêt pour ces dernières est principalement d'accroître la consommation de produits sur leur plateforme et d’améliorer l’expérience utilisateur.
+
+Pour prendre quelques exemple dans le cas du commerce en ligne on peut citer Amazon, Ebay et Rakuten dont les moteurs de recommandation peuvent parfois vous inciter à acheter des produits supplémentaire mais aussi vous aider dans vos recherches. Si vous allez sur la page d’un produit sur Amazon vous verrez un peu plus bas plusieurs bandeaux proposant des recommandation se basant sur des moteurs différents. Sur la page de l’Iphone 8 on peut peut trouver entre autre :
+
+
+
+*   Un bandeau de recommandation reposant sur un moteur qui propose les produits qui ont souvent été acheté avec l’iphone 8. Celui-ci à pour but de vous faire ajouter dans votre panier un ou des accessoires qui ont souvents été considéré comme complémentaire par les acheteur de l’iphone 8.
+
+
+![](https://drive.google.com/uc?export=view&id=1kSwOhwG7c_eKurlrZC59q6Y-EXDrJx49)
+
+
+*   Un bandeau de recommandation reposant sur un moteur qui propose les produits qui ont souvent été vu par les utilisateurs qui ont vu la page de l’iphone 8. Comme vous pouvez l’imaginer ce moteurs est moins sélectif que le précédent car le fait de voir la page d’un produit est un événement moins rare que le fait d’en acheter un. Ceux qui ont vu la page de l’iphone 8 ont pu ensuite allez sur les pages de produits complémentaires ou bien les pages de produits concurrents. Ce moteur vous permettra donc également de faciliter votre recherche en vous proposant des alternatives auxquelles vous seriez susceptible de vous intéresser.
+
+
+![](https://drive.google.com/uc?export=view&id=1VHYhDfVk-iPJNk70uUNJ1noNIonYZ_Fq)
+
+
+Dans le secteur des médias, de nombreuses plateformes de diffusion de contenu écrit, de musique et de vidéos font usage d’un moteur de recommandations, parfois même de plusieurs à l'instar d’Amazon.
+
+
+## Les principales méthodes
+
+Il existe principalement deux types de méthodes qui permettent d’élaborer des moteurs de recommandation, le filtrage basé sur le contenu et le filtrage collaboratif. Chacune des ces méthodes à ses avantages et ses inconvénients et il n’est pas rare qu’un moteur repose sur une combinaison des ces deux dernières.
+
+
+### Le filtrage basé sur le contenu
+
+Le filtrage basé sur le contenu est une forme de recommandation qui s’appui sur les caractéristiques intrinsèques des items consommés. Autrement dit, pour un utilisateur donné, on va recommander des produits dont les caractéristiques sont similaires à ceux qu’il consomme d’habitude.
+
+Si l’on prend l’exemple d’une plateforme de musique en streaming comme Deezer, un moteur de recommandation basé sur le contenu va vous recommander du contenu proches de ceux que vous consommez habituellement en terme de genre, d’année de production, de longueur et sans doute de nombreux autres attributs. Durant la phase d’entraînement, l’algorithme va pondérer l’importance de ces différents attributs pour s’assurer d'effectuer une recommandation pertinente.
+
+Ce type de recommandation ne peut fonctionner que dans la mesure où l’on dispose d’un minimum d’informations sur les produits que l’on cherche à recommander.
+
+
+### Le filtrage collaboratif
+
+Le filtrage collaboratif repose sur une approche totalement différente du filtrage basé sur le contenu. En effet la recommandation ne va plus s’appuyer sur les caractéristiques des produits mais plutôt sur qui les consomme. Pour un utilisateur donné on va donc recommander les contenus qui ont été consommés par des personnes qui lui ressemble. La notion de ressemblance se base ici sur l’historique de consommation des utilisateurs.
+
+Pour reprendre l’exemple de Deezer, un moteur comme celui que nous venons de décrire vous proposera des musiques qu’écoutent ceux qui ont les mêmes goût que vous. L’idée est que si ces derniers apprécient une musique que vous n’avez jamais écouté alors  vous l'apprécierez aussi en l’écoutant.
+
+Contrairement au filtrage basé sur le contenu cette méthode ne nécessite pas de disposer d'informations sur les caractéristiques des produits recommandés, seul l’historique des interactions entre utilisateurs et produit sert de base à l'entraînement de l'algorithme.
+
+
+## Les principes de l’Alternating Least Square (ALS)
+
+Nous allons maintenant nous intéresser à un algorithme de filtrage collaboratif très couramment utilisé, l’Alternanting Least Square. Avant de comprendre comment cet algorithme fonctionne revenons sur la formulation du problème que nous cherchons à résoudre.
+
+
+### Formulation du problème
+
+Le filtrage collaboratif va toujours s’appuyer sur un matrice d'interaction entres les utilisateurs et les produits. Ces interactions peuvent représenter des choses différentes selon les choix vous aurez fais, il pourrait s’agir de la visite d’une page, d’un achat ou bien de la notation d’un produit. Dans tous les cas le principe reste le même.
+
+Voici ceux à quoi pourrait ressembler une matrice d'interaction utilisateur / produit pour une plateforme comme Netflix.
+
+
+![](https://drive.google.com/uc?export=view&id=1sogsultG5MqqGHmPC5BWSk_UiJbKp2WT)
+
+
+Comme vous pouvez le constater une interaction entre un film et un utilisateur peut prendre trois valeurs différentes  :
+
+
+
+*   1 signifie que le film a été proposé à l’utilisateur et qu’il a cliqué dessus pour le visionner
+*   0 signifie que le film a été proposé à l’utilisateur et qu’il n’a pas cliqué dessus
+*   ? signifie que le film n’a jamais été proposé à l’utilisateur et donc on ne sait pas s’il aurait cliqué dessus
+
+Le principe du filtrage collaboratif est d’utiliser les informations sur les interactions qui ont eu lieu (les 0 et les 1) pour combler les trous de cette matrice, c’est à dire remplacer chaque ? par la probabilité que l’utilisateur clique sur la vidéo pour la visionner si elle lui était proposée. Grâce à cela le moteur peut associer pour tout utilisateur la liste des vidéos que ne lui ont jamais été proposées et qu’il aurait le plus de chance de vouloir regarder.
+
+De façon similaire on pourrait, comme cela a été évoqué, s'intéresser à un autre type d’interaction tel que la notation d’un film. On aurait dans ce cas une matrice similaire à celle-ci.
+
+
+![](https://drive.google.com/uc?export=view&id=1dlfsi4LixcWLKr7Si9E84LKzVx-bVROm)
+
+
+Cette fois-ci il y a davantage de valeurs possibles:
+
+
+
+*   Soit une note comprise entre 0 et 5
+*   Soit un ? pour un film que l’utilisateur n’a pas noté
+
+Le mécanique restera ici la même que dans le cas précédent, sauf qu’au lieu d’estimer la probabilité que l’utilisateur clique sur le film si on lui recommande, on estime la note qu’il serait susceptible de mettre s’il l’avais visionné. Le moteur pourra ensuite proposer à l’utilisateur une liste de film ordonnée selon l'estimation de cette note (dans un cas réel on aurait très certainement retiré de cette liste les films qu’il aurait éventuellement vu sans attribuer de note).
+
+
+### Fonctionnement de l’algorithme
+
+L’ALS est un algorithme de filtrage collaboratif qui offre une solution relativement simple pour construire un moteur de recommandation en estimant la valeur probable que pourrait prendre une interaction qui n’a pas encore eu lieu.
+
+Pour estimer ces valeurs, qui permettent de compléter la matrice d’interaction (I), on va décomposer cette dernière en 2 matrices de taille plus petite. L’une sera associé aux profils des utilisateurs (U), et l’autre aux profils des produits (P). Les matrices U et P ont un hyper paramètre en commun (k) qui détermine le nombre de variables latentes qu’elles possèdent.
+
+Les variables latente correspondent à un encodage de l’information qui résulte des interactions entre utilisateur et produit. Vous pouvez faire l’analogie avec certaines méthodes de réduction de dimensions tel que l’ACP, les variables latente joue ici un rôle similaire aux composantes. Ici k est égale à 3, la matrice U offre ainsi une représentation de chaque utilisateur à l’aide de trois variables numériques, la matrice P joue le même rôle pour les produits.
+
+
+![](https://drive.google.com/uc?export=view&id=1XT-Rn1rF8IYHubudIDajL6NPNs8WgAoc)
+
+
+Bien entendu nous ne connaissons pas les matrices U et P et nous allons donc devoir les estimer. Pour cela rappelons que l’équation que nous cherchons à résoudre est la suivante :
+
+
+![](https://drive.google.com/uc?export=view&id=1IqbdAJRrEbSxOtYrukQf5h1MXWKIWvX5)
+
+
+La multiplication de U et P va nous permettre de reconstruire la matrice I en attribuant une valeur à chacune des interactions, y compris celles qui n’ont jamais eu lieu (les ?). Comme dans tout problème de machine learning supervisé on va estimer les paramètres du modèle (les matrices U et P) en cherchant à minimiser une fonction de coût qui sera égale à la somme des écarts entre la valeur d’une interaction connue et le produit des vecteurs utilisateur et produit associés à cette interaction.
+
+
+
+Par exemple l’interaction User 1 / Film 1 a pour valeur 1, le coût pour cette interaction sera donc calculé comme ceci :
+
+
+
+![](https://drive.google.com/uc?export=view&id=1PkRi8fTCKv3HZrHeIFSvbZK7b2fXMknp)
+
+
+soit
+
+
+![](https://drive.google.com/uc?export=view&id=1HMKNRA_i8tYOsYVIcifPTB2aIM4ZFUep)
+
+
+
+De façon globale la fonction le coût peut être formulé de la façon suivante :
+
+
+
+![](https://drive.google.com/uc?export=view&id=1ayAQKZ_nKlU8ojrWoC63cIkMydK-9zhR)
+
+
+ou plus simplement
+
+
+![](https://drive.google.com/uc?export=view&id=1dkrP9_Ssm6xcXj-YMowbxdr2eviouV2G)
+
+
+
+La somme s’effectue sur les ***(i,j) observés***, c’est à dire les interactions de la matrice I dont on connaît la valeur.
+
+Vous pourriez faire l’analogie avec la fonction de coût d’une régression linéaire qui s’y apparente fortement. On va de la même manière rechercher les valeurs des matrices U et P qui minimisent cette fonction de coût. Cependant le problème est en réalité ici bien plus complexe que dans le cas de la régression linéaire. En effet dans une régression linéaire on cherche à résoudre une équation de la forme AX = Y où seul le vecteur de coefficient A doit être estimé, X et Y étant des valeurs connues. Dans le cas de l’ALS on ne connaît que la matrice I et on doit estimer U et P.
+
+
+![](https://drive.google.com/uc?export=view&id=1oldFTTwErZzseOyoW5w9IAHjmcRiyXGX)
+
+
+De ce fait la fonction de coût que nous cherchons à optimiser (I - UP), est non convexe. Bien qu’il soit possible d’effectuer une descente de gradient pour trouver une solution approximative cela nécessiterait un grand nombre d’itération et l'entraînement du modèle pourrait donc s’avérer extrêmement lent.
+
+En revanche, si après avoir initialisé aléatoirement les valeurs de U et P, nous traitons les valeurs de P comme des constantes (de façon analogue au X dans la régression linéaire) alors la fonction de coût, qui ne dépend plus que de U, devient convexe. On peut alors aisément trouver les valeurs de U qui minimise la fonction de coût étant donné les matrices P et I. On va ensuite à nouveau effectuer une optimisation de la fonction de coût en considérant cette fois-ci les valeurs de U comme constantes et en cherchant les valeurs de P qui minimise cette dernière étant donné les matrices U et I.
+
+Au lieu d’estimer simultanément U et P on procède donc en deux temps, on fixe P et on estime U puis on fixe U et on estime P. On répète ce processus jusqu’à ce que les valeurs de U et P finissent par converger. C’est cette approche qui est communément appelé Alternating Least Square.
+
+Voici une description plus formelle de l’algorithme:
+
+
+
+1. Initialisation aléatoire de U et P
+2. Répéter jusqu'à convergence :
+    1. Pour tous les utilisateurs
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;u_i" />:
+
+![](https://drive.google.com/uc?export=view&id=1A1alel8fcFoYACbPFHa3JjsNbKB4zLXq)
+
+    2. Pour tous les produits
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;p_i" /> :
+
+
+![](https://drive.google.com/uc?export=view&id=1u1J1vx3wDjisejhjB5j0jHWPuMUtmQns)
+
+
+## Quelques liens pour aller plus loin
+
+**How do you build a “People who bought this also bought that”-style recommendation engine**
+
+[https://datasciencemadesimpler.wordpress.com/tag/alternating-least-squares/](https://datasciencemadesimpler.wordpress.com/tag/alternating-least-squares/)
+
+**Stanford CME 323: Distributed Algorithms and Optimization, Spring 2015**
+
+[http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf](http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf)
+
+
+
+## L'ALS dans Spark
 
 
 [TOC]
 
 
-Dans ce cours nous allons nous intéresser à MLlib, la librairie de Spark qui vous permettra de créer des modèle de machine learning. Cette librairie n’est pas aussi riche que scikit-learn mais elle offre tout de même de très nombreuses fonctionnalités que vous allez p
-
-
-## Le workflow typique avec MLlib
-
-Avant de passer à la pratique il est important que vous ayez une idée claire des étapes qui seront nécessaire avant d'entraîner un modèle de machine learning sur vos données.
-
-
-### Le pré processing
-
-Toutes les **variables catégorielles** devront être traité de la façon suivante:
-
-
-
-*   On commence par associer un index à chacune des modalités de la variable, par exemple pour la variable Genre on peut associer l’index 0 à la valeur Homme et l’index 1 à la valeur Femme.
-*   On transforme ensuite cet index en vecteur one hot, c’est à dire un vecteur où il y a autant de positions que de modalités, avec la valeur 1 à l’index de la modalité correspondante et 0 zéro ailleurs. Par exemple pour la variable genre on aurait homme = [1, 0] et femme = [0, 1]. En réalité la dernière position de ce vecteur est le plus souvent tronquée car elle n’apporte aucune information, par défault vous verrez donc homme = [1] et femme = [0].
-
-Par ailleurs, **toutes les variables**, qu’elles soient numériques ou catégorielles, devront être concaténées dans un seul vecteur. Par conséquent toutes les variables sur lesquels vous vous baserez pour effectuer votre prédiction se trouveront dans une seule colonne, la plupart de temps on nomme cette colonne “features”.
-
-Voici un schéma récapitulatif de ce processus avec le nom des classes que vous utiliserez dans vos codes.
-
-
-![](https://drive.google.com/uc?export=view&id=1nqqgpyMdIR6rjIamDjgx4veumjlGvTBd)
-
-
-De façon plus synthétique voici les données brutes et ce qui devrait en résulter à l’issu du pré processing :
-
-
-![](https://drive.google.com/uc?export=view&id=1xjkgD7Biv4UQq5G05UykO3IK67L3zWki)
-
-
-Bien entendu ce ne sont que les étapes minimales de traitement que vous devrez effectuer avant de passer au machine learning. Mais il y a réalité d’autres étapes de pré processing que vous pourriez utiliser selon les cas. En voici quelques exemples :
-
-
-
-*   Le remplacement des valeurs manquantes avec différentes stratégies (utilisation de la moyenne, de la médiane …)
-*   La normalisation ou le scaling des variables numériques
-*   La discrétisation des variables numériques en quantile
-*   Le pré processing de variables contenant du texte avec le TF IDF, la suppression des stop words ou la génération de n-grams.
-
-
-### L’entrainement d’un modèle de ML
-
-Une fois les étapes de pré processing effectuées vous allez pouvoir suivre les étapes classique qui vous permettront d'entraîner un modèle, à savoir  :
-
-
-
-*   L’application d’un algorithme sur vos données pour produire un modèle
-*   La définition d’un évaluateur permettant de juger de la qualité du modèle
-*   L’utilisation de la cross validation pour choisir le meilleur modèle au regard de la métrique que vous avez défini
-
-La façon typique de procéder avec MLlib est d'utiliser un pipeline. Tout comme dans scikit-learn le pipeline est un objet combinant l’ensemble des étapes de transformations qui vous permettent de passer de vos données brutes au résultat souhaité. Pour illustrer cela on pourrait donc compléter notre schéma précédent sur le pré processing :
-
-
-![](https://drive.google.com/uc?export=view&id=1YBaRfe565v9o3OVODEVMrc03uBmPMEz3)
-
-
-En réalité on va encore ajouter une dernière étape dans ce pipeline qui est l’application d’un algorithme de machine learning, disons dans ce cas d’une régression logistique. De cette manière le pipeline constitue l’ensemble des étapes permettant de passer des données brutes à un modèle entraîné.
-
-
-![](https://drive.google.com/uc?export=view&id=1JBRhA7uU1Pug_-kKxkMiMH6_Lxp9U8Yf)
-
-
-En plus de clarifier grandement le processus permettant de générer un modèle à partir de données brutes, l'intérêt des pipelines est également lié à la cross validation. Vous allez en effet pouvoir déterminer une grille de paramètres pour l’ensemble du pipeline, c’est à dire pour l’algorithme de machine learning mais aussi pour les étapes de pré processing dont le choix des paramètres peut influer sur la performance du modèle, c’est par exemple le cas :
-
-
-    -       Du choix de la méthode pour remplacer les valeurs manquantes
-
-
-    -       Du choix de la méthode de discrétisation des variables continues
-
-
-    -       Du nombre d’axe à conserver si vous effectuez une ACP
-
-
-    -       …
-
-## Prise en main de MLlib
 
 ## Chargement des données
 
-Pour prendre en main la librairie MLLib nous allons effectuer une classification permettant de déterminer si un individu gagne plus ou moins de 50 000 dollars par an étant donnée un ensemble de facteurs.
-
-Comme d’habitude nous allons commencé par déclarer notre compte de stockage dans l’objet SparkSession et nous allons charger les données dans un dataframe :
+Afin de découvrir comment effectuer une ALS dans Spark, nous allons charger un jeu de données avec des notations d’utilisateur sur différentes catégories de produits. Nous allons donc nous baser sur ces notes pour recommander des catégories de produits aux utilisateurs.
 
 
-![](https://drive.google.com/uc?export=view&id=1elSguFhH-gmbt1750-W1znLFCfI9mI4F)
+![](https://drive.google.com/uc?export=view&id=1fw7P8tJP-ancYnxKgLvimhimB7bnO2wO)
 
 
-## Preprocessing et utilisation d’un pipeline
+## Preprocessing
 
-Comme nous l’avons vu dans le cours, nous allons devoir effectuer certains traitement sur les données avant de pouvoir entraîner notre modèle.
+Comme vous avez pu le constater sur le screenshot précédent, Spark a par défaut considéré que vos column sont de type String. Or, comme pour tous les autres algorithme de MLLib il est nécessaire que vos données soient de type numérique, il va donc falloir les convertir.
 
-Nous allons d’abord devoir traiter les variables catégorielles, ce sont normalement des chaînes de caractères (ce qui correspond au type StringType). Pour chacune des modalités de ces variables nous allons devoir associé un index qui sera un entier (correspondant au type IntegerType en Spark). La class StringIndexer permet de faire cela. Un objet de type StringIndexer prend argument le nom de la colonne sur laquelle il doit s’appliquer et le nom de la colonne contenant l’index.
-
-Nous allons d’abord commencé par la variable salary, qui est la variable que nous cherchons à prévoir. Celle-ci a deux valeurs possible : “>50K” ou “<=50K”. Nous indiquons au StringIndexer que nous souhaitons que la colonne contenant l’index des valeurs soit nommée label.
+Par ailleurs, pour faire une ALS nous avons uniquement besoin d’un identifiant d’utilisateurs, d’un identifiant d’item (ici l’item est une catégorie de produit)  et d’une notation de l’item par l’utilisateur. Nous pouvons donc nous séparer de la colonne reviews.
 
 
-![](https://drive.google.com/uc?export=view&id=1_hTFYEQ_gSee82HDGBoCYxC0o-puFkZy)
-
-
-Comme dans Scikit-Learn la plupart des class de MLLib s’utilise avec les méthodes fit et transform.
-
-Pour un objet de type StringIndexer la méthode fit va permettre d’obtenir un objet capable d’associer à chaque modalité un index. Il ensuite falloir utiliser la méthode transform de cet objet pour ajouter la colonne contenant les index à notre dataframe (la colonne label).
-
-
-![](https://drive.google.com/uc?export=view&id=1xukvzW8_xfH3dS8hqgY61DIfiCwudRD3)
-
-
-Cela un peu lourd, surtout quand vous avez beaucoup de transformation de ce type à faire. L’utilisation des pipelines va nous permettre de simplifier cela, nous allons donc faire comme si nous réparations de cette cellule de code :
-
-
-![](https://drive.google.com/uc?export=view&id=1jVh8-8QH7QeHwEeq0HuC20mFiMxXeM1q)
-
-
-Maintenant que nous avons l’objet permettant de créer l’index pour la colonne salary nous allons nous occuper des autres variables catégorielles. La variable string_columns contient la liste du nom des colonnes correspondant aux variables catégorielles de notre dataset. Pour chacune de ces colonnes nous allons créer un objet de type StringIndexer, le nom des colonnes contenant les index des modalités sera le nom original de la colonne avec le suffix Index (par exemple workclass devient workclassIndex). Par soucis de simplicité nous ne parlerons pas du paramètre handleInvalid=”skip” mais nous pourrons évoquer son utilité en classe.
-
-
-![](https://drive.google.com/uc?export=view&id=18f4GBWaN5WVnmgahAU_r5PQOg_-8QOxo)
-
-
-Une fois que nous avons pu associer un index pour chaque variable catégorielle il va maintenant falloir créer des indicatrices pour chacune d’entre elle (un vecteur avec un 1 à l’index de la modalité correspondante et des 0 pour tout les autres index). On peut directement passer une liste de colonne à un objet de type OneHotEncoderEstimator. Le nom des colonnes contenant les vecteurs avec les indicatrices sera le nom original de la colonne avec le suffix Vec (par exemple workclass devient workclassVec). Notez que l’on ne doit pas faire cette étape pour la colonne label qui est celle que nous cherchons à prédire.
-
-
-![](https://drive.google.com/uc?export=view&id=1qaJlBZfUdEJZrUpKLa9JReO09BE-1Aa1)
-
-
-La dernière étape de pre processing consiste à rassembler toutes les colonnes correspondant à nos prédicteurs dans un seul et même vecteur, la colonne label n’est donc pas concerné. Nous allons donc rassembler dans un vecteur :
-
-
-
-*   Les vecteur correspondant aux indicatrices des variables catégorielles
-*   Les variables numériques (en l'occurrence age et hours_per_week). Assurez-vous avant que celles-ci soient bien d’un type numérique tel que IntegerType, FloatType, DoubleType …
-
-Nous allons donc fournir au VectorAssembler le nom des colonnes à rassembler et lui indiquer que la nouvelle colonne créée s’appeler features.
-
-
-![](https://drive.google.com/uc?export=view&id=1l6QrGKQvdj4iNLdPgmxPQIsFWSB1JXgu)
-
-
-Nous avons maintenant créer toutes les étapes de pre processing de note pipeline. Avant de pouvoir toute les rassembler dans un objet de type Pipeline il nous manque encore une dernière étape: l'algorithme de classification que nous allons utiliser. Nous allons donc créer un objet de type régression logistique (rassurez vous il existe plein d’autres alogrithmes de classification dans la librairie MLLib). Pour cela nous simplement indiquer à la class régression logistique le nom de la colonne contenant la variable à prédire et le nom de la colonne contenant les prédicteurs.
-
-
-![](https://drive.google.com/uc?export=view&id=1V75ZAWn3voUkrxxMqRabdgFiZs1OYEsQ)
-
-
-Pour finir nous allons rassembler toutes ces étapes de traitement dans un Pipeline de la façon suivante :
-
-
-![](https://drive.google.com/uc?export=view&id=1Mzq9IY5vPqPq_M8WQsKli0T0NN9RvIMY)
-
-
-Voilà ! Vous avez maintenant un objet de type pipeline qui comprend toutes les étapes de traitement que nous avons définies pour aboutir à un modèle de classification.
+![](https://drive.google.com/uc?export=view&id=12RjQb7Qh006HwbmRgneGFgyr3Tc3-27Q)
 
 
 ## Entrainement du modèle
 
-Pour entraîner notre modèle nous allons d’abord splitter notre dataset en ensemble d'entraînement (70% du dataset)  et de test (30%) avec la méthode randomSplit. Nous allons ensuite utiliser la méthode fit de notre pipeline pour entraîner notre modèle sur l’ensemble d'entraînement.
+Dans le cas présent nous n’avons davantage de pré processing et l’utilisation d’un pipeline se révèle donc inutile. Vous allez donc voir que l'entraînement de l’ALS est relativement simple et ressemble fortement à ce que nous avons vu dans le cours précédent. Voici les différentes étapes que réalise le code ci-dessous :
 
 
-![](https://drive.google.com/uc?export=view&id=1hoE2N9R-gxayrGz6Sc2sfLK_WaezQxct)
+
+*   Séparation des données en ensemble d'entraînement et de test
+*   Création d’un objet de type ALS en renseignant les colonnes d’identifiants de users, d’items et les notations. Le pramètre coldStartStrategy=”drop” permet tout simplement de ne pas faire de prédictions pour des users ou des items sur lequel le modèle n’aurait pas été entraîné, dans le cas contraire cela fausserait le calcul de l’erreur.
+*   Création d’un objet de type evaluator pour avoir une mesure de l’erreur de notre modèle (ici le RMSE). On doit également renseigner la colonne avec la notation (stars) et celle avec les prédictions (par défaut Spark nomme cette colonne prediction)
+*   Création d’un objet de ParamGridBuilder pour construire les combinaisons de paramètres que nous allons tester durant la cross validation
 
 
-La variable pipeline_lr_fitted contient notre regression logistique entrainé. Plus précisément notre régression logistique est en fait la dernière étape de notre pipeline après application de la méthode fit.
+![](https://drive.google.com/uc?export=view&id=1C6esXkh-5lbDZBdKV6lVi6_1qUsxacGJ)
 
 
-![](https://drive.google.com/uc?export=view&id=1RBMf35Ob6wVKLLHZ33ux7IENTyHS5mvb)
+Maintenant que tous les objets nécessaires ont été défini on peut faire la cross validation de la façon suivante :
 
 
-On peut directement la récupérer de la façon suivante :
+![](https://drive.google.com/uc?export=view&id=1Dxb3-W2yXu3-5toIokkn-D6YR1gMZZoW)
 
 
-![](https://drive.google.com/uc?export=view&id=19kr1TeVt_pBNi25EuGgzGe_D_-pc7JZK)
+La méthode fit de l’objet CrossValidator va nous renvoyer le modèle entraîné avec la meilleure combinaison de paramètres.
 
 
-## Evaluation et analyse du modèle
+## Evaluation
 
-Nous allons maintenant évaluer les performances de notre modèle sur les ensemble de test et d'entraînement. Pour cela il faut d’abord appliqué le modèle pour obtenir les prédiction, on utilise donc la méthode transform de pipeline_lr_fitted.
-
-Nous définissons ensuite un évaluateur de classification binaire en renseignant le nom de la colonne avec les probabilités (Spark nomme cette colonne rawPrediction par default) et la métrique d’évaluation que nous souhaitons utiliser, dans notre cas l’AUC.
-
-Nous utilisons enfin la méthode evaluate de notre évaluateur pour obtenir l’AUC sur l'ensemble d'entraînement et de test.
-
-![](https://drive.google.com/uc?export=view&id=1WOIv2Ec2YrXF8OsGTMurUS_-hyNxivLf)
+Pour évaluer le modèle sur l’ensemble de test, il faut dans un premier temps générer les prédiction sur celui-ci puis utiliser la méthode evaluate de l’objet evaluator en passant les prédictions en paramètre.
 
 
-Nous pouvons également afficher les coefficients de notre régression logistique comme ci-dessous. Notez qu’il faut pour cela accéder à l’objet correspondant à notre régression logistique qui est la dernière étape du pipeline.
+![](https://drive.google.com/uc?export=view&id=1cvxVXyyHlWtWGzuFIIhTaq5GhBNzveTY)
 
 
-![](https://drive.google.com/uc?export=view&id=1wiqvanIZJI5o5e4kn0iGwvT-G8zQEUfG)
+![](https://drive.google.com/uc?export=view&id=1JjQAFL5bRBMetwofCUDSryI6U4NVufxB)
 
 
-Vous pouvez manuellement regardez les résultats de votre régression en affichant les colonnes pertinentes d’un dataset sur lequel vous avez appliqué votre modèle.
+## Utilisation du modèle
+
+L’ALS dans Spark offre certaine fonction très pratique pour pouvoir utiliser le moteur de recommandation.
+
+Cependant notre objet model n’implement pas ces fonctionnalités lui-même car il est de type CrossValidator et il peut donc être utilisé pour entraîner n’importe quel type de modèle supervisé.  
+
+Pour utiliser ces fonctionnalités il faut d’abord accéder à l’attribut bestModel de notre objet model. En faisant model.bestModel on obtient donc un objet de type ALS qui implémente deux fonctions intéressantes : recommendForAllUsers et recommendForAllItems.
+
+Pour recommander pour chaque users les 10 catégories de produit qu’il est le plus susceptible d’apprécier on peut faire :
 
 
-![](https://drive.google.com/uc?export=view&id=1sPJRPJxbyOVxGpoQf-S3aPREi2230Oo_)
+![](https://drive.google.com/uc?export=view&id=18e_Twm_yZFOwObsP1d3NUS4zg1UsFslS)
 
 
-## Cross validation
+Pour recommander pour chaque catégorie les 10 users qui sont le plus susceptible de l’apprécier on peut faire :
 
-Nous avons entraîné notre régression logistiques en laissant les paramètres par défaut. Il est bien sur  possible de renseigner des paramètres spécifiques pour son entraînement. Il également possible de tester plusieurs combinaisons de paramètres pour savoir laquelle fonctionne le mieux grâce à la cross validation.
-
-Pour cela il faut d’abord définir une grille de paramètre à l’aide de la classe Param
-
-GridBuilder et de ses méthodes addGrid et build. La méthode addGrid prend en paramètre un pointeur sur le paramètre que l’on souhaite faire varier ainsi que l’ensemble des valeurs qu’il pourra prendre. Par exemple pour le nombre maximum d’itération on utilise le pointeur lr.maxIter (nous avions précédemment stocker notre régression logistique dans une variable nommé lr avant de construire le pipeline) et on indique que l’on veut tester les valeurs 1, 5 et 10 pour ce paramètre.
-
-Une fois la grille construite on fournit au CrossValidator notre pipeline non entraîné, la grille de paramètre, la métrique d'évaluation (c’est sur ce critère que l’on va juger de la meilleurs combinaison de paramètre) et le nombre de fold pour la cross validation.
-
-On peut ensuite utiliser les méthode fit pour déterminer la meilleur combinaison de paramètres puis transform pour appliquer le pipeline avec cette combinaison de paramètres.
-
-
-![](https://drive.google.com/uc?export=view&id=13Gfr8SjoTwIhkoo9cENAtVIoHsC04YzO)
-
-
-![](https://drive.google.com/uc?export=view&id=18VS0_yu_ume9O36rPz2q2mj7FYcmjL5o)
+<![](https://drive.google.com/uc?export=view&id=1twI3gaRcWw2-iAYzDoIJ003UPI7O4ayv)
