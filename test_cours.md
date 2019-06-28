@@ -1,130 +1,611 @@
-## Machine learning avancé
-
-
-### Reinforcement learning
+## Natural Language Processing
 
 
 ## Ce que vous apprendrez dans ce cours
 
-Ce cours propose une introduction au vaste champ des possibles ouverts par le récent développement du reinforcement learning. Nous allons créer ensemble une véritable intelligence artificielle capable d’apprendre de zéro dans une situation très simplifiée.
+Ce cours est une introduction à l’analyse statistique des textes et du langage. C’est une discipline qui a récemment connu d’énorme progrès scientifique grâce aux développement du deep learning et de la capacité exponentielle des ordinateurs à traiter les calculs qu’on leur demande. Nous commencerons ici par des principes d’analyse élémentaires.
 
 
-## Reinforcement learning
+## Natural language processing
 
-Le reinforcement learning s’est illustré récemment par la résolution de problèmes jusqu’à envisagés impossibles pour des machines. Par exemple, l’entreprise DeepMind, acquise depuis par Google a créé un modèle intelligent capable de surpasser les meilleurs joueurs de Go de la planète, alors que le jeu était considéré jusqu’alors comme bien trop complexe et vaste dans ses configuration possible pour être compris par un système informatique. La même entreprise a également entraîné un modèle capable de battre les meilleurs score mondiaux sur une collection de jeux d’arcade.
+Le Natural Language Processing, souvent abrégé par le sigle NLP et traduit en français par traitement automatique du langage naturel, est une discipline au croisement des sciences informatiques et des data science qui consiste à étudier comment interagissent les langages informatiques et celui des humains (langage naturel).
 
-L’idée sous-jacente du reinforcement learning est la suivante : en machine learning supervisé, la machine se trouvant confrontée à des exemples résolus par les humains, voit ses performances limitée par les performances de ces mêmes humains. Par exemple, si on entraîne une machine à jouer au Go en lui donnant des exemples de parties jouées par les humains, elle pourra dans le meilleur des cas jouer aussi bien que le meilleur humain, mais jamais mieux, ses compétences ne dépasseront jamais l’exemple et le système ainsi créé sera incapable d’innover. Le reinforcement learning consiste donc à créer un système capable d’apprendre tout seul à partir des données entrantes et d’un objectif qu’on lui donne.
 
 
+1. Exemples d’applications
 
-1. Introduction
+Le NLP a connu un très fort essor depuis ses balbutiements dans les années 1950, et aujourd’hui, grâce à l’amélioration rapide des capacités des ordinateurs tant en termes de mémoire, de stockage et de vitesse de calcul et à l’avènement du deep learning, le nombre et la diversité des champs d’application du NLP ne cesse de grandir. Faisons une liste fortement non-exhaustive de quelques applications populaires :
 
-Le processus de reinforcement learning s’apparente par bien des aspects à l’apprentissage supervisé. Prenons l’exemple d’un jeu de pong :
 
 
-![](https://drive.google.com/uc?export=view&id=1pm0biZGeTSQANYyVmwm4w93C6m4aZVQI)
+*   Correction orthographique, recherche de mots clés, recherche de synonymes
+*   Extraction d’information depuis des sites internets (par exemple, le prix d’un produit, des dates, des noms de personnes, d’entreprises etc…)
+*   Classification :
+    *   Classer des textes par niveau de difficulté
+    *   Classer par sujet traité
+    *   Classer en fonction du sentiment général d’un texte (positif/négatif)
+*   Traduction automatisée
+*   Système commandé par la parole
+*   Capacité pour l’ordinateur de répondre à des questions complexes
+2. Pourquoi le langage constitue un type de données très particulier ?
 
+La plupart des données sur lesquelles travaillent d’ordinaires les data scientists sont des métriques mesurées dans le monde, comme des cours d’action, des mesures météorologiques, du signal que l’on souhaite transcrire en son. Toutes ces données sur lesquelles nous travaillons, nous espérons leur donner un sens pour en faire quelque chose d’utile, comme aider notre prise de décision quant à l’achat d’une maison, ou d’une action, prédire quel temps il fera demain, si un client serait plutôt une jeune mère ou un homme du troisième âge.
 
-Les données d’entrée sont les pixels de l’image du jeu, on peut donc imaginer construire un réseau de convolution pour analyser les images issues de l’écran du jeu par exemple. La différence principale avec l’apprentissage supervisé, c’est que la réponse (variable cible) qui donne l’action que l’on doit entreprendre pour gagner le jeu (BAS ou HAUT) n’est pas connu à l’avance, on ne dispose pas d’exemples fournis par un dataset basé sur un joueur humain.
+Le langage a cette particularité d’être un système spécifiquement développé par les humains pour véhiculer de l’information et du sens. Le problème n’est plus de donner un sens à des données qui prises hors contexte n’en on pas, il s’agit maintenant pour les data-scientists d’aider la machine à comprendre le sens ou les sens qui existent déjà au sein du langage qu’utilisent les humains. Le système symbolique qu’est le langage humain peut être communiqué de différentes façons, il peut être écrit, exprimé sous forme de sons, de gestes, ce qui entraîne un nouveau niveau de complexité et de richesse pour cette discipline.
 
-Le réseau ainsi construit qui à chaque image du jeu renvoie une probabilité de descendre BAS ou monter HAUT, s’appelle un _policy network._ La manière d’entraîner un policy network pour résoudre un problème tel que gagner le jeu de pong s’appelle le _policy gradient._
+Si les données étudiées dans le cadre du Natural Language Processing sont par nature très particulières, elles amènent avec un elle un certains nombre de difficultés elles aussi très particulières.
 
 
 
-2. Policy gradient
+*   L’expression du langage passe par de nombreux canaux de communications à la fois, lors d’une conversation, par exemple, le langage est exprimé à la fois par les mots, l'intonation et les modulations de la voix, les mouvements du corps qui accompagnent le discours, le regard etc…
+*   Le langage est un mode d’expression ambigu. Un même mot, une même phrase ou texte peuvent avoir des interprétations complètement différents, des générations de chercheurs continue de s’intéresser à des oeuvres, des citations, voie même des mots tant la richesse d’interprétation du langage est profonde et dense.
+*   L’interprétation du langage dépend d’un contexte situationnel, du monde réel environnant, du sens commun et de normes culturelles et sociales
 
-On commence de la même manière que pour les réseaux de neurones ou réseaux de convolution avec des poids aléatoire pour chaque neurone dans le réseau. Le réseau reçoit une première image et donne une probabilité de descendre BAS ou monter UP :
+Toutes ces particularités du langage en font un sujet infiniment intéressant pour les data-scientists qui, malgré les difficultés présentées par ce dernier, ont fait et continue à faire d’immense progrès dans cette discipline.
 
 
-![](https://drive.google.com/uc?export=view&id=1vMMl3M1G6LPxbQKMvLl7CK9rKw77QGim)
 
+3. Représentation du langage pour la machine
 
-En fonction des probabilité des actions HAUT et BAS, on fait un tirage aléatoire qui donnera la réponse HAUT avec une probabilité <img src="https://latex.codecogs.com/svg.latex?\Large&space;P_{HAUT}" /> et BAS avec une probabilité <img src="https://latex.codecogs.com/svg.latex?\Large&space;P_{BAS}" />. Cette action nous amène à un nouvel état du système, c’est à dire une nouvelle image qui sera envoyée comme entrée du réseau, cette action peut aussi entraîner une récompense, ou une punition dans le cas où le score change à l’issu de l’action et qu’une nouvelle manche commence. Nous exposons cette logique dans la figure suivante :
+Afin d’analyser du texte avec python, il est nécessaire de travailler le format des données afin qu’elles puissent facilement être comprises, comptées, analysées par l’ordinateur. Nous allons maintenant présenter rapidement différentes techniques de traitement du texte de manière à ce qu’il puisse être utilisé pour du machine leanring :
 
 
-![](https://drive.google.com/uc?export=view&id=1bpYtn4u2KlEFrKlaRcSXYDHsx_3IWUjJ)
 
+*   Lower case (lettres minuscules) :
 
-Le fait que les réponses du réseau consistent en un tirage aléatoire obéissant à une loi de probabilité donne la possibilité au modèle d’explorer de nombreuses possibilités lorsqu’il joue au jeu de Pong.
+    Python, comme beaucoup d’autres langages informatiques, fait la distinction entre les majuscules et les minuscules “A”, n’est ainsi pas le même caractère que “a”. Par extension les mots “Apprendre” et “apprendre”, bien que compris de la même manière par nos cerveaux humains ne représentent pas les mêmes chaînes de caractère dans un langage comme python. On va donc généralement remplacer tous les caractères d’un texte par leur équivalent en minuscule avant de commencer des traitements plus avancés.
 
-Le principe du reinforcement learning est de laisser le modèle, aussi appelé _agent,_ d’apprendre par lui-même. De fait le seul indicateur de performance que l’on renvoie au réseau est le tableau des scores de la partie, qui donne à l’agent une récompense lorsque ce dernier marque un point et une punition lorsqu’il perd le point. Le but de l’agent est d’adapter les poids de son policy network de manière à recevoir le plus de récompenses possibles.
+*   Retirer la ponctuation :
 
-On commence l’entraînement par policy gradient en laissant jouer l’agent tout seul, puisque l’agent entame le jeu avec des poids aléatoire, il est probable qu’il perdra la plupart des parties qu’il va jouer, cependant, de temps à autres, l’agent pourra être chanceux, marquer un point et ainsi recevoir une récompense ! L’avantage est qu’à chaque manche jouée, on peut calculer le gradient et modifier les poids en fonction. De fait, les séries d’actions qui mènent à des défaites deviendront de moins en moins probables alors que les séries d’actions qui mènent à la victoire deviendront de plus en plus probables, c’est ainsi que l’agent apprend petit à petit à jouer au jeu de Pong!
+    Il est rare d’analyser la ponctuation en texte mining, on va donc généralement retirer toute la ponctuation afin de n’avoir plus que des mots à analyser.
 
-Afin d’illustrer la différence subtile entre l’apprentissage supervisé et le reinforcement learning, on peut exposer les figures suivantes :
+*   Stop words :
 
+    Les stop words sont tous les mots de liaison, les articles et quantificateurs très utilisés dans une langue mais qui ne sont pas en eux mêmes porteurs de sens, en français il s’agit de : “au” “car” “la” “le” etc… En anglais il s’agit par exemple de : “a” “and” “any” etc…
 
-![](https://drive.google.com/uc?export=view&id=1UOWz01SXDHA-m3W0DnwJ4k300XB89N57)
 
+    On les retire en général car ils sont tellement fréquent dans les textes qu’ils empêchent de manière général les différents modèles qu’on peut utiliser de voir les mots qui caractérisent vraiment un texte.
 
-Dans le cas de l’apprentissage supervisé, à chaque action entreprise par l’agent, on sait à l’avance si c’est une bonne ou une mauvaise action, et on peut calculer le gradient et les mise à jour des poids désirées à chaque étape sans attendre le résultat final de la manche. On regarde ici les log probabilité des actions BAS et HAUT car cela simplifie les mathématiques de calcul de gradient.
+*   Mots communs :
 
+    Pour certaines analyses, comme lorsque l’on souhaite analyser un vocabulaire très spécifique d’un texte, on va parfois retirer certains mots très communs dans un texte en particulier ou une famille de texte. Si on cherche à classer par thèmes des textes qui décrivent l’italie, on va sans doute retirer de tous ces texte le vocabulaire trop communs afin de pouvoir mettre en valeur les différences entre ces différents textes.
 
-![](https://drive.google.com/uc?export=view&id=1PPRRkvGIe5UuO3VY2SiSROmOgPcwOPiZ)
+*   Mots rares :
 
+    De la même manière, des mots trop peu fréquents dans des textes peuvent s’avérer inutiles car leur liaison avec d’autres mots dans le texte pourraient s’apparenter à du bruit, on les retire aussi dans certains cas.
 
-Dans le cas du reinforcement learning, on ne sait pas à l’avance si les actions entreprises sont bonnes ou mauvaises, on laisse donc jouer l’agent et une fois qu’on obtient une récompense (ou punition) on utilise les gradients calculés pour chaque image et on applique les mises à jour en fonction du résultat de la manche.
+*   Correction des fautes de frappes :
 
+    Dans un but d’unifier l’orthographe des mots employés dans les textes que l’on souhaite analyser, on fera souvent appel à des packages python afin de corriger les fautes de frappes et ainsi ramener à l’identiques des mots qui ne l’étaient pas à cause de leur orthographe erroné.
 
+*   Stemming (Racinisation)
 
-3. Credit assignment problem
+    De nombreux mots dans différentes langues sont des variations autour d’une racine commune, le processus de racinisation permet de se débarrasser d’éventuels préfixes et suffixes afin de conserver uniquement les racines communes des mots et ainsi pouvoir faire des analyses jusqu’alors impossibles.
 
-Le credit assignment problem, ou problème d’attribution en français, est une difficulté que l’on rencontre très souvent dans des problèmes de reinforcement learning et intelligence artificielle. Comme on l’a expliqué, le policy gradient, consiste à laisser l’agent jouer au jeu de Pong, à chaque nouvelle image ou état du système on envoie une réponse et ainsi de suite. Cependant on peut voir passer un très grand nombre d’images avant d’avoir la moindre punition ou récompense. Il s’agit alors de savoir quelles actions sont à remettre en cause ou favoriser, quelles actions sont la cause du changement de score? Est ce que ce sont les actions prises juste avant le changement de score, celle prises au début, ou bien les actions choisies à l’image 20 et l’image 48?
+*   Lemmisation
 
-Dans le cas du jeu de Pong, sur lequel nous nous concentrons ici, une récompense est due au fait qu’on a envoyé la balle dans une bonne trajectoire compte tenu de la configuration du jeu dans laquelle nous étions au moment de toucher la balle. Cependant la série d’actions menant à la récompense ont eu lieu bien avant le changement de score et toutes les actions prises par la suite n’ont eu aucun effet sur le score. A l’inverse, si on perd le point, on peut penser que ce sont les actions précédant immédiatement le changement de score qui ont mené à l’échec. Les enjeux de ce problème d’attribution sont intimement liés aux performances de notre système.
+    La lemmisation est un procédé proche de la racinisation mais qui, au lieu de supprimer simplement les suffixes et préfixes courants, possède une connaissance suffisante du vocabulaire d’une langue afin de transformer les mots en leur racine et ainsi ne pas dénaturer le vocabulaire comme peut le faire le stemming. Par exemple, le stemming transformera “president” en “sid” alors que la lemmisation transformera “predident” en “presid”.
 
+    1. N-grams
 
+Souvent on ne représentera pas un texte de manière brut lorsqu’on se lance dans du text mining, ainsi on ne laissera pas l’ordinateur se débrouilla avec une chaîne de caractère de la forme :
 
-4. Apprentissage en détail
-    1. A partir des gradients (si on écrit notre propre algorithme de rétro-propagation)
+“Le chat mange les poissons”
 
-Nous allons maintenant présenter comment l’apprentissage va se faire dans le détail. On choisit d’utiliser un réseau de neurones complètement connecté (donc simple, pas de convolution ici) comprenant deux couches.
+Au lieu de cela on va la plupart du temps représenter le texte sous forme de N-grams. Les N-grams sont une manière de décomposer le texte par groupes de ```N``` mots. Par exemple : les 1-grams ou unigrams du texte précédent sont les suivants :
 
-On initialise le policy network en choisissant au hasard les poids <img src="https://latex.codecogs.com/svg.latex?\Large&space;W_1" /> de la première couche et les poids <img src="https://latex.codecogs.com/svg.latex?\Large&space;W_Z" /> de la seconde couche du réseau. On laisse l’agent jouer 100 partie de Pong, en supposant que chaque partie dure 200 images, on obtient au total une collection de 20 000 décisions HAUT ou BAS. Pour chacune de ces décisions on peut calculer le gradient du réseau qui nous donne la manière dont nous devrions modifier les poids dans le réseau si nous voulions encourager ces actions à l’avenir. Tout ce qu’il nous manque est le résultat de la manche qui nous indique si les actions que nous avons entreprises étaient bonnes ou mauvaises. Supposons qu’on aie remporté 12 manches et perdu 88 manches du jeu, on considérera les ```12 x 200 = 2400``` actions qui ont mené à des victoire et leur appliquer un feedback positif, c’est à dire qu’on remplace l’inconnu dans la formule du gradient pour ces actions par ***+1*** et on change les poids dans le réseau en fonction. Pour les autres ``` 88 x 200 = 17 600``` actions qui ont mené à des défaites, on remplace l’inconnue dans les gradients pré calculés par ***-1*** et on applique les changements souhaités aux poids dans le réseau. Et voilà, grâce à cette première série de mises à jour, le réseau sera plus susceptible de reproduire des actions qui ont mené à des victoires et moins susceptible d’effectuer les actions qui ont mené à des défaites.
 
-Si on repense à la manière dont on optimise un réseau de neurone dans le cadre du machine learning supervisé, les principes sont très similaire. En faisant jouer notre agent 100 parties, on a créé des données d’entraînement contenant ``` 200 x 100 = 20 000 ``` observations qu’on a labellisées à posteriori comme bonne ou mauvaise, calculé le gradient pour chaque observation et appliqué les changements grâce à la rétropropagation de l’erreur.
+<table>
+  <tr>
+   <td>“le”
+   </td>
+   <td>“chat”
+   </td>
+   <td>“mange”
+   </td>
+   <td>“les”
+   </td>
+   <td>“poissons”
+   </td>
+  </tr>
+</table>
+
+
+Les 2-grams de ce même texte sont :
+
+
+<table>
+  <tr>
+   <td>“le chat”
+   </td>
+   <td>“chat mange”
+   </td>
+   <td>“mange les”
+   </td>
+   <td>“les poissons”
+   </td>
+  </tr>
+</table>
 
-On répète ensuite le même procédé avec 100 nouvelles parties, on adapte les réseau en fonction de ces nouvelles parties et on itère jusqu’à obtenir un modèle capable de gagner le jeu de Pong.
 
-Une question légitime qu’on peut se poser est : si certaines actions d’une partie perdue étaient en réalité de bonnes actions qui ont finalement mené à une défaite car les actions suivantes étaient mauvaises, ne risque t’on pas de diminuer aussi la probabilité de ces bonnes actions? La réponse est oui, cependant, on espère qu’en moyenne sur les très nombreuses partie qu’on aura fait jouer au système, les bonnes actions seront plutôt favorisées et les mauvaises plutôt rejetées.
+Les N-grams sont des outils très pratiques pour analyser le thème général d’un texte, extraire les mots les plus importants, lier les textes entre eux, les classer.
 
 
 
-    2. A partir de la fonction de coût (si on utilise des packages qui gèrent entièrement la rétro-propagation)
+    2. Parse trees
 
-Si on utilise des package python comme Theano ou TensorFlow, qui se chargent entièrement de la rétropropagation et pour lesquels il est difficile de modifier les gradients en fonction des résultats d’une manche (car ils ont été construits à l’origine d’un point de vue apprentissage supervisé où l’on connaît les vraies valeurs de la variable cible). Alors on va utiliser la fonction de coût afin d’optimiser notre réseau et non pas modifier le gradient.
+Les parse trees sont des outils qui permettent de décomposer des phrases simples de manière automatiques comme dans l’exemple suivant :
 
-En machine learning supervisé, le but est d’optimiser la fonction de coût suivante (de manière schématique) :
 
+![](https://drive.google.com/uc?export=view&id=15yqMknQsiaqnubxCQjN4AwnlmcDWRQh1)
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(A/B)=\sum_{i}log(p(y_i|x_i))" />
 
+En anglais, par exemple, des règles grammaticales existent qui permettent de construire des phrases, par exemple une phrase peut être composée d’un groupe nominal (Noun phrase NP) suivie d’un groupe verbal (Verb phrase). On peut faire la liste de ces règles et il existe une librairie sur python (nltk) qui permet grâce à des algorithme de décomposition d’analyser des phrases simples. C’est grâce à cette technologie que les assistants personnels comme Siri (apple), Alexa (amazon) ou Cortana (microsoft) sont capables de comprendre rapidement des instructions vocales après les avoir converties en texte.
 
-Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_i,\;y_i" /> sont les données d’apprentissage, respectivement les variables explicatives et la variable cible. Pour le reinforcement learning, on procède de la manière suivante :
+Cependant, lorsque les phrases deviennent trop complexes, ce type d’analyse ne permet d’extraire le sens de manière intelligible pour l’ordinateur, elle est plus adaptée à la compréhension du sens d’instructions courtes, précises et factuelles.
 
 
 
-*   On fait comme si la valeur de la variable cible <img src="https://latex.codecogs.com/svg.latex?\Large&space;y_i" /> est l’action entreprise par l’agent lorsqu’on lui fournit l’entrée <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_i" />
-.
-*   On modifie ensuite la fonction de coût en fonction du résultat de l’expérience (ici une manche de Pong).
+4. Analyses simples
 
+Avant de passer à des méthodes de machine learning avancées pour la compréhension du langage, nous allons commencer par introduire des techniques très fréquemment utilisées en linguistique et en marketing quantitatifs pour extraire de l’information de données textuelles.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i}A_{i}log(p(y_i|x_i))" />
 
 
-Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;y_i" /> est l’action entreprise par l’agent exposé à l’état du système <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_i" /> est <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_i" /> est appelé l’avantage. Par exemple <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_i=1" /> lorsque l’action *i* a mené finalement à une victoire et <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_i=-1" /> si l’action *i* a mené à une défaite.
+    1. Term frequency
 
+La term frequency ou fréquence d’un terme et le ratio du nombre d’occurrences du terme sur le nombre de mots dans la phrase ou le texte. Par exemple dans la phrase suivante : “le chat noir mange les poissons mais ne mange pas les autres chats noirs” la table des fréquences peut s’écrire de la manière suivantes après traitement de lemmisation et suppression des stop words :
 
 
-5. AI vs Intelligence humaine
-
-En première conclusion de cette partie sur le reinforcement learning, qui permet à une machine d’effectuer des tâches complètes à la hauteur voire surpassant parfois l’intelligence ou le talent humains, nous reviendront sur les aspects qui différencient fondamentalement les intelligences artificielles des intelligences humaines.
-
-
-
-*   En pratique, lorsque l’on donne une tâche à effectuer à quelqu’un, on l’exprime à travers le langage. Dans le cas du reinforcement learning, nous communiquons la tâche à effectuer via une fonction de récompense.
-*   Les êtres humains commencent une partie de Pong armés de beaucoup de connaissances déjà acquise, comme des notions de physique et des idées de stratégie comme “si la balle rebondit de manière à bouger rapidement selon l’axe verticale, alors il est plus difficile d’anticiper ses mouvements”. Au contraire, notre algorithme démarre de zéro, ce qui est à la fois impressionnant car il parvient à apprendre beaucoup par lui-même, mais aussi alarmant car nous n’avons aucune idée de comment lui fournir ces connaissances à priori.
-*   Le policy gradient repose sur la force brut, on doit donner au système un très très grand nombre d’exemple afin que le modèle parvienne à une solution satisfaisante. Les humains au contraire, construise une sorte de stratégie après très peu d’exemple et définisse une sorte de cadre logique des possibilités à explorer.
-*   Le policy gradient ne peut améliorer le modèle que si il reçoit une récompense positive, sinon les actions continueront à être plus ou moins aléatoires. Alors que les humains peuvent se projeter dans l’avenir et imaginer à partir de leur expérience des manières d’obtenir de manière non aléatoire des récompenses.
-
-Certaines tâches sont très difficile à appréhender avec le reinforcement learning à cause des raisons exprimées au dessus. Dans certains jeux par exemple, il est très improbables de parvenir au hasard à un enchaînement d’actions qui donneront au système une récompense, il est donc quasiment impossible de lui faire apprendre des comportements approprié dans un temps limité.
+<table>
+  <tr>
+   <td>Term
+   </td>
+   <td>Occurrences
+   </td>
+   <td>Term Frequency
+   </td>
+  </tr>
+  <tr>
+   <td>“chat”
+   </td>
+   <td>2
+   </td>
+   <td>0.25
+   </td>
+  </tr>
+  <tr>
+   <td>“noir”
+   </td>
+   <td>2
+   </td>
+   <td>0.25
+   </td>
+  </tr>
+  <tr>
+   <td>“mange”
+   </td>
+   <td>2
+   </td>
+   <td>0.25
+   </td>
+  </tr>
+  <tr>
+   <td>“poisson”
+   </td>
+   <td>1
+   </td>
+   <td>0.125
+   </td>
+  </tr>
+  <tr>
+   <td>“autre”
+   </td>
+   <td>1
+   </td>
+   <td>0.125
+   </td>
+  </tr>
+  <tr>
+   <td><strong>Total</strong>
+   </td>
+   <td><strong>8</strong>
+   </td>
+   <td><strong>1</strong>
+   </td>
+  </tr>
+</table>
+
+
+
+
+    2. Inverse document frequency
+
+L’idée sous-jacente si on pense à un ensemble de documents textuels que l’on souhaite classer, on conclut qu’un terme qui apparaît dans tous les documents du corpus (ou groupe de textes) n’est pas très utile pour différencier ou rapprocher entre eux les documents. La formule général de l’inverse term frequency ou IDF est la suivante :
+
+
+
+
+![](https://drive.google.com/uc?export=view&id=1s5juVZzMugTAE3gcbk-PkpiGG-1eMzUO)
+
+
+
+Où ```N``` est le nombre total de documents et ```n``` est le nombre de documents dans lequel le terme apparaît. Par exemple si l’on considère les deux documents suivants : “le chat noir mange les poissons mais ne mange pas les autres chats noirs” et “la girafe mange des feuilles grâce à son long cou, mais ne mange pas de poissons”. Si on calcule l’IDF sur ces exemples on obtient le tableau suivant :
+
+
+<table>
+  <tr>
+   <td>Term
+   </td>
+   <td>Document occurences
+   </td>
+   <td>Document frequency
+   </td>
+   <td>IDF
+   </td>
+  </tr>
+  <tr>
+   <td>"chat"
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.5</p>
+
+   </td>
+   <td>LOG(2)
+   </td>
+  </tr>
+  <tr>
+   <td>“noir”
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.5</p>
+
+   </td>
+   <td>LOG(2)
+   </td>
+  </tr>
+  <tr>
+   <td>“mange”
+   </td>
+   <td><p style="text-align: right">
+2</p>
+
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td>“poisson”
+   </td>
+   <td><p style="text-align: right">
+2</p>
+
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td>“autre”
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.5</p>
+
+   </td>
+   <td>LOG(2)
+   </td>
+  </tr>
+  <tr>
+   <td>"giraffe"
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.5</p>
+
+   </td>
+   <td>LOG(2)
+   </td>
+  </tr>
+  <tr>
+   <td>"feuille"
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.5</p>
+
+   </td>
+   <td>LOG(2)
+   </td>
+  </tr>
+  <tr>
+   <td>"long"
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.5</p>
+
+   </td>
+   <td>LOG(2)
+   </td>
+  </tr>
+  <tr>
+   <td>"cou"
+   </td>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.5</p>
+
+   </td>
+   <td>LOG(2)
+   </td>
+  </tr>
+</table>
+
+
+Plus l’IDF d’un mot est élevé, plus le mot est unique et donc représentatif d’une caractéristique particulière du document dans lequel il se trouve par rapport aux autres documents.
+
+
+
+    3. Term frequency - Inverse document frequency
+
+La Term frequency - inverse document frequency est la multiplication de TF et IDF, c’est un indicateur très populaire de l’importance d’un mot dans un document relativement à sa présence dans les autres documents. Par exemple si un mot est très fréquent dans un texte mais présent dans tous les autres textes, alors son importance sera moins grande qu’un terme très fréquent dans un seul document et absent des autres. Pour les exemples cités, les tf-idf s’écrivent ainsi.
+
+
+<table>
+  <tr>
+   <td>Document
+   </td>
+   <td>Term
+   </td>
+   <td>TF
+   </td>
+   <td>IDF
+   </td>
+   <td>TF IDF
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td>"chat"
+   </td>
+   <td><p style="text-align: right">
+0.25</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.6020599913</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.1505149978</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td>“noir”
+   </td>
+   <td><p style="text-align: right">
+0.25</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.6020599913</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.1505149978</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td>“mange”
+   </td>
+   <td><p style="text-align: right">
+0.25</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.3010299957</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.07525749892</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td>“poisson”
+   </td>
+   <td><p style="text-align: right">
+0.125</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.3010299957</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.03762874946</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+1</p>
+
+   </td>
+   <td>“autre”
+   </td>
+   <td><p style="text-align: right">
+0.125</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.6020599913</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.07525749892</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+2</p>
+
+   </td>
+   <td>"giraffe"
+   </td>
+   <td><p style="text-align: right">
+0.2</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.6020599913</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.1204119983</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+2</p>
+
+   </td>
+   <td>"mange"
+   </td>
+   <td><p style="text-align: right">
+0.2</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.3010299957</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.06020599913</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+2</p>
+
+   </td>
+   <td>"feuille"
+   </td>
+   <td><p style="text-align: right">
+0.2</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.6020599913</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.1204119983</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+2</p>
+
+   </td>
+   <td>"long"
+   </td>
+   <td><p style="text-align: right">
+0.2</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.6020599913</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.1204119983</p>
+
+   </td>
+  </tr>
+  <tr>
+   <td><p style="text-align: right">
+2</p>
+
+   </td>
+   <td>"cou"
+   </td>
+   <td><p style="text-align: right">
+0.2</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.6020599913</p>
+
+   </td>
+   <td><p style="text-align: right">
+0.1204119983</p>
+
+   </td>
+  </tr>
+</table>
+
+
+Ainsi on comprend que les mots les plus importants du document 1 qui le démarquent des autres documents du corpus sont “chat” et “noir”, dans les document 2 les mots “giraffe” “feuille” “long” et “cou” sont les termes les plus caractéristiques. Inversement les mots “mange” et “poisson” ont un tf-idf faible dans les deux documents. On peut donc conclure que les deux document parlent du fait de manger du poisson, mais que le document 1 se concentre sur les chats, alors que le document 2 porte sur les giraffes.
+
+
+
+    4. Sentiment analysis
+
+Il existe des librairies dans python comme textblob qui contiennent des listes de vocabulaire où chaque mot possède un score associé au sentiment qu’il véhicule, si ce sentiment est plutôt positif, le score sera positif, par contre si le sentiment véhiculé par le mot est négatif alors le score sera lui aussi négatif.
