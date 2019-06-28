@@ -1,91 +1,130 @@
 ## Machine learning avancé
 
 
-### Réseau de neurones convolutif
+### Reinforcement learning
 
 
 ## Ce que vous apprendrez dans ce cours
 
-Les réseaux de neurones convolutifs sont une généralisation des réseaux de neurones simples qui sont devenus très populaires car ils sont particulièrement adapté à l’analyse des images. Nous verrons aujourd’hui de quoi ils sont fait et comment les utiliser.
+Ce cours propose une introduction au vaste champ des possibles ouverts par le récent développement du reinforcement learning. Nous allons créer ensemble une véritable intelligence artificielle capable d’apprendre de zéro dans une situation très simplifiée.
 
 
-### Réseaux de neurones convolutifs
+## Reinforcement learning
 
-Les réseaux de neurones convolutif sont une variante des réseaux de neurones que nous avons vus précédemment et qui sont particulièrement performants pour résoudre des problèmes liés aux images ou autres objets qui ont une dimension spatiale, nous verrons ce que cela signifie en détail dans ce qui suit. Afin d’expliquer au mieux le fonctionnement de ces modèles, utilisés notamment par des entreprises comme Google pour la recherche et la reconnaissance d’image, nous utiliserons l’exemple de la reconnaissance de chiffres manuscrits.
+Le reinforcement learning s’est illustré récemment par la résolution de problèmes jusqu’à envisagés impossibles pour des machines. Par exemple, l’entreprise DeepMind, acquise depuis par Google a créé un modèle intelligent capable de surpasser les meilleurs joueurs de Go de la planète, alors que le jeu était considéré jusqu’alors comme bien trop complexe et vaste dans ses configuration possible pour être compris par un système informatique. La même entreprise a également entraîné un modèle capable de battre les meilleurs score mondiaux sur une collection de jeux d’arcade.
 
-
-
-    1. Principe général
-
-Nous avons vu précédemment comment les neurones d’un réseau de neurones prennent comme entrée les variables explicatives qu’on lui soumet dans le cas de la couche d’entrée et les sorties des couches précédentes dans les cas de toutes les couches qui suivent. Ce qui change dans le cas des réseaux de neurones convolutifs, les entrées de chaque neurone est modifiée pour prendre en compte une dimension spatiale. Passons à l’exemple pour illustrer cette idée :
-
-![](https://drive.google.com/uc?export=view&id=1_s27XL6-gMvUdqAZcvBhdHcTvBE4Nsss)
-
-
-Dans le cas de la reconnaissance de chiffres manuscrit dans des images de 18 par 18 pixels, nous disposons de 324 variables que sont les pixels de l’image. Dans le cas d’un réseau de neurones classique, les entrées de la première couche seraient chacun des pixels affectés d’un poids pour chaque neurone de la couche d’entrée. Dans le cas d’un réseau de neurones convolutif, c’est différent, cette fois les entrées d’un neurone sur la première couche ne seront pas les pixels eux même, mais une combinaison des valeurs d’un pixel et des pixels environnant. Ceci vient de l’idée que lorsque nous identifions des objets par la vision, la propriété essentielle que nous cherchons à trouver sont les délimitations et propriétés spatiales de l’objet dans son ensemble, pas point par point jusqu’à reconstituer une image complète. Le fait de prendre en compte une zone de l’espace comme entrée et non plus un point, vise à communiquer au réseau l’importance de chercher des schémas dans l’espace pour reconnaître des images.
-
-Dans la figure ci-dessus, chaque neurone correspond à la fonction suivante :
-
-
-![](https://drive.google.com/uc?export=view&id=16VT0OtxmHrQPecpUsw5U9zZqmqdwl_rX)
+L’idée sous-jacente du reinforcement learning est la suivante : en machine learning supervisé, la machine se trouvant confrontée à des exemples résolus par les humains, voit ses performances limitée par les performances de ces mêmes humains. Par exemple, si on entraîne une machine à jouer au Go en lui donnant des exemples de parties jouées par les humains, elle pourra dans le meilleur des cas jouer aussi bien que le meilleur humain, mais jamais mieux, ses compétences ne dépasseront jamais l’exemple et le système ainsi créé sera incapable d’innover. Le reinforcement learning consiste donc à créer un système capable d’apprendre tout seul à partir des données entrantes et d’un objectif qu’on lui donne.
 
 
 
+1. Introduction
 
-Où les ```x_i,j``` représente les valeur du pixel en position ```i , j``` sur le filtre (par exemple ```x₃,₁``` est la valeur du pixel en bas à gauche du filtre), les ```w_i,j``` sont les poids ou paramètres du neurone considéré, associé au pixel correspondant, et ```b``` est le paramètre de biai calculé pour chaque neurone.
-
-Le fait de passer ainsi une sorte de calque sur les différent pixel de l’image est ce qu’on entend par convolution lorsque l’on parle de réseau de neurones convolutifs.
-
+Le processus de reinforcement learning s’apparente par bien des aspects à l’apprentissage supervisé. Prenons l’exemple d’un jeu de pong :
 
 
-    2. Arrangement spatial
-
-Dans le cas des réseaux de neurones simples, les seuls hyper-paramètres que nous devons choisir est le nombre de couches et le nombre de neurones que l’on souhaite placer sur chaque couche. Ici d’autres hyper paramètres doivent être choisis en plus en fonction des objets que l’on souhaite faire analyser par le réseau. Prenons l’exemple des images de chiffres, les hyper paramètres à déterminer sont :
+![](https://drive.google.com/uc?export=view&id=1pm0biZGeTSQANYyVmwm4w93C6m4aZVQI)
 
 
+Les données d’entrée sont les pixels de l’image du jeu, on peut donc imaginer construire un réseau de convolution pour analyser les images issues de l’écran du jeu par exemple. La différence principale avec l’apprentissage supervisé, c’est que la réponse (variable cible) qui donne l’action que l’on doit entreprendre pour gagner le jeu (BAS ou HAUT) n’est pas connu à l’avance, on ne dispose pas d’exemples fournis par un dataset basé sur un joueur humain.
 
-*   Profondeur : Plusieurs neurones peuvent servir à analyser la même zone de l’objet en entrée, le nombre de neurones ainsi dédié à une zone précise est appelé la profondeur d’une couche du réseau de convolution.
-*   Pas du filtre : Nous devons choisir de combien de pixels la zone à explorer (ou filtre) doit bouger avant de définir une nouvelle entrée. Dans la figure précédente le pas a été choisi égal à ```1```, car on décalait le filtre d’un pixel à chaque mouvement. Plus le pas du filtre est grand, plus la sortie du neurone sera spatialement petite.
-*   Dimensions du filtre : Nous devons définir les dimensions des filtres que nous souhaitons utiliser, dans le cas de notre exemple, nous avons choisi des dimensions de 3 pixels par 3 pixels.
-*   Padding : Le padding consiste à rajouter des pixels autour de l’image afin qu’à la sortie d’un filtre, l’objet que l’on obtient fasse la même taille que l’objet en entrée (en l'occurrence l’image de taille 18 par 18 pixels). En effet, avec un filtre de taille 3 pixels par 3 pixels, on ne peut pas sélectionner comme centre du filtre les pixels qui forment la bordure de l’image, ce qui fera qu’à la sortie du filtre on aura non pas ```18x18 ``` éléments mais ```16x16 ``` éléments.
-
-Nous montrons dans la figure ci-dessous ce que signifie le padding :
-
-
-<table>
-  <tr>
-   <td>
-
-![](https://drive.google.com/uc?export=view&id=1GGLejkBqaLedIG4swumHWHuwchuSOkmI)
-
-   </td>
-   <td>
-
-![](https://drive.google.com/uc?export=view&id=1j_BkYZPSa6ZJjoaxoiAyPJVawlZSAlAN)
-
-   </td>
-  </tr>
-</table>
-
-
-Dans la figure de gauche, sans padding, les positions possibles pour le centre du filtre de taille ```3 x 3``` sont indiquées en rouge, et la zone couverte par l'ensemble des filtres est indiquée par les pointillés. A la sortie du filtre, on aura donc ```16 x 16``` éléments de sortie, ce qui donne un objet plus petit que l’image que l’on analyse entrée. Le padding revient à entourer artificiellement l’image d’une couche de pixel, épaisse d’un ou plusieurs pixel d’une valeur ```0``` de façon à ce que la sortie du filtre soit de la même taille que l’image d’entrée. Ici par exemple, la taille de padding nécessaire est de ```1```, les positions possibles des centres des filtres recouvrent maintenant toute l’image et la sortie sera de taille ```18 x 18```
+Le réseau ainsi construit qui à chaque image du jeu renvoie une probabilité de descendre BAS ou monter HAUT, s’appelle un _policy network._ La manière d’entraîner un policy network pour résoudre un problème tel que gagner le jeu de pong s’appelle le _policy gradient._
 
 
 
+2. Policy gradient
+
+On commence de la même manière que pour les réseaux de neurones ou réseaux de convolution avec des poids aléatoire pour chaque neurone dans le réseau. Le réseau reçoit une première image et donne une probabilité de descendre BAS ou monter UP :
 
 
-    3. Connectivité locale
-
-Le système des filtres permet de réduire le nombre de paramètres que le réseau aura besoin d’optimiser au cours de son apprentissage. Si on connecte l’ensemble des pixels à chaque neurone de la couche d’entrée, alors chaque neurone comprendra ```18 x 18 = 324``` poids plus un éventuel biai à optimiser, alors qu’en utilisant un filtre de taille ```3 x 3```, chaque neurone n’est lié qu’à une petite partie de l’objet qui réduit le nombre de poids à calculer à ```3 x 3 = 9``` plus un éventuel biai.
+![](https://drive.google.com/uc?export=view&id=1vMMl3M1G6LPxbQKMvLl7CK9rKw77QGim)
 
 
+En fonction des probabilité des actions HAUT et BAS, on fait un tirage aléatoire qui donnera la réponse HAUT avec une probabilité <img src="https://latex.codecogs.com/svg.latex?\Large&space;P_{HAUT}" /> et BAS avec une probabilité <img src="https://latex.codecogs.com/svg.latex?\Large&space;P_{BAS}" />. Cette action nous amène à un nouvel état du système, c’est à dire une nouvelle image qui sera envoyée comme entrée du réseau, cette action peut aussi entraîner une récompense, ou une punition dans le cas où le score change à l’issu de l’action et qu’une nouvelle manche commence. Nous exposons cette logique dans la figure suivante :
 
-    4. Partage de paramètre
 
-Un exemple de réseau qui a fait grand bruit dans le monde du machine learning est celui construit par [Krizhevsky](http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks) pour la reconnaissance d’image. Ce réseau prend en entrée des images de taille ```227 x 227 x 3```, ```227```pixels en hauteur et largeur et trois valeurs par pixel associées à l’intensité des trois couleurs primaires : rouge, vert et bleu.
+![](https://drive.google.com/uc?export=view&id=1bpYtn4u2KlEFrKlaRcSXYDHsx_3IWUjJ)
 
-Le réseau utilise des filtres de taille ```11 x 11```, un pas de ```4``` et pas de padding. Chaque niveau de profondeur du réseau contient donc ```(227 - 11) / 4 + 1 = 55``` filtre en largeur et le même nombre en hauteur, ce qui fait ```55 x 55``` filtres. De plus, le réseau est d’une profondeur ```K = 96```, chaque zone couverte par un filtre est donc regardé par ```96``` filtres différents.
 
-Chaque filtre a donc ```11 x 11 x 3 = 363``` paramètres et un biai, ce qui fait que chaque couche le long de la profondeur contient ```364 x 55 x 55 = 1 101 100``` poids, ce qui en tout donne ```1 101 100 x 96 = 105 705 600``` poids à optimiser au total. Cette quantité de paramètres n’est pas un choix très judicieux à priori car non seulement le temps de calcul nécessaire pour optimiser le réseau sera très long, mais on risque de tomber rapidement dans une situation de sur-apprentissage.
+Le fait que les réponses du réseau consistent en un tirage aléatoire obéissant à une loi de probabilité donne la possibilité au modèle d’explorer de nombreuses possibilités lorsqu’il joue au jeu de Pong.
 
-Pour pallier cette difficulté, on considère l’idée suivante : si une certaine association de poids au niveau d’un filtre (donc une zone déterminée de l’image) est utile pour analyser l’image, alors cette même association de poids peut être utilisée pour analyser d’autres zones de l’image! On va donc contraindre les filtres de chaque couche le long de la profondeur à partager les même paramètres, de manière à n’avoir à déterminer que ```96``` associations de paramètres différents. Cette idée nous permet de réduire la quantité de paramètres à calculer drastiquement puisqu’il suffit d’optimiser ```96``` associations de ```11 x 11 x 3 + 1 = 364``` paramètres, soit l’équivalent d’un seul filtre. Le nombre de paramètres à optimiser devient alors ```96 ( 11 x 11 x 3 + 1) = 34 944``` ce qui est un problème beaucoup plus accessible et raisonnablement proportionné à la tâche de la reconnaissance d’image.
+Le principe du reinforcement learning est de laisser le modèle, aussi appelé _agent,_ d’apprendre par lui-même. De fait le seul indicateur de performance que l’on renvoie au réseau est le tableau des scores de la partie, qui donne à l’agent une récompense lorsque ce dernier marque un point et une punition lorsqu’il perd le point. Le but de l’agent est d’adapter les poids de son policy network de manière à recevoir le plus de récompenses possibles.
+
+On commence l’entraînement par policy gradient en laissant jouer l’agent tout seul, puisque l’agent entame le jeu avec des poids aléatoire, il est probable qu’il perdra la plupart des parties qu’il va jouer, cependant, de temps à autres, l’agent pourra être chanceux, marquer un point et ainsi recevoir une récompense ! L’avantage est qu’à chaque manche jouée, on peut calculer le gradient et modifier les poids en fonction. De fait, les séries d’actions qui mènent à des défaites deviendront de moins en moins probables alors que les séries d’actions qui mènent à la victoire deviendront de plus en plus probables, c’est ainsi que l’agent apprend petit à petit à jouer au jeu de Pong!
+
+Afin d’illustrer la différence subtile entre l’apprentissage supervisé et le reinforcement learning, on peut exposer les figures suivantes :
+
+
+![](https://drive.google.com/uc?export=view&id=1UOWz01SXDHA-m3W0DnwJ4k300XB89N57)
+
+
+Dans le cas de l’apprentissage supervisé, à chaque action entreprise par l’agent, on sait à l’avance si c’est une bonne ou une mauvaise action, et on peut calculer le gradient et les mise à jour des poids désirées à chaque étape sans attendre le résultat final de la manche. On regarde ici les log probabilité des actions BAS et HAUT car cela simplifie les mathématiques de calcul de gradient.
+
+
+![](https://drive.google.com/uc?export=view&id=1PPRRkvGIe5UuO3VY2SiSROmOgPcwOPiZ)
+
+
+Dans le cas du reinforcement learning, on ne sait pas à l’avance si les actions entreprises sont bonnes ou mauvaises, on laisse donc jouer l’agent et une fois qu’on obtient une récompense (ou punition) on utilise les gradients calculés pour chaque image et on applique les mises à jour en fonction du résultat de la manche.
+
+
+
+3. Credit assignment problem
+
+Le credit assignment problem, ou problème d’attribution en français, est une difficulté que l’on rencontre très souvent dans des problèmes de reinforcement learning et intelligence artificielle. Comme on l’a expliqué, le policy gradient, consiste à laisser l’agent jouer au jeu de Pong, à chaque nouvelle image ou état du système on envoie une réponse et ainsi de suite. Cependant on peut voir passer un très grand nombre d’images avant d’avoir la moindre punition ou récompense. Il s’agit alors de savoir quelles actions sont à remettre en cause ou favoriser, quelles actions sont la cause du changement de score? Est ce que ce sont les actions prises juste avant le changement de score, celle prises au début, ou bien les actions choisies à l’image 20 et l’image 48?
+
+Dans le cas du jeu de Pong, sur lequel nous nous concentrons ici, une récompense est due au fait qu’on a envoyé la balle dans une bonne trajectoire compte tenu de la configuration du jeu dans laquelle nous étions au moment de toucher la balle. Cependant la série d’actions menant à la récompense ont eu lieu bien avant le changement de score et toutes les actions prises par la suite n’ont eu aucun effet sur le score. A l’inverse, si on perd le point, on peut penser que ce sont les actions précédant immédiatement le changement de score qui ont mené à l’échec. Les enjeux de ce problème d’attribution sont intimement liés aux performances de notre système.
+
+
+
+4. Apprentissage en détail
+    1. A partir des gradients (si on écrit notre propre algorithme de rétro-propagation)
+
+Nous allons maintenant présenter comment l’apprentissage va se faire dans le détail. On choisit d’utiliser un réseau de neurones complètement connecté (donc simple, pas de convolution ici) comprenant deux couches.
+
+On initialise le policy network en choisissant au hasard les poids <img src="https://latex.codecogs.com/svg.latex?\Large&space;W_1" /> de la première couche et les poids <img src="https://latex.codecogs.com/svg.latex?\Large&space;W_Z" /> de la seconde couche du réseau. On laisse l’agent jouer 100 partie de Pong, en supposant que chaque partie dure 200 images, on obtient au total une collection de 20 000 décisions HAUT ou BAS. Pour chacune de ces décisions on peut calculer le gradient du réseau qui nous donne la manière dont nous devrions modifier les poids dans le réseau si nous voulions encourager ces actions à l’avenir. Tout ce qu’il nous manque est le résultat de la manche qui nous indique si les actions que nous avons entreprises étaient bonnes ou mauvaises. Supposons qu’on aie remporté 12 manches et perdu 88 manches du jeu, on considérera les ```12 x 200 = 2400``` actions qui ont mené à des victoire et leur appliquer un feedback positif, c’est à dire qu’on remplace l’inconnu dans la formule du gradient pour ces actions par ***+1*** et on change les poids dans le réseau en fonction. Pour les autres ``` 88 x 200 = 17 600``` actions qui ont mené à des défaites, on remplace l’inconnue dans les gradients pré calculés par ***-1*** et on applique les changements souhaités aux poids dans le réseau. Et voilà, grâce à cette première série de mises à jour, le réseau sera plus susceptible de reproduire des actions qui ont mené à des victoires et moins susceptible d’effectuer les actions qui ont mené à des défaites.
+
+Si on repense à la manière dont on optimise un réseau de neurone dans le cadre du machine learning supervisé, les principes sont très similaire. En faisant jouer notre agent 100 parties, on a créé des données d’entraînement contenant ``` 200 x 100 = 20 000 ``` observations qu’on a labellisées à posteriori comme bonne ou mauvaise, calculé le gradient pour chaque observation et appliqué les changements grâce à la rétropropagation de l’erreur.
+
+On répète ensuite le même procédé avec 100 nouvelles parties, on adapte les réseau en fonction de ces nouvelles parties et on itère jusqu’à obtenir un modèle capable de gagner le jeu de Pong.
+
+Une question légitime qu’on peut se poser est : si certaines actions d’une partie perdue étaient en réalité de bonnes actions qui ont finalement mené à une défaite car les actions suivantes étaient mauvaises, ne risque t’on pas de diminuer aussi la probabilité de ces bonnes actions? La réponse est oui, cependant, on espère qu’en moyenne sur les très nombreuses partie qu’on aura fait jouer au système, les bonnes actions seront plutôt favorisées et les mauvaises plutôt rejetées.
+
+
+
+    2. A partir de la fonction de coût (si on utilise des packages qui gèrent entièrement la rétro-propagation)
+
+Si on utilise des package python comme Theano ou TensorFlow, qui se chargent entièrement de la rétropropagation et pour lesquels il est difficile de modifier les gradients en fonction des résultats d’une manche (car ils ont été construits à l’origine d’un point de vue apprentissage supervisé où l’on connaît les vraies valeurs de la variable cible). Alors on va utiliser la fonction de coût afin d’optimiser notre réseau et non pas modifier le gradient.
+
+En machine learning supervisé, le but est d’optimiser la fonction de coût suivante (de manière schématique) :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(A/B)=\sum_{i}log(p(y_i|x_i))" />
+
+
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_i,\;y_i" /> sont les données d’apprentissage, respectivement les variables explicatives et la variable cible. Pour le reinforcement learning, on procède de la manière suivante :
+
+
+
+*   On fait comme si la valeur de la variable cible <img src="https://latex.codecogs.com/svg.latex?\Large&space;y_i" /> est l’action entreprise par l’agent lorsqu’on lui fournit l’entrée <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_i" />
+.
+*   On modifie ensuite la fonction de coût en fonction du résultat de l’expérience (ici une manche de Pong).
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\sum_{i}A_{i}log(p(y_i|x_i))" />
+
+
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;y_i" /> est l’action entreprise par l’agent exposé à l’état du système <img src="https://latex.codecogs.com/svg.latex?\Large&space;x_i" /> est <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_i" /> est appelé l’avantage. Par exemple <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_i=1" /> lorsque l’action *i* a mené finalement à une victoire et <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_i=-1" /> si l’action *i* a mené à une défaite.
+
+
+
+5. AI vs Intelligence humaine
+
+En première conclusion de cette partie sur le reinforcement learning, qui permet à une machine d’effectuer des tâches complètes à la hauteur voire surpassant parfois l’intelligence ou le talent humains, nous reviendront sur les aspects qui différencient fondamentalement les intelligences artificielles des intelligences humaines.
+
+
+
+*   En pratique, lorsque l’on donne une tâche à effectuer à quelqu’un, on l’exprime à travers le langage. Dans le cas du reinforcement learning, nous communiquons la tâche à effectuer via une fonction de récompense.
+*   Les êtres humains commencent une partie de Pong armés de beaucoup de connaissances déjà acquise, comme des notions de physique et des idées de stratégie comme “si la balle rebondit de manière à bouger rapidement selon l’axe verticale, alors il est plus difficile d’anticiper ses mouvements”. Au contraire, notre algorithme démarre de zéro, ce qui est à la fois impressionnant car il parvient à apprendre beaucoup par lui-même, mais aussi alarmant car nous n’avons aucune idée de comment lui fournir ces connaissances à priori.
+*   Le policy gradient repose sur la force brut, on doit donner au système un très très grand nombre d’exemple afin que le modèle parvienne à une solution satisfaisante. Les humains au contraire, construise une sorte de stratégie après très peu d’exemple et définisse une sorte de cadre logique des possibilités à explorer.
+*   Le policy gradient ne peut améliorer le modèle que si il reçoit une récompense positive, sinon les actions continueront à être plus ou moins aléatoires. Alors que les humains peuvent se projeter dans l’avenir et imaginer à partir de leur expérience des manières d’obtenir de manière non aléatoire des récompenses.
+
+Certaines tâches sont très difficile à appréhender avec le reinforcement learning à cause des raisons exprimées au dessus. Dans certains jeux par exemple, il est très improbables de parvenir au hasard à un enchaînement d’actions qui donneront au système une récompense, il est donc quasiment impossible de lui faire apprendre des comportements approprié dans un temps limité.
