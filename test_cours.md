@@ -51,7 +51,7 @@ La fonction **select** nous permet ici de sélectionner 4 colonnes et la fonctio
 Notez que c’est un objet colonne qui est utilisé dans la fonction **filter** pour former la condition, comme le dataframe s’appel apple_store l’objet colonne de prime_genre est **F.col(“prime_genre”)**.
 
 
-![](https://drive.google.com/uc?export=view&id=1rLaW_zoj14STEmL5GyjM2xvCj7q-OFY)
+![](https://drive.google.com/uc?export=view&id=11ChsUB_yi3eLmkNmsBeew5Bm7eMKxuOT)
 
 
 Il est bien sur possible de filtrer avec des expressions plus complex que nous venons de le faire. Par exemple pour ne garder que les lignes dont le prime_genre est différent de “Games” ou “Weather” on peut procéder comme ci-dessous.
