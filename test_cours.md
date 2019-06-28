@@ -1,179 +1,222 @@
 
-## Spark SQL
+## Spark Mllib
 
 
-## Les différentes structures de données en Spark
-
-Tout comme dans la librairie pandas ou dans le langage R, il existe une structure de donnée appelé Dataframe en Spark. L’objectif du Dataframe est d’intégrer les données dans un format tabulaire, c’est-à-dire avec une notion de ligne et de colonnes, pour rendre leur manipulation plus simple. Vous verrez que les dataframe Spark sont assez différent de ceux que vous connaissez avec Pandas et vous devrez par conséquent utiliser une syntaxe différente.
-
-Avant d’étudier plus en détail les dataframes Spark nous allons d’abord voir que ce n’est pas la seule structure de données que ce framework permet d’utiliser.
+[TOC]
 
 
-### Les RDD
-
-Le RDD (Resilient Distributed Dataset) est  la première structure de données qui fut disponible en Spark. Dans un RDD il n’y a pas de notion de colonne car il n’y a pas de schéma*, vous ne faites que manipuler des lignes avec des fonctions du type map et reduce. La manipulation des RDD est difficile et plutôt bas niveau, en l’absence de colonne vous devrez en effet parser les lignes manuellement pour en extraire des informations. Comme nous allons le voir après il y a aujourd’hui peu d'intérêt à utiliser le RDD par rapport au Dataframe.
+Dans ce cours nous allons nous intéresser à MLlib, la librairie de Spark qui vous permettra de créer des modèle de machine learning. Cette librairie n’est pas aussi riche que scikit-learn mais elle offre tout de même de très nombreuses fonctionnalités que vous allez p
 
 
-### Les Dataframes
+## Le workflow typique avec MLlib
 
-Les Dataframes que nous avons déjà évoqué sont apparu dans la version 1.3 de Spark. Le Dataframe vous permettra d’effectuer des transformations  avec une syntaxe plus simple et surtout avec de meilleurs performances que le RDD (voir ci dessous le temps d'exécution pour les DF versus les RDD).C’est donc sur cette structure de donnée que nous consacrerons nos efforts d’apprentissage.
-
-
-![](https://drive.google.com/uc?export=view&id=1Kkd0BFyynZrUfDolCU2_IWGY7D7J04U1)
+Avant de passer à la pratique il est important que vous ayez une idée claire des étapes qui seront nécessaire avant d'entraîner un modèle de machine learning sur vos données.
 
 
-### Les Datasets
+### Le pré processing
 
-Les Datasets sont une évolution des Dataframes. Ils présentent de grands intérêts notamment celui de pouvoir combiner à la fois les traitements haut niveau que l’on peut effectuer sur les Dataframes et les traitements bas niveau sur les RDD. Cela est parfois trè utile. Cependant on ne peut utiliser le Dataset qu’en Scala ou en Java car il requière un typage statique là où python est un langage à typage dynamique (le typage d’une variable s’effectue lors de l'exécution du code alors que pour utiliser les Dataset il est nécessaire qu’il soit connu avant l'exécution)
-
-
-## Quelques liens pour aller plus loin
-
-https://databricks.com/blog/2015/08/12/from-pandas-to-apache-sparks-dataframe.html
+Toutes les **variables catégorielles** devront être traité de la façon suivante:
 
 
-## Prise en main de Spark SQL
 
+*   On commence par associer un index à chacune des modalités de la variable, par exemple pour la variable Genre on peut associer l’index 0 à la valeur Homme et l’index 1 à la valeur Femme.
+*   On transforme ensuite cet index en vecteur one hot, c’est à dire un vecteur où il y a autant de positions que de modalités, avec la valeur 1 à l’index de la modalité correspondante et 0 zéro ailleurs. Par exemple pour la variable genre on aurait homme = [1, 0] et femme = [0, 1]. En réalité la dernière position de ce vecteur est le plus souvent tronquée car elle n’apporte aucune information, par défault vous verrez donc homme = [1] et femme = [0].
+
+Par ailleurs, **toutes les variables**, qu’elles soient numériques ou catégorielles, devront être concaténées dans un seul vecteur. Par conséquent toutes les variables sur lesquels vous vous baserez pour effectuer votre prédiction se trouveront dans une seule colonne, la plupart de temps on nomme cette colonne “features”.
+
+Voici un schéma récapitulatif de ce processus avec le nom des classes que vous utiliserez dans vos codes.
+
+
+![](https://drive.google.com/uc?export=view&id=1nqqgpyMdIR6rjIamDjgx4veumjlGvTBd)
+
+
+De façon plus synthétique voici les données brutes et ce qui devrait en résulter à l’issu du pré processing :
+
+
+![](https://drive.google.com/uc?export=view&id=1xjkgD7Biv4UQq5G05UykO3IK67L3zWki)
+
+
+Bien entendu ce ne sont que les étapes minimales de traitement que vous devrez effectuer avant de passer au machine learning. Mais il y a réalité d’autres étapes de pré processing que vous pourriez utiliser selon les cas. En voici quelques exemples :
+
+
+
+*   Le remplacement des valeurs manquantes avec différentes stratégies (utilisation de la moyenne, de la médiane …)
+*   La normalisation ou le scaling des variables numériques
+*   La discrétisation des variables numériques en quantile
+*   Le pré processing de variables contenant du texte avec le TF IDF, la suppression des stop words ou la génération de n-grams.
+
+
+### L’entrainement d’un modèle de ML
+
+Une fois les étapes de pré processing effectuées vous allez pouvoir suivre les étapes classique qui vous permettront d'entraîner un modèle, à savoir  :
+
+
+
+*   L’application d’un algorithme sur vos données pour produire un modèle
+*   La définition d’un évaluateur permettant de juger de la qualité du modèle
+*   L’utilisation de la cross validation pour choisir le meilleur modèle au regard de la métrique que vous avez défini
+
+La façon typique de procéder avec MLlib est d'utiliser un pipeline. Tout comme dans scikit-learn le pipeline est un objet combinant l’ensemble des étapes de transformations qui vous permettent de passer de vos données brutes au résultat souhaité. Pour illustrer cela on pourrait donc compléter notre schéma précédent sur le pré processing :
+
+
+![](https://drive.google.com/uc?export=view&id=1YBaRfe565v9o3OVODEVMrc03uBmPMEz3)
+
+
+En réalité on va encore ajouter une dernière étape dans ce pipeline qui est l’application d’un algorithme de machine learning, disons dans ce cas d’une régression logistique. De cette manière le pipeline constitue l’ensemble des étapes permettant de passer des données brutes à un modèle entraîné.
+
+
+![](https://drive.google.com/uc?export=view&id=1JBRhA7uU1Pug_-kKxkMiMH6_Lxp9U8Yf)
+
+
+En plus de clarifier grandement le processus permettant de générer un modèle à partir de données brutes, l'intérêt des pipelines est également lié à la cross validation. Vous allez en effet pouvoir déterminer une grille de paramètres pour l’ensemble du pipeline, c’est à dire pour l’algorithme de machine learning mais aussi pour les étapes de pré processing dont le choix des paramètres peut influer sur la performance du modèle, c’est par exemple le cas :
+
+
+    -       Du choix de la méthode pour remplacer les valeurs manquantes
+
+
+    -       Du choix de la méthode de discrétisation des variables continues
+
+
+    -       Du nombre d’axe à conserver si vous effectuez une ACP
+
+
+    -       …
+
+## Prise en main de MLlib
 
 ## Chargement des données
 
-Nous allons reprendre le même dataset que dans la leçon précédente pour découvrir les principales fonctionnalités de Spark SQL. Celui-ci comporte des informations sur 10 000 applications disponibles sur l’App Store. Les deux cellules ci-dessous vont permettre de déclarer le compte de stockage Azure dans l’objet SparkSession puis de charger les données dans un dataframe enregistré dans une variable appelé apple_store. Notez que nous chargeons ici le fichier au format parquet que nous avons enregistré la dernière fois.
+Pour prendre en main la librairie MLLib nous allons effectuer une classification permettant de déterminer si un individu gagne plus ou moins de 50 000 dollars par an étant donnée un ensemble de facteurs.
 
+Comme d’habitude nous allons commencé par déclarer notre compte de stockage dans l’objet SparkSession et nous allons charger les données dans un dataframe :
 
-![](https://drive.google.com/uc?export=view&id=1DsVIS02JmL-q2-EKkIe9V9HchryNDaWp)
 
-## Sélection et filtrage
+![](https://drive.google.com/uc?export=view&id=1elSguFhH-gmbt1750-W1znLFCfI9mI4F)
 
-Dans cet exemple nous allons afficher un sous ensemble de nos données à l’aide des fonctions **select** et **filter**. Par rapport à une requête SQL la fonction **filter** joue le rôle du where.
 
-La fonction **select** nous permet ici de sélectionner 4 colonnes et la fonction **filter** de ne retenir que les lignes dont la colonne prime_genre a pour valeur “Games”.
+## Preprocessing et utilisation d’un pipeline
 
-Notez que c’est un objet colonne qui est utilisé dans la fonction **filter** pour former la condition, comme le dataframe s’appel apple_store l’objet colonne de prime_genre est **F.col(“prime_genre”)**.
+Comme nous l’avons vu dans le cours, nous allons devoir effectuer certains traitement sur les données avant de pouvoir entraîner notre modèle.
 
+Nous allons d’abord devoir traiter les variables catégorielles, ce sont normalement des chaînes de caractères (ce qui correspond au type StringType). Pour chacune des modalités de ces variables nous allons devoir associé un index qui sera un entier (correspondant au type IntegerType en Spark). La class StringIndexer permet de faire cela. Un objet de type StringIndexer prend argument le nom de la colonne sur laquelle il doit s’appliquer et le nom de la colonne contenant l’index.
 
-![](https://drive.google.com/uc?export=view&id=11ChsUB_yi3eLmkNmsBeew5Bm7eMKxuOT)
+Nous allons d’abord commencé par la variable salary, qui est la variable que nous cherchons à prévoir. Celle-ci a deux valeurs possible : “>50K” ou “<=50K”. Nous indiquons au StringIndexer que nous souhaitons que la colonne contenant l’index des valeurs soit nommée label.
 
 
-Il est bien sur possible de filtrer avec des expressions plus complex que nous venons de le faire. Par exemple pour ne garder que les lignes dont le prime_genre est différent de “Games” ou “Weather” on peut procéder comme ci-dessous.
+![](https://drive.google.com/uc?export=view&id=1_hTFYEQ_gSee82HDGBoCYxC0o-puFkZy)
 
-La méthode **isin** sur un objet colonne permet de retenir toute les lignes dont la valeur est inclue dans la liste passée en argument.
 
-L’opérateur **~** permet d’obtenir la réciproque de l'expression qui la suit, autrement dit combiné avec **isin** vous obtenez toute les lignes dont les valeurs ne sont pas comprises dans la liste passée en argument.
+Comme dans Scikit-Learn la plupart des class de MLLib s’utilise avec les méthodes fit et transform.
 
+Pour un objet de type StringIndexer la méthode fit va permettre d’obtenir un objet capable d’associer à chaque modalité un index. Il ensuite falloir utiliser la méthode transform de cet objet pour ajouter la colonne contenant les index à notre dataframe (la colonne label).
 
-![](https://drive.google.com/uc?export=view&id=1-DVnaYuBjJz1ipIZCy9wsrtZPV1pmcLW)
 
+![](https://drive.google.com/uc?export=view&id=1xukvzW8_xfH3dS8hqgY61DIfiCwudRD3)
 
 
-## Opérations simples sur les colonnes
+Cela un peu lourd, surtout quand vous avez beaucoup de transformation de ce type à faire. L’utilisation des pipelines va nous permettre de simplifier cela, nous allons donc faire comme si nous réparations de cette cellule de code :
 
-Il est assez simple d’effectuer une opération arithmétique sur uns colonne et de stocker ce résultat dans une nouvelle colonne de dataframe.
 
-Avec la méthode **withColumn** sur le dataframe nous allons ajouter une colonne le prix en euros. **withColumn** prend deux paramètre, le nom de la nouvelle colonne et sa valeur. Pour obtenir sa valeur nous prenons l’objet colonne correspondant au prix en dollar et nous la multiplions par 0.86 pour obtenir le prix en euros.
+![](https://drive.google.com/uc?export=view&id=1jVh8-8QH7QeHwEeq0HuC20mFiMxXeM1q)
 
 
-![](https://drive.google.com/uc?export=view&id=1gVUeYXCQ0OhfvycO_NdXynShj-ZJEmfH)
+Maintenant que nous avons l’objet permettant de créer l’index pour la colonne salary nous allons nous occuper des autres variables catégorielles. La variable string_columns contient la liste du nom des colonnes correspondant aux variables catégorielles de notre dataset. Pour chacune de ces colonnes nous allons créer un objet de type StringIndexer, le nom des colonnes contenant les index des modalités sera le nom original de la colonne avec le suffix Index (par exemple workclass devient workclassIndex). Par soucis de simplicité nous ne parlerons pas du paramètre handleInvalid=”skip” mais nous pourrons évoquer son utilité en classe.
 
 
-On pourrait obtenir exactement le même résultat en utilisant la fonction select.
+![](https://drive.google.com/uc?export=view&id=18f4GBWaN5WVnmgahAU_r5PQOg_-8QOxo)
 
-Pour cela on doit passer dans la fonction select toute les colonnes déjà présente dans le dataset, on peut faire cela avec ***[apple_store[col] for col in apple_store.columns]***. On ajoute ensuite la nouvelle colonne à la suite en utilisant la méthode alias pour lui fournir un nom :
 
+Une fois que nous avons pu associer un index pour chaque variable catégorielle il va maintenant falloir créer des indicatrices pour chacune d’entre elle (un vecteur avec un 1 à l’index de la modalité correspondante et des 0 pour tout les autres index). On peut directement passer une liste de colonne à un objet de type OneHotEncoderEstimator. Le nom des colonnes contenant les vecteurs avec les indicatrices sera le nom original de la colonne avec le suffix Vec (par exemple workclass devient workclassVec). Notez que l’on ne doit pas faire cette étape pour la colonne label qui est celle que nous cherchons à prédire.
 
-![](https://drive.google.com/uc?export=view&id=1oBkrStMc38WHnaVSIwTIoz7p8AuWl3Bz)
 
+![](https://drive.google.com/uc?export=view&id=1qaJlBZfUdEJZrUpKLa9JReO09BE-1Aa1)
 
-Pour ajouter une valeur constante dans une colonnes on doit nécessaire passer par la fonction **lit**. En effet pour ajouter une colonne on doit fournir un objet colonne, dans le cas précédent l’expression **F.col(“price”)*0.86** renvoie un objet colonne. Si l’on souhaite simplement ajouter une colonne contenant la chaîne de caractère “Apple” pour toute les lignes on doit d’abord obtenir un objet colonne avec **lit**(“Apple”) avant de fournir cette valeur en argument dans la fonction **withColumn** ou **select**.
 
+La dernière étape de pre processing consiste à rassembler toutes les colonnes correspondant à nos prédicteurs dans un seul et même vecteur, la colonne label n’est donc pas concerné. Nous allons donc rassembler dans un vecteur :
 
-![](https://drive.google.com/uc?export=view&id=1dS72TMzuG11IUmFtPdg9hFcl4rdoC9DW)
 
 
-On peut également effectuer une opération avec plusieurs colonnes du dataset :
+*   Les vecteur correspondant aux indicatrices des variables catégorielles
+*   Les variables numériques (en l'occurrence age et hours_per_week). Assurez-vous avant que celles-ci soient bien d’un type numérique tel que IntegerType, FloatType, DoubleType …
 
+Nous allons donc fournir au VectorAssembler le nom des colonnes à rassembler et lui indiquer que la nouvelle colonne créée s’appeler features.
 
-![](https://drive.google.com/uc?export=view&id=1cG9MyvXL3xTl4WDDoWUXLsCl3p3HIgZW)
 
+![](https://drive.google.com/uc?export=view&id=1l6QrGKQvdj4iNLdPgmxPQIsFWSB1JXgu)
 
-## Les fonctions Spark prédéfinies
 
-Dans de nombreux cas vous aurez besoin d’effectuer des opérations plus complexe que celles que nous venons de voir. Spark SQL contient de très nombreuses fonction prédéfinies. L’exemple ci-dessous vous offre un aperçu de certaines d’entre elles sur les chaînes de caractères (pour concaténer, splitter ou tester si une chaine contient une valeur) et sur les tableaux (obtenir la taille d’un tableau, le n-ième élément ou tester s’il contient une valeur)
+Nous avons maintenant créer toutes les étapes de pre processing de note pipeline. Avant de pouvoir toute les rassembler dans un objet de type Pipeline il nous manque encore une dernière étape: l'algorithme de classification que nous allons utiliser. Nous allons donc créer un objet de type régression logistique (rassurez vous il existe plein d’autres alogrithmes de classification dans la librairie MLLib). Pour cela nous simplement indiquer à la class régression logistique le nom de la colonne contenant la variable à prédire et le nom de la colonne contenant les prédicteurs.
 
 
-![](https://drive.google.com/uc?export=view&id=19EsbKzhg6y7LL--V7N97OqKwOpK7F-EF)
+![](https://drive.google.com/uc?export=view&id=1V75ZAWn3voUkrxxMqRabdgFiZs1OYEsQ)
 
 
-Pour plus de praticité vous pouvez tout à fait définir vos propre fonction en utilisant des opérations arithmétiques ou des fonctions Spark prédéfinies comme ci-dessous.
+Pour finir nous allons rassembler toutes ces étapes de traitement dans un Pipeline de la façon suivante :
 
-Notez que la fonction get_type renvoie un type pour la colonne tout entière ou non pas pour chaque ligne, par conséquent le type de retour est une chaîne de caractère, il faut donc l’enrobé avec la fonction **lit** pour pouvoir l’insérer dans une colonne du dataframe.
 
+![](https://drive.google.com/uc?export=view&id=1Mzq9IY5vPqPq_M8WQsKli0T0NN9RvIMY)
 
-![](https://drive.google.com/uc?export=view&id=1Tih1JL03lREUOHZqUWwU57esf8eMkCej)
 
+Voilà ! Vous avez maintenant un objet de type pipeline qui comprend toutes les étapes de traitement que nous avons définies pour aboutir à un modèle de classification.
 
-## Les UDF
 
-Les fonctions que nous venons de voir s’appliquent sur des objets colonnes de Spark. Ce sont donc des fonctions différentes de celles que vous utiliseriez pour manipuler directement des objets en python. Les fonctions Spark prédéfinies permettent de faire de nombreuses choses et dans la plupart des cas il faut privilégier leur utilisation. Mais il arrive parfois que ces fonctions soient insuffisantes pour votre besoin ou que leur utilisation paraissent trop complexe.
+## Entrainement du modèle
 
-Dans ce cas il est possible de créer des UDF (user defined fonctions) qui sont des fonctions que vous allez définir vous mêmes et qui manipule directement des objet python au lieu colonnes Spark. Cela se fait toujours en deux étapes, vous allez d’abord créer une fonction python classique puis vous allez créer l’UDF à l’aide de la fonction **udf **en passant en paramètre votre fonction python et le type de retour Spark de votre fonction, par exemple **udf(maFonctionPython, StringType())** si la fonction renvoie une chaîne de caractère.
+Pour entraîner notre modèle nous allons d’abord splitter notre dataset en ensemble d'entraînement (70% du dataset)  et de test (30%) avec la méthode randomSplit. Nous allons ensuite utiliser la méthode fit de notre pipeline pour entraîner notre modèle sur l’ensemble d'entraînement.
 
-Dans l’exemple ci-dessous nous allons simplement calculer le nombre de caractère du nom de chaque application. En python pour calculer la taille d’une chaine de caractère on utilise la fonction **len**. On va donc faire une fonction python qui va simplement renvoyer la longueur d’une chaine de caractère puis créer une UDF à partir de cette fonction :
 
+![](https://drive.google.com/uc?export=view&id=1hoE2N9R-gxayrGz6Sc2sfLK_WaezQxct)
 
-![](https://drive.google.com/uc?export=view&id=1yogqdgOfkbyIa8KSkCWgZQK-h13cIpQl)
 
+La variable pipeline_lr_fitted contient notre regression logistique entrainé. Plus précisément notre régression logistique est en fait la dernière étape de notre pipeline après application de la méthode fit.
 
-Notez que la fonction length ne fait rien d’autre que d'appeler **len**, on aurait donc tout aussi bien pu faire :
 
+![](https://drive.google.com/uc?export=view&id=1RBMf35Ob6wVKLLHZ33ux7IENTyHS5mvb)
 
-![](https://drive.google.com/uc?export=view&id=1Sa7HHDvpLKrlRFMOohG-_OieQVq8SevF)
 
+On peut directement la récupérer de la façon suivante :
 
-Voyons maintenant une UDF qui permettrait de remplacer tout les caractères espaces par des _ dans le nom de l’application :
 
+![](https://drive.google.com/uc?export=view&id=19kr1TeVt_pBNi25EuGgzGe_D_-pc7JZK)
 
-![](https://drive.google.com/uc?export=view&id=1lWkzGZx4YwbDYlLckMrHf1P4g77X2ZmO)
 
+## Evaluation et analyse du modèle
 
-Cependant cela manque cruellement de généricité, il serait sans doute souhaitable de pouvoir passer en paramètre le caractère que nous souhaitons remplacer et son remplaçant. Cela devient un peu plus compliqué et il faut alors faire appel à une méthode appelé le currying. Sans entrer dans les détails cela va ici consister à faire une fonction que renverra elle même une autre fonction. La première fonction va prendre en paramètre le caractère que l’on souhaite remplacer et son remplaçant puis va nous renvoyer une UDF similaire à celle que venons d'utiliser, sauf que celle-ci aura été paramétré par la première fonction. Voici un exemple :
+Nous allons maintenant évaluer les performances de notre modèle sur les ensemble de test et d'entraînement. Pour cela il faut d’abord appliqué le modèle pour obtenir les prédiction, on utilise donc la méthode transform de pipeline_lr_fitted.
 
+Nous définissons ensuite un évaluateur de classification binaire en renseignant le nom de la colonne avec les probabilités (Spark nomme cette colonne rawPrediction par default) et la métrique d’évaluation que nous souhaitons utiliser, dans notre cas l’AUC.
 
-![](https://drive.google.com/uc?export=view&id=1iCBpHdUBkLd_po-7aMOK3DfuIuuBFm2u)
+Nous utilisons enfin la méthode evaluate de notre évaluateur pour obtenir l’AUC sur l'ensemble d'entraînement et de test.
 
+![](https://drive.google.com/uc?export=view&id=1WOIv2Ec2YrXF8OsGTMurUS_-hyNxivLf)
 
-## Les Agrégations
 
-Les agrégations en Spark suivent une syntaxe semblable aux agrégations avec Pandas. Dans les l’exemple ci-dessous on va agréger les données des applications par genre et calculer un ensemble de métrique à l’aide de fonctions Spark dont les noms cont assez explicites :
+Nous pouvons également afficher les coefficients de notre régression logistique comme ci-dessous. Notez qu’il faut pour cela accéder à l’objet correspondant à notre régression logistique qui est la dernière étape du pipeline.
 
 
-![](https://drive.google.com/uc?export=view&id=1QEvTrETRXy0ZvKQ1QuHb-mA55TFzlyUg)
+![](https://drive.google.com/uc?export=view&id=1wiqvanIZJI5o5e4kn0iGwvT-G8zQEUfG)
 
 
-Il est parfois utile d'agréger un ensemble d’item à l’intérieur d’une liste. Dans l’exemple suivant on va pour chaque genre construire une liste des noms d’applications qui en font partie à l’aide de la fonction d'agrégation Spark **collect_list**. Notez qu’il existe également **collect_set** qui supprime les doublons contrairement à **collect_list**.
+Vous pouvez manuellement regardez les résultats de votre régression en affichant les colonnes pertinentes d’un dataset sur lequel vous avez appliqué votre modèle.
 
 
-![](https://drive.google.com/uc?export=view&id=1rtNSLe8elkqo3M4d0lT57ijLUrvsKqyn)
+![](https://drive.google.com/uc?export=view&id=1sPJRPJxbyOVxGpoQf-S3aPREi2230Oo_)
 
 
-L’opération inverse du collect_list est une fonction appelé explode. Pour comprendre un peu mieux imaginez que l’on split le nom des applications sur le caractère espace. On obtiendrait alors pour chaque app une liste avec les mots contenus dans son nom (la colonne “words”). La fonction explode va nous permettre de créer une ligne pour chacun des mots qui se trouvent dans la liste.
+## Cross validation
 
-Dans l'exemple ci dessous vous pouvez voir deux lignes pour l’application PAC-MAN Premium, dans la colonne “word” de la première il y a le premier mot du titre (PAC-MAN)  et sur la seconde ligne il y a le second mot du titre (Premium) :
+Nous avons entraîné notre régression logistiques en laissant les paramètres par défaut. Il est bien sur  possible de renseigner des paramètres spécifiques pour son entraînement. Il également possible de tester plusieurs combinaisons de paramètres pour savoir laquelle fonctionne le mieux grâce à la cross validation.
 
+Pour cela il faut d’abord définir une grille de paramètre à l’aide de la classe Param
 
-![](https://drive.google.com/uc?export=view&id=1nz3sx3ZfxvL2vN2KLHuW7U2toPdkWwr3)
+GridBuilder et de ses méthodes addGrid et build. La méthode addGrid prend en paramètre un pointeur sur le paramètre que l’on souhaite faire varier ainsi que l’ensemble des valeurs qu’il pourra prendre. Par exemple pour le nombre maximum d’itération on utilise le pointeur lr.maxIter (nous avions précédemment stocker notre régression logistique dans une variable nommé lr avant de construire le pipeline) et on indique que l’on veut tester les valeurs 1, 5 et 10 pour ce paramètre.
 
+Une fois la grille construite on fournit au CrossValidator notre pipeline non entraîné, la grille de paramètre, la métrique d'évaluation (c’est sur ce critère que l’on va juger de la meilleurs combinaison de paramètre) et le nombre de fold pour la cross validation.
 
-Avec les fonctions **explode** et **collect_set** nous allons par exemple très facilement pouvoir recueillir l’ensemble des mots utilisés dans les titres pour chaque genre d’application.
+On peut ensuite utiliser les méthode fit pour déterminer la meilleur combinaison de paramètres puis transform pour appliquer le pipeline avec cette combinaison de paramètres.
 
 
-![](https://drive.google.com/uc?export=view&id=1XsxoCJK2RmjfWUa6KNdGHdZUoZzq_FOF)
+![](https://drive.google.com/uc?export=view&id=13Gfr8SjoTwIhkoo9cENAtVIoHsC04YzO)
 
 
-
-## Les Window fonction
-
-Les window fonction en Spark ont une syntaxe similaire au SQL. L’exemple ci-dessous permet de ranker les applications selon leur poid pour chaque genre. Autrement dit pour chaque genre l'application avec le rang 1 est celle qui est la plus lourde.
-
-Comme en SQL il faut d’abord préciser le nom de la window fonction et fournir dans la clause over les informations de partitionnement ainsi que l’ordre. On a donc ici utilisé la fonction rank, en partitionnant le genre de l’application à l’aide de **Window.partitionBy**(“prime_rank”) et en ordonnant de façon décroissante de la taille en byte avec **orderBy**(“size_bytes”) :
-
-![](https://drive.google.com/uc?export=view&id=1LisEYAnvShLRU6qaA42trm7QyFne9Lv3)
+![](https://drive.google.com/uc?export=view&id=18VS0_yu_ume9O36rPz2q2mj7FYcmjL5o)
