@@ -1,265 +1,282 @@
 
-## Moteurs de recommandations
-
-## Les moteurs de recommandations
-
-Tout comme les moteurs de recherche, les moteurs de recommandation font partie de la famille des algorithmes de filtrage d’informations. Le filtrage d’informations consiste à utiliser des données d’interaction entre des utilisateurs et des items pour produire un modèle capable d’ordonner ces items selon l'intérêt qu’ils peuvent avoir pour un utilisateur donné. Dans le cas plus spécifique des moteurs de recommandation, il s’agit de proposer à un utilisateur les produits qu’il est le plus susceptible de consommer ou d’apprécier.
-
-La création d’un moteur de recommandation est l’un des cas d’usage les plus courant du machine learning. Cependant, en terme de business, il n’a d'intérêt que pour un certains type d’entreprises. En effet, celles-ci doivent effectuer leur activité au moins en partie sur internet, et elles doivent par ailleurs disposer de suffisamment de produits et d’utilisateurs pour que la recommandation soit utile et pertinente. C’est donc principalement des entreprises présentent dans les secteurs du commerces en ligne et des médias qui font usage de la recommandation. L'intérêt pour ces dernières est principalement d'accroître la consommation de produits sur leur plateforme et d’améliorer l’expérience utilisateur.
-
-Pour prendre quelques exemple dans le cas du commerce en ligne on peut citer Amazon, Ebay et Rakuten dont les moteurs de recommandation peuvent parfois vous inciter à acheter des produits supplémentaire mais aussi vous aider dans vos recherches. Si vous allez sur la page d’un produit sur Amazon vous verrez un peu plus bas plusieurs bandeaux proposant des recommandation se basant sur des moteurs différents. Sur la page de l’Iphone 8 on peut peut trouver entre autre :
-
-
-
-*   Un bandeau de recommandation reposant sur un moteur qui propose les produits qui ont souvent été acheté avec l’iphone 8. Celui-ci à pour but de vous faire ajouter dans votre panier un ou des accessoires qui ont souvents été considéré comme complémentaire par les acheteur de l’iphone 8.
-
-
-![](https://drive.google.com/uc?export=view&id=1kSwOhwG7c_eKurlrZC59q6Y-EXDrJx49)
-
-
-*   Un bandeau de recommandation reposant sur un moteur qui propose les produits qui ont souvent été vu par les utilisateurs qui ont vu la page de l’iphone 8. Comme vous pouvez l’imaginer ce moteurs est moins sélectif que le précédent car le fait de voir la page d’un produit est un événement moins rare que le fait d’en acheter un. Ceux qui ont vu la page de l’iphone 8 ont pu ensuite allez sur les pages de produits complémentaires ou bien les pages de produits concurrents. Ce moteur vous permettra donc également de faciliter votre recherche en vous proposant des alternatives auxquelles vous seriez susceptible de vous intéresser.
-
-
-![](https://drive.google.com/uc?export=view&id=1VHYhDfVk-iPJNk70uUNJ1noNIonYZ_Fq)
-
-
-Dans le secteur des médias, de nombreuses plateformes de diffusion de contenu écrit, de musique et de vidéos font usage d’un moteur de recommandations, parfois même de plusieurs à l'instar d’Amazon.
-
-
-## Les principales méthodes
-
-Il existe principalement deux types de méthodes qui permettent d’élaborer des moteurs de recommandation, le filtrage basé sur le contenu et le filtrage collaboratif. Chacune des ces méthodes à ses avantages et ses inconvénients et il n’est pas rare qu’un moteur repose sur une combinaison des ces deux dernières.
-
-
-### Le filtrage basé sur le contenu
-
-Le filtrage basé sur le contenu est une forme de recommandation qui s’appui sur les caractéristiques intrinsèques des items consommés. Autrement dit, pour un utilisateur donné, on va recommander des produits dont les caractéristiques sont similaires à ceux qu’il consomme d’habitude.
-
-Si l’on prend l’exemple d’une plateforme de musique en streaming comme Deezer, un moteur de recommandation basé sur le contenu va vous recommander du contenu proches de ceux que vous consommez habituellement en terme de genre, d’année de production, de longueur et sans doute de nombreux autres attributs. Durant la phase d’entraînement, l’algorithme va pondérer l’importance de ces différents attributs pour s’assurer d'effectuer une recommandation pertinente.
-
-Ce type de recommandation ne peut fonctionner que dans la mesure où l’on dispose d’un minimum d’informations sur les produits que l’on cherche à recommander.
-
-
-### Le filtrage collaboratif
-
-Le filtrage collaboratif repose sur une approche totalement différente du filtrage basé sur le contenu. En effet la recommandation ne va plus s’appuyer sur les caractéristiques des produits mais plutôt sur qui les consomme. Pour un utilisateur donné on va donc recommander les contenus qui ont été consommés par des personnes qui lui ressemble. La notion de ressemblance se base ici sur l’historique de consommation des utilisateurs.
-
-Pour reprendre l’exemple de Deezer, un moteur comme celui que nous venons de décrire vous proposera des musiques qu’écoutent ceux qui ont les mêmes goût que vous. L’idée est que si ces derniers apprécient une musique que vous n’avez jamais écouté alors  vous l'apprécierez aussi en l’écoutant.
-
-Contrairement au filtrage basé sur le contenu cette méthode ne nécessite pas de disposer d'informations sur les caractéristiques des produits recommandés, seul l’historique des interactions entre utilisateurs et produit sert de base à l'entraînement de l'algorithme.
-
-
-## Les principes de l’Alternating Least Square (ALS)
-
-Nous allons maintenant nous intéresser à un algorithme de filtrage collaboratif très couramment utilisé, l’Alternanting Least Square. Avant de comprendre comment cet algorithme fonctionne revenons sur la formulation du problème que nous cherchons à résoudre.
-
-
-### Formulation du problème
-
-Le filtrage collaboratif va toujours s’appuyer sur un matrice d'interaction entres les utilisateurs et les produits. Ces interactions peuvent représenter des choses différentes selon les choix vous aurez fais, il pourrait s’agir de la visite d’une page, d’un achat ou bien de la notation d’un produit. Dans tous les cas le principe reste le même.
-
-Voici ceux à quoi pourrait ressembler une matrice d'interaction utilisateur / produit pour une plateforme comme Netflix.
-
-
-![](https://drive.google.com/uc?export=view&id=1sogsultG5MqqGHmPC5BWSk_UiJbKp2WT)
-
-
-Comme vous pouvez le constater une interaction entre un film et un utilisateur peut prendre trois valeurs différentes  :
-
-
-
-*   1 signifie que le film a été proposé à l’utilisateur et qu’il a cliqué dessus pour le visionner
-*   0 signifie que le film a été proposé à l’utilisateur et qu’il n’a pas cliqué dessus
-*   ? signifie que le film n’a jamais été proposé à l’utilisateur et donc on ne sait pas s’il aurait cliqué dessus
-
-Le principe du filtrage collaboratif est d’utiliser les informations sur les interactions qui ont eu lieu (les 0 et les 1) pour combler les trous de cette matrice, c’est à dire remplacer chaque ? par la probabilité que l’utilisateur clique sur la vidéo pour la visionner si elle lui était proposée. Grâce à cela le moteur peut associer pour tout utilisateur la liste des vidéos que ne lui ont jamais été proposées et qu’il aurait le plus de chance de vouloir regarder.
-
-De façon similaire on pourrait, comme cela a été évoqué, s'intéresser à un autre type d’interaction tel que la notation d’un film. On aurait dans ce cas une matrice similaire à celle-ci.
-
-
-![](https://drive.google.com/uc?export=view&id=1dlfsi4LixcWLKr7Si9E84LKzVx-bVROm)
-
-
-Cette fois-ci il y a davantage de valeurs possibles:
-
-
-
-*   Soit une note comprise entre 0 et 5
-*   Soit un ? pour un film que l’utilisateur n’a pas noté
-
-Le mécanique restera ici la même que dans le cas précédent, sauf qu’au lieu d’estimer la probabilité que l’utilisateur clique sur le film si on lui recommande, on estime la note qu’il serait susceptible de mettre s’il l’avais visionné. Le moteur pourra ensuite proposer à l’utilisateur une liste de film ordonnée selon l'estimation de cette note (dans un cas réel on aurait très certainement retiré de cette liste les films qu’il aurait éventuellement vu sans attribuer de note).
-
-
-### Fonctionnement de l’algorithme
-
-L’ALS est un algorithme de filtrage collaboratif qui offre une solution relativement simple pour construire un moteur de recommandation en estimant la valeur probable que pourrait prendre une interaction qui n’a pas encore eu lieu.
-
-Pour estimer ces valeurs, qui permettent de compléter la matrice d’interaction (I), on va décomposer cette dernière en 2 matrices de taille plus petite. L’une sera associé aux profils des utilisateurs (U), et l’autre aux profils des produits (P). Les matrices U et P ont un hyper paramètre en commun (k) qui détermine le nombre de variables latentes qu’elles possèdent.
-
-Les variables latente correspondent à un encodage de l’information qui résulte des interactions entre utilisateur et produit. Vous pouvez faire l’analogie avec certaines méthodes de réduction de dimensions tel que l’ACP, les variables latente joue ici un rôle similaire aux composantes. Ici k est égale à 3, la matrice U offre ainsi une représentation de chaque utilisateur à l’aide de trois variables numériques, la matrice P joue le même rôle pour les produits.
-
-
-![](https://drive.google.com/uc?export=view&id=1XT-Rn1rF8IYHubudIDajL6NPNs8WgAoc)
-
-
-Bien entendu nous ne connaissons pas les matrices U et P et nous allons donc devoir les estimer. Pour cela rappelons que l’équation que nous cherchons à résoudre est la suivante :
-
-
-![](https://drive.google.com/uc?export=view&id=1IqbdAJRrEbSxOtYrukQf5h1MXWKIWvX5)
-
-
-La multiplication de U et P va nous permettre de reconstruire la matrice I en attribuant une valeur à chacune des interactions, y compris celles qui n’ont jamais eu lieu (les ?). Comme dans tout problème de machine learning supervisé on va estimer les paramètres du modèle (les matrices U et P) en cherchant à minimiser une fonction de coût qui sera égale à la somme des écarts entre la valeur d’une interaction connue et le produit des vecteurs utilisateur et produit associés à cette interaction.
-
-
-
-Par exemple l’interaction User 1 / Film 1 a pour valeur 1, le coût pour cette interaction sera donc calculé comme ceci :
-
-
-
-![](https://drive.google.com/uc?export=view&id=1PkRi8fTCKv3HZrHeIFSvbZK7b2fXMknp)
-
-
-soit
-
-
-![](https://drive.google.com/uc?export=view&id=1HMKNRA_i8tYOsYVIcifPTB2aIM4ZFUep)
-
-
-
-De façon globale la fonction le coût peut être formulé de la façon suivante :
-
-
-
-![](https://drive.google.com/uc?export=view&id=1ayAQKZ_nKlU8ojrWoC63cIkMydK-9zhR)
-
-
-ou plus simplement
-
-
-![](https://drive.google.com/uc?export=view&id=1dkrP9_Ssm6xcXj-YMowbxdr2eviouV2G)
-
-
-
-La somme s’effectue sur les ***(i,j) observés***, c’est à dire les interactions de la matrice I dont on connaît la valeur.
-
-Vous pourriez faire l’analogie avec la fonction de coût d’une régression linéaire qui s’y apparente fortement. On va de la même manière rechercher les valeurs des matrices U et P qui minimisent cette fonction de coût. Cependant le problème est en réalité ici bien plus complexe que dans le cas de la régression linéaire. En effet dans une régression linéaire on cherche à résoudre une équation de la forme AX = Y où seul le vecteur de coefficient A doit être estimé, X et Y étant des valeurs connues. Dans le cas de l’ALS on ne connaît que la matrice I et on doit estimer U et P.
-
-
-![](https://drive.google.com/uc?export=view&id=1oldFTTwErZzseOyoW5w9IAHjmcRiyXGX)
-
-
-De ce fait la fonction de coût que nous cherchons à optimiser (I - UP), est non convexe. Bien qu’il soit possible d’effectuer une descente de gradient pour trouver une solution approximative cela nécessiterait un grand nombre d’itération et l'entraînement du modèle pourrait donc s’avérer extrêmement lent.
-
-En revanche, si après avoir initialisé aléatoirement les valeurs de U et P, nous traitons les valeurs de P comme des constantes (de façon analogue au X dans la régression linéaire) alors la fonction de coût, qui ne dépend plus que de U, devient convexe. On peut alors aisément trouver les valeurs de U qui minimise la fonction de coût étant donné les matrices P et I. On va ensuite à nouveau effectuer une optimisation de la fonction de coût en considérant cette fois-ci les valeurs de U comme constantes et en cherchant les valeurs de P qui minimise cette dernière étant donné les matrices U et I.
-
-Au lieu d’estimer simultanément U et P on procède donc en deux temps, on fixe P et on estime U puis on fixe U et on estime P. On répète ce processus jusqu’à ce que les valeurs de U et P finissent par converger. C’est cette approche qui est communément appelé Alternating Least Square.
-
-Voici une description plus formelle de l’algorithme:
-
-
-
-1. Initialisation aléatoire de U et P
-2. Répéter jusqu'à convergence :
-    1. Pour tous les utilisateurs
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;u_i" />:
-
-![](https://drive.google.com/uc?export=view&id=1A1alel8fcFoYACbPFHa3JjsNbKB4zLXq)
-
-    2. Pour tous les produits
-
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;p_i" /> :
-
-
-![](https://drive.google.com/uc?export=view&id=1u1J1vx3wDjisejhjB5j0jHWPuMUtmQns)
-
-
-## Quelques liens pour aller plus loin
-
-**How do you build a “People who bought this also bought that”-style recommendation engine**
-
-[https://datasciencemadesimpler.wordpress.com/tag/alternating-least-squares/](https://datasciencemadesimpler.wordpress.com/tag/alternating-least-squares/)
-
-**Stanford CME 323: Distributed Algorithms and Optimization, Spring 2015**
-
-[http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf](http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf)
-
-
-
-## L'ALS dans Spark
+##
+    Séries temporelles
 
 
 [TOC]
 
 
 
-## Chargement des données
+## Ce que vous apprendrez dans ce cours
 
-Afin de découvrir comment effectuer une ALS dans Spark, nous allons charger un jeu de données avec des notations d’utilisateur sur différentes catégories de produits. Nous allons donc nous baser sur ces notes pour recommander des catégories de produits aux utilisateurs.
-
-
-![](https://drive.google.com/uc?export=view&id=1fw7P8tJP-ancYnxKgLvimhimB7bnO2wO)
-
-
-## Preprocessing
-
-Comme vous avez pu le constater sur le screenshot précédent, Spark a par défaut considéré que vos column sont de type String. Or, comme pour tous les autres algorithme de MLLib il est nécessaire que vos données soient de type numérique, il va donc falloir les convertir.
-
-Par ailleurs, pour faire une ALS nous avons uniquement besoin d’un identifiant d’utilisateurs, d’un identifiant d’item (ici l’item est une catégorie de produit)  et d’une notation de l’item par l’utilisateur. Nous pouvons donc nous séparer de la colonne reviews.
-
-
-![](https://drive.google.com/uc?export=view&id=12RjQb7Qh006HwbmRgneGFgyr3Tc3-27Q)
-
-
-## Entrainement du modèle
-
-Dans le cas présent nous n’avons davantage de pré processing et l’utilisation d’un pipeline se révèle donc inutile. Vous allez donc voir que l'entraînement de l’ALS est relativement simple et ressemble fortement à ce que nous avons vu dans le cours précédent. Voici les différentes étapes que réalise le code ci-dessous :
+Ce cours a pour ambition de vous apprendre tout ce qu’il y a à savoir sur l’analyse élémentaire des séries temporelles. Nous verrons comment lisser une série pour visualiser ses évolutions, comment extraire la tendance et les saisonnalités de séries temporelles. Pour finir nous verrons comment choisir les modèles les plus appropriés afin de modéliser une série temporelle et comment prédire les prochaines valeurs d’une séries temporelle.
 
 
 
-*   Séparation des données en ensemble d'entraînement et de test
-*   Création d’un objet de type ALS en renseignant les colonnes d’identifiants de users, d’items et les notations. Le pramètre coldStartStrategy=”drop” permet tout simplement de ne pas faire de prédictions pour des users ou des items sur lequel le modèle n’aurait pas été entraîné, dans le cas contraire cela fausserait le calcul de l’erreur.
-*   Création d’un objet de type evaluator pour avoir une mesure de l’erreur de notre modèle (ici le RMSE). On doit également renseigner la colonne avec la notation (stars) et celle avec les prédictions (par défaut Spark nomme cette colonne prediction)
-*   Création d’un objet de ParamGridBuilder pour construire les combinaisons de paramètres que nous allons tester durant la cross validation
+    1. Définition
 
 
-![](https://drive.google.com/uc?export=view&id=1C6esXkh-5lbDZBdKV6lVi6_1qUsxacGJ)
+Une série temporelle est une succession ordonnée de valeurs d’une variable qui sont toutes séparées par un même intervalle de temps. Par exemple si on mesure tous les jours le cours du pétrole à midi pendant sept jours, on obtient une série temporelle de période 1 jour comprenant sept observations consécutives. Ce chapitre introduit l’étude des séries temporelles.
 
 
-Maintenant que tous les objets nécessaires ont été défini on peut faire la cross validation de la façon suivante :
+    2. Applications
+
+Deux usages courants des séries temporelles sont :
+*   Comprendre les lois sous-jacentes qui régissent et et structure les données observées
+*   Construire des modèles de prédiction qui permettent d’anticiper les futures valeurs de la série de manière à prendre des décisions ou monitoré la série.
+Les champs d’application des séries temporelles sont très variés : économie, prévision de ventes, analyse budgétaire, analyse boursière, prévision de rendement, logistique et inventaire et bien d’autres encore.
 
 
-![](https://drive.google.com/uc?export=view&id=1Dxb3-W2yXu3-5toIokkn-D6YR1gMZZoW)
+    3.  Analyse des séries temporelles
 
 
-La méthode fit de l’objet CrossValidator va nous renvoyer le modèle entraîné avec la meilleure combinaison de paramètres.
+Nous allons ici voir différentes manières d’analyser les séries temporelles de différentes techniques et explorer différentes caractéristiques remarquables des séries temporelles.
 
 
-## Evaluation
-
-Pour évaluer le modèle sur l’ensemble de test, il faut dans un premier temps générer les prédiction sur celui-ci puis utiliser la méthode evaluate de l’objet evaluator en passant les prédictions en paramètre.
+    a. Moyennes mobiles et techniques de lissage
 
 
-![](https://drive.google.com/uc?export=view&id=1cvxVXyyHlWtWGzuFIIhTaq5GhBNzveTY)
+La plupart des séries temporelles ne se comportent pas comme des fonctions simples du temps, leurs variations peuvent souvent sembler assez imprévisible, c’est pourquoi il existe un certain nombres de techniques qui vont permettre de transformer une série temporelle difficilement compréhensible en une version très simplifiée. C’est techniques sont ce qu’on appelle du lissage et permettent comme leur nom l’indique, d’obtenir des versions résumées des séries temporelles dont les variations sont très atténuées afin d’en extraire la tendance générale.
+De manière générale il existe deux grandes familles de techniques de lissage, les moyennes mobiles et les technique de lissage exponentiel.
 
 
-![](https://drive.google.com/uc?export=view&id=1JjQAFL5bRBMetwofCUDSryI6U4NVufxB)
+    i.  Moyenne mobile simple
 
 
-## Utilisation du modèle
+Une technique de lissage très courante et très simple à comprendre et interpréter des séries temporelles. Imaginons que nous étudions la séries temporelle qui donne les montants dépensés par une entreprise en matières premières par jour cette série temporelle est notée *X* est la réalisation de *X* à la date *t* est notée <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t" />. On définit l’ensemble des moyennes mobiles associées à cette série, l’ensemble des séries temporelles de la forme :
 
-L’ALS dans Spark offre certaine fonction très pratique pour pouvoir utiliser le moteur de recommandation.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;M_t=\frac{X_t+X_{t-1}+...+X_{t-N+1}}{N}" />
 
-Cependant notre objet model n’implement pas ces fonctionnalités lui-même car il est de type CrossValidator et il peut donc être utilisé pour entraîner n’importe quel type de modèle supervisé.  
-
-Pour utiliser ces fonctionnalités il faut d’abord accéder à l’attribut bestModel de notre objet model. En faisant model.bestModel on obtient donc un objet de type ALS qui implémente deux fonctions intéressantes : recommendForAllUsers et recommendForAllItems.
-
-Pour recommander pour chaque users les 10 catégories de produit qu’il est le plus susceptible d’apprécier on peut faire :
+Dit simplement, une moyenne mobile d’ordre par exemple 3 est la moyenne de l’observation courante et des deux observations précédentes à chaque date (c’est à dire chaque date pour lesquelles on dispose d’au moins deux observations précédentes).
 
 
-![](https://drive.google.com/uc?export=view&id=18e_Twm_yZFOwObsP1d3NUS4zg1UsFslS)
+![tab_moy_mobile_simple](https://drive.google.com/uc?export=view&id=1JyGFi5y9re0zsr7xuf6-8PHeOXJa5l9c)
 
 
-Pour recommander pour chaque catégorie les 10 users qui sont le plus susceptible de l’apprécier on peut faire :
+Afin d’évaluer la qualité d’adhésion entre la moyenne mobile et les données réelles on calcule souvent la moyenne des erreurs au carré (Mean Squared Error MSE) qui ici vaut 7.71.
 
-<![](https://drive.google.com/uc?export=view&id=1twI3gaRcWw2-iAYzDoIJ003UPI7O4ayv)
+
+    ii.  Moyenne mobile centrée
+
+
+Dans l’exemple précédent, on a calculé la moyenne mobile d’ordre 3, la première date à laquelle la moyenne mobile était définie était *t=3*. On aurait pu choisir par exemple de placer cette valeur au niveau de l’observation *t=2* afin de centrer la première valeur au centre de l’intervalle utilisé pour son calcule, et on procède de la même manière pour toutes les valeurs suivantes. Cette méthode fonctionne bien pour les ordres de moyenne mobile impaires car le centre de l’intervalle est un nombre entier, mais pas si bien que ça pour les ordres pairs car la valeur qui coupe l’intervalle en deux partie égale est un nombre décimal.
+
+
+
+![tab_moy_mobile_centree](https://drive.google.com/uc?export=view&id=1jMLArRoLEZVjS22wBlczv2rFVAT-JEvR)
+
+
+
+Dans l’exemple ci-dessus, on représente les moyennes mobiles centrées d’ordre 4 et 3. La caractéristique principale des moyennes mobiles est que toutes les observations précédentes utilisées pèsent le même poids dans le calcul des valeurs de la série lissée.
+Nous allons voir comment une autre forme de pondération des observations permet également de construire des séries lissées.
+
+
+    iii.	Lissage exponentiel simple
+
+
+Le lissage exponentiel est une méthode très populaire pour le calcul de séries temporelles lissées qui assigne des poids qui décroissent de manière exponentielle plus les observations sont ancienne par rapport au point à estimer. Cela entraîne que les observations les plus proches du point à estimer se verront assigner un poids relativement beaucoup important que les observations plus anciennes.
+On notera la série lissée exponentielle <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_t" /> et la série originale est toujours <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t" />. <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_2" /> prend la valeur <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1" />, <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_3=\alpha{X_2}+(1-\alpha)S_2" />, puis de manière récurssive :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;S_t=\alpha{X_{t-1}}+(1-\alpha)S_{t-1},\;0<\alpha\leq{1,t}\ge3" />
+
+
+Ceci est l’équation de base du lissage exponentiel, qui suffit à définir toute la série lissée de manière itérative. Plus α est proche de 1, plus la série sera proche en valeur de <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_1" /> est attribuera un poids très faible aux précédentes observations. Plus α sera proche de 0, plus on donne de l’importance anciennes valeur de *X* pour calculer la série lissée. La valeur de α doit donc être choisie avec cette donnée en tête.
+Exemple de séries temporelles lissées par lissage exponentiel
+
+
+    iv.	Prédiction par lissage exponentiel simple
+
+
+La formule qui permet de prédire les dates futures à partir de la série lissée construite grâce à la série originale est :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;F_{t+1}=\alpha{X_t}+(1-\alpha)S_t,\;0<\alpha<(1,t)>0" />
+
+
+Ce qui permet d’obtenir les valeurs hypothétiques que la série prendra à l’avenir en partant du principe qu’elle préservera le même comportement pendant un certain nombre de prériodes.
+
+
+    v. Lissage exponentiel double
+
+
+Comme le montre l’exemple montré précédemment, le lissage exponentiel simple n’est pas une méthode qui permette de bien suivre la série temporelle originale si celle-ci suit on tendance générale. Cela peut être résolu par l’addition d’un terme supplémentaire dans l’équation de calcul des <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_t" />.
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;S_t=\alpha{X_t}+(1-\alpha)(S_{t-1}+b_{t-1}),\;0\leq\alpha\leq{1}" />
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t=\gamma(S_t-S_{t-1)+(1-\gamma)b_{t-1}},\;0\leq\gamma\leq{1}" />
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" /> est l’élément censé représenter la tendance générale de la série temporelle, et d’éviter ainsi les décrochages observés dans l’exemple précédent. Il s’agit en tout cas dans un premier temps de choisir la valeur initiale de ce terme <img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" />. Les suggestions les plus courantes sont :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_1=X_2-X_1" />
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_1=\frac{1}{3}[(X_2-X_1)+(X_3-X_2)+(X_4-X_3)]" />
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_1=\frac{X_n-1}{n-1}" />
+
+
+
+Peu importe quelle formule l’on choisit pour l’initialisation, tant que cette dernière représente d’une certaine façon la tendance de la série. Schématiquement, plus <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma" /> est proche de 0, plus les variations antérieures de la série auront de l’importance dans l’estimation du terme de tendance, inversement plus <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma" /> sera grand, plus le terme de tendance sera la réflexion des variations immédiates de la série.
+
+
+    vi.  Prédiction par lissage exponentiel double
+
+
+Si on cherche à prédire la valeur prise par la série temporelle *X* à la date *t+1*, qui est la première date suivant la dernière observation disponible, la prédiction par lissage exponentiel double est donnée par la formule suivante :
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;F_{t+1}=S_t+b_t" />
+
+C’est donc la somme du dernier terme de la série lissée et du dernier terme de tendance calculé.
+Si par contre on cherche à prédire la valeur de la série originale à la date *t+m*, la formule est légèrement modifiée :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;F_{t+m}=S_t+mb_t" />
+
+Qui est la somme de la dernière valeur disponible de la série lissée à laquelle on ajoute *m* fois le terme de tendance. Ceci est logique car le terme <img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" /> est construit de manière à représenter le coefficient directeur d’une éventuelle tendance linéaire de la série originale *X*.
+
+
+    vii.  Lissage exponentiel triple
+
+
+Le lissage exponentiel triple est un nouveau niveau de raffinement pour le lissage des séries temporelles qui cette fois prendra en compte une éventuelle saisonnalité de la série temporelle considérée. La saisonnalité est un terme utilisé pour décrire tout phénomène qui affecte les valeurs d’une série temporelle à intervalle régulier. Par exemple, une série temporelle qui mesure les ventes d’un magasin comme les galeries Lafayette aura des périodes de comportement normal et des périodes de forte augmentation pendant les soldes et les périodes de fêtes, qui sont des événements qui reviennent chaque année autour des mêmes périodes.
+Le lissage exponentiel triple est décrit par un jeu de plusieurs équations qui sont appelé la méthode de Holt-Winters pour l’analyse des séries temporelles, nommée ainsi d’après le nom de ses deux inventeurs.
+
+
+![tab_formules](https://drive.google.com/uc?export=view&id=1oAiZuvpStOJWcisdv_cVJpU2B-h20E2X)
+
+
+Dans les formules ci-dessus les paramètres on les significations suivantes:
+* <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t" /> est la valeur que la série temporelle X prend à la date *t*
+* <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_t" /> est la valeur de la série triplement lissée à la date *t*
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;b_t" /> est la valeur de la série décrivant la tendance à la date *t*
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;I_t" /> est la valeur prise par l’indice de saisonnalité à la date *t*
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;F_{t+m}" /> est la valeur de la prédiction pour la date *t+m*
+*	0<α<1,0<β<1,0< <img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma" /> <1 sont trois constantes qu’il convient de choisir de manière à réduire l’erreur moyenne commise lors du calcul de la série lissée.
+*	*L* est un entier qui décrit le nombre de périodes qui constituent un cycle complet de la série temporelle (dans l’exemple des galeries lafayette *L* doit être égal à un nombre de périodes équivalent à une année, si une période représente un mois alors *L=12*, si une période est une semaine *L=52* et ainsi de suite)
+
+Le modèle de Holt-Winter ne peut être estimé si l’on ne dispose pas au minimum d’un cycle complet de données, de plus, il est grandement conseillé en général de disposer de deux cycles complets ou plus afin d’obtenir de bons résultats.
+
+***Exemple de lissage triple***
+
+
+    b.  Propriétés des séries temporelles
+
+
+On prendra comme exemples dans cette partie deux jeux de données communément utilisés pour illustrer les notions de modélisation que nous verrons dans ce qui suit. Il s’agit d’une série de concentration ce CO2 dans l’air, mesurée par un observatoire, l’autre série mesure la différentiel de pression atmosphérique au niveau de la mer entre deux points de la planète : [Hawaii](https://www.itl.nist.gov/div898/handbook/datasets/MLCO2MON.DAT) et [Tahiti les îles Darwin](https://www.itl.nist.gov/div898/handbook/datasets/ELNINO.DAT)
+Nous allons maintenant découvrir des propriétés des séries temporelles qui correspondent à des hypothèses de bases nous permettant d’appliquer certains modèles d’analyse des séries temporelles.
+
+
+    i.  Stationarité
+
+
+La stationnarité est certainement la propriété des séries temporelles dont a le plus souvent besoin afin de pouvoir faire de la modélisation. Une série temporelle stationnaire a pour propriétés que sa moyenne, sa variance et la structure de ses corrélations ne changent pas au cours du temps, ce qui en termes mathématiques peut s’expliquer de la manière suivante :
+
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;E(X_t)=\mu,\forall{t}" />, chaque valeur de la série temporelle est considérée comme une réalisation particulière d’une variable aléatoire suivant une certaine loi, si cette loi reste inchangée au cours du temps, alors la moyenne des X_t devrait être constante.
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;V(X_t)=\sigma^2,\forall{t}" />, chaque réalisation de la série temporelle repose sur une variable aléatoire dont la variance est constante dans le temps.
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;Cov(X_t,X_{t-d})=\rho_d" />, les autocorrélations de la série avec elle même possède une structure qui ne dépend pas du temps, mais uniquement du décalage entre les périodes observées.
+Les séries temporelles sont malheureusement très rarement stationnaires, il est donc souvent nécessaire de les différencier afin d’obtenir une série temporelle stationnaire à partir des données dont on dispose. Différencier une série temporelle correspond au fait de remplacer la série originale *X* par la série suivante :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;Y_t=X_t-X_{t-1}" />
+
+
+Si la série originale suit une certaine tendance, linéaire par exemple, on peut estimer la nature de cette tendance et la soustraire aux données originales avec l’espoir que les résidus ainsi obtenus auront un comportement stationnaire.
+Lorsque la variance de la série originale est non constante dans le temps, étudier le logarithme ou la racine carrée de la série permet parfois de stabiliser les propriétés de la variance dans le temps.
+Ces techniques permettent d’obtenir des séries temporelles dont l’échelle et le niveau dans le temps sont constants dans le temps, cependant une propriété comme la saisonnalité contredit l’hypothèse de stationnarité. Cela n’est pas grave cependant, car la plupart des modèles sur les séries temporelles incluent une description des propriétés saisonnières.
+
+
+     ii.  Saisonalité
+
+
+De nombreuses séries temporelles présentent certains degrés de saisonnalité, c’est l’exemple des ventes aux galeries lafayette. Des techniques existent afin de repérer et décrire la saisonnalité des séries temporelles.
+*	Une visualisation graphique des valeurs de la série au cours du temps permet en général de montrer assez facilement la présence ou non de saisonnalité.
+*	Si on connaît la période de saisonnalité (12 mois dans le cas des galeries lafayette par exemple) alors il est possible de tracer un graphique où les valeurs pour chaque période du cycle sont représentée côte à côte et l’axe des abscisse ne comprend que les, ici 12, périodes constituants un cycle.
+*	On peut également tracer une boîte à moustache pour chaque période du cycle qui aurait pour but de représenter la distribution des valeurs de la série pour chaque nouveau cycle.
+*	La table des autocorrélations de la série peut permettre également de mettre en évidence la saisonnalité de la série temporelle, si la série <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t" /> et la série <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_{t-d}" /> sont fortement corrélées, alors on soupçonne la présence d’une saisonnalité de période *d*.
+
+
+    c.  Modélisation des séries temporelles univariées
+
+
+      i.  Bruit blanc
+
+
+Un concept très utile lorsqu’on s’intéresse aux séries temporelles est celui de bruit blanc (white noise en anglais). Un bruit blanc ϵ est une série temporelle qui possède les propriétés suivantes:
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[\epsilon_t]=0" /> E[ϵ_t]=0 l’espérance d’un bruit blanc à toutes dates observée est nulle
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[\epsilon_{t}^2]=\sigma^2" /> la variance d’un bruit blanc est constante dans le temps
+*	<img src="https://latex.codecogs.com/svg.latex?\Large&space;E[\epsilon_t,\epsilon_k]=0,t\neq{k}" /> les auto-corrélations du bruit blanc sont nulles
+Le concept du bruit blanc est l’équivalent pour les séries temporelles des résidus pour les modèles d’apprentissage supervisé.
+
+
+    ii.  Modèle auto-régressif
+
+
+Le modèle auto-regressif est un modèle dans lequel la variable cible est la série temporelle elle-même, et les variables explicatives sont les dates antérieures de la même série temporelle. Mathématiquement cela s’écrit:
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t=\delta+\Phi_1X_{t-1}+...+\Phi_pX_{t-p}+A_t" />
+
+
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t" />   est la série temporelle que l’on souhaite modéliser et <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_t" /> est un bruit blanc et <img src="https://latex.codecogs.com/svg.latex?\Large&space;\delta=(1-\Sigma_{i=1}^{P}\Phi_i)\mu" />, où μ est la moyenne de la série temporelle <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t" /> .
+
+Le modèle auto-régressif n’est donc ni plus ni moins qu’une régression linéaire de la série temporelle sur ses réalisations précédentes. La valeur p est appelée l’ordre du modèle autorégressif. Le modèle auto-régressif d’ordre *p* est noté *AR(p)*.
+Il est important de noter qu’il est absolument nécessaire de s’assurer que la série temporelle à laquelle on s’intéresse est bien STATIONNAIRE avant de se lancer dans la modélisation.
+
+
+    iii.  Modèle moyenne mobile
+
+
+Une autre approche très courante pour modéliser les séries temporelles est le modèle des moyennes mobiles. L’idée est de faire une régression linéaire de la série temporelle sur les réalisation à différentes dates d’un bruit blanc de distribution souvent choisie comme gaussienne.
+
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t=\mu+A_t-\Theta_1A_{t-1}-,...,-\Theta_qA_{t-q}" />
+
+Où <img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t" /> est la série temporelle que nous modélisons, μ est la moyenne de la série, <img src="https://latex.codecogs.com/svg.latex?\Large&space;A_t" /> est un bruit blanc, *q* est l’ordre du modèle de moyennes mobiles, noté *MA(q)*.
+Il est encore une fois important de noter qu’un modèle *MA* ne peut fonctionner que s’il est appliqué à une série STATIONNAIRE.
+
+
+    iv.  Modèle ARMA (Box-Jenkins)
+
+
+Il arrive assez souvent que le modèle le plus pertinent afin de décrire une série temporelle stationnaire soit une combinaison d’un modèle auto-régressif et des moyennes mobiles, ce modèle appelé modèle de Box-Jenkins est noté ARMA(p,q) où p est l’ordre du modèle autorégressif et q l’ordre du modèle de moyennes mobiles. Mathématiquement, le modèle s’écrit ainsi :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;X_t=\delta+\Phi_1{X_{t-1}}+...+\Phi_p{X_{t-1}}+A_t-\Theta_1{A_{t-1}}-...-\Theta_q{A_{t-q}}" />
+
+Ce modèle est très utile car en théorie toute série stationnaire peut être modélisée de cette façon, la difficulté est de trouver les ordres *p* et *q* adéquat. Nous allons voir tout de suite des techniques afin d’identifier les ordres susceptibles de fonctionner.
+
+
+    v. Autocorrélations
+
+
+Les coefficients d’autocorrélation sont définis par le calcul des corrélations entre la série originale et la série décalée dans le temps.
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\gamma_d=Cov(X_t,X_{t-d})" />
+
+En pratique on est obligé de calculer une estimation de ces coefficients d’autocorrélation de la manière suivante :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\widehat{r_d}=\frac{1}{T-d}\sum_{t-d+1}^{T}(X_T-\mu)(X_{t-d}-\mu)" />
+
+Les valeurs des coefficients vont pouvoir être visualisés sous forme graphique et permettre de déduire la nature du modèle qui décrit les données.
+
+
+    vi.	Autocorrélations partielles
+
+
+Les coefficients d’autocorrelation partielle sont définis pour chaque ordre de décalage comme la corrélation de la série avec elle même, sans prendre en compte la contribution des dates antérieures. Mathématiquement cela s’écrit :
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;\rho_d=Corr(X_{T+d}-P(X_t|X_{t-1},...,X_1),X_t-P(X_t|X_{t-1},...,X_1))" />
+
+
+De la même manière, on peut les visualiser pour obtenir des indices quand à la nature du modèle adequat.
+
+
+    vii.  Spécification du modèle
+
+
+L’allure du graphique des autocorrélations permet de déterminer la nature du modèle de la manière suivante :
+
+
+
+![tab_ts_specif](https://drive.google.com/uc?export=view&id=1LF9379zg_QgIX_Gs3WNBKi85rw6VDqJ6)
+
+
+
+Une fois l’analyse du graphe des autocorrélations effectuée, on utilise le graphe des autocorrélations partielles afin de déterminer l’éventuel ordre de la composante *AR* du modèle, la position du dernier coefficient d’autocorrélation partielle non nulle indique l’ordre du modèle *AR*.
